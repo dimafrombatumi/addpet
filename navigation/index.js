@@ -1,0 +1,112 @@
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+
+import HomeScreen from "../screens/HomeScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import LostPetScreen from "../screens/LostPetScreen";
+import ReportScreen from "../screens/ReportScreen";
+import LostPetsListScreen from "../screens/LostPetsListScreen";
+import SearchResultsScreen from "../screens/SearchResultsScreen";
+import AddPetScreen from "../screens/AddPetScreen";
+import { Ionicons } from "@expo/vector-icons";
+
+const Navigation = () => {
+  const Stack = createStackNavigator();
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="LoginScreen"
+        screenOptions={{
+          headerShown: true,
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: "#E8EBF1",
+            height: 120,
+          },
+          headerBackImage: () => (
+            <Ionicons
+              style={{
+                padding: 3,
+                width: 33,
+                height: 33,
+                borderRadius: 5,
+                marginLeft: 15,
+                marginBottom: 10,
+              }}
+              name="chevron-back-outline"
+              size={25}
+              color="#1A3053"
+            />
+          ),
+        }}
+      >
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            title: "Add Pet App - Login",
+          }}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+          options={{
+            title: "Add Pet App - Register",
+          }}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            title: "Add Pet App",
+          }}
+        />
+
+        <Stack.Screen
+          name="LostPetScreen"
+          component={LostPetScreen}
+          options={{
+            title: "Lost Pet",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="ReportScreen"
+          component={ReportScreen}
+          options={{
+            title: "Report Lost Pet",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="LostPetsListScreen"
+          component={LostPetsListScreen}
+          options={{
+            title: "All Lost Pets",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="SearchResultsScreen"
+          component={SearchResultsScreen}
+          options={{
+            title: "Search Results",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="AddPetScreen"
+          component={AddPetScreen}
+          options={{
+            title: "Add Pet in Database",
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default Navigation;
