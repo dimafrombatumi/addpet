@@ -31,16 +31,16 @@ const LostPetsList = () => {
           columnWrapperStyle={styles.flatListWrap}
         />
       </View>
-      <View style={styles.allLostBtn}>
+      <View>
         <TouchableOpacity
           onPress={function () {
             navigation.navigate("LostPetsListScreen", {
               registeredPets: registeredPets,
             });
           }}
-          style={styles.pressMeBtn}
+        
         >
-          <Text style={styles.pressMeText}>See All Lost Pets</Text>
+          <Text style={styles.lostPetsText}>See All Lost Pets</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     padding: 10,
+    marginBottom:20
   },
   flatListWrap: {
     marginBottom: 10,
@@ -89,20 +90,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
   },
-  pressMeBtn: {
-    height: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    flexDirection: "row-reverse",
-    backgroundColor: "#E8EBF1",
-    borderRadius: 10,
-    borderColor: "1.5px solid rgba(80, 134, 231, 0.5)",
-    borderWidth: 3,
+  lostPetsBlock: {
+  padding: 10,
+  paddingHorizontal: 10,
+  height: 130,
+  backgroundColor: "#ссс",
+  borderRadius: 10,
+  marginTop:10,
   },
-  pressMeText: {
-    color: "#1A3053",
-  },
+  lostPetsText: {
+    fontSize: 22,
+    fontWeight: "700",
+    marginTop: 20,
+    color: "#111",
+    },
   h2: {
     fontSize: 22,
     fontWeight: "600",

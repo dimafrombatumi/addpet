@@ -12,6 +12,7 @@ import { onAuthStateChanged } from "firebase/auth";
 export default function App() {
   const [registeredPets, setRegisteredPets] = useState([]);
   const [myPets, setMyPets] = useState([]);
+  const [isLost, setIsLost] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -26,7 +27,7 @@ export default function App() {
   }, []);
 
   useEffect(()=>{
-    fetchAllPets(registeredPets)
+    fetchAllPets()
   }, [])
 
   const fetchMyPets = async (uid) => {
@@ -48,11 +49,13 @@ export default function App() {
   const fetchAllPets = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3010/registered-pets/`
+        `http://localhost:3010/lost-pets/`  // Передаем булевое значение
       );
+      
       const sortedData = response.data.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
       );
+      
       setRegisteredPets(sortedData);
     } catch (error) {
       console.error("Error fetching pets:", error);
@@ -60,6 +63,7 @@ export default function App() {
       setLoading(false);
     }
   };
+  
 
 
   return (

@@ -15,11 +15,15 @@ const LostPetsListScreen = () => {
 
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
 
+  // Фильтруем питомцев, у которых islost === true
+  const lostPets = registeredPets.filter(pet => pet.islost);
+
   const filteredPets = petsTypeToFilter
-    ? registeredPets.filter(
+    ? lostPets.filter(
         (item) => item.pettype.toUpperCase() === petsTypeToFilter
       )
-    : registeredPets;
+    : lostPets;
+
   return (
     <View style={essentialstyles.container}>
       <Text style={essentialstyles.h2}>All Lost Pets</Text>
@@ -30,6 +34,9 @@ const LostPetsListScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setPetsTypeToFilter("DOG")}>
           <Text style={styles.filterCategory}>🐕 Dogs</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setPetsTypeToFilter("")}>
+          <Text style={styles.filterCategory}>🐈‍⬛ + 🐕 All pets</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.listContainer}>
@@ -43,22 +50,21 @@ const LostPetsListScreen = () => {
       </View>
       <View style={styles.allLostBtn}>
         <Pressable
-          onPress={function () {
-            navigation.navigate("LostPetsListScreen", {
-              registeredPets: registeredPets,
-            });
-          }}
+          onPress={() => navigation.navigate("LostPetsListScreen", { registeredPets })}
           style={styles.pressMeBtn}
         >
-          <Text style={styles.pressMeText}>See All Lost Pets
-          </Text>
+          <Text style={styles.pressMeText}>See All Lost Pets</Text>
         </Pressable>
       </View>
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
+  pressed:{
+    backgroundColor:"red"
+  },
   flatListWrap: {
     marginBottom: 10,
     gap: 15,
@@ -107,6 +113,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 10,
     alignSelf: "center",
+    
   },
   pressMeBtn: {
     height: 60,

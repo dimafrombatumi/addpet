@@ -31,29 +31,33 @@ const AddPetScreen = () => {
   const [petBreed, setPetBreed] = useState("");
   const [petDescription, setPetDescription] = useState("");
   const [image, setImage] = useState(null);
+  const [ownerId, setOwnerId] = useState(null);
+  const [ownerEmail, setOwnerEmail] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
   const { pickImage, addPet } = usePetActions();
 
   const user = useContext(UserContext);
-
+   const uid = user.uid;
   const handleAddPet = () => {
     const petDetails = {
       uid: user.uid,
       petid: petId,
-      petname: petName,
       pettype: petType,
+      petname: petName,
       petsex: petSex,
-      petcolor: petColor,
       petage: petAge,
+      petcolor: petColor,
       petweight: petWeight,
-      petownerphone: petOwnerphone,
-      petlocation: petLocation,
       petimageurl: petImageurl,
-      petbreed: petBreed,
+      petlocation: petLocation,
+      petownerphone: petOwnerphone,
       petdescription: petDescription,
+      petbreed: petBreed,
       created_at: new Date().toISOString(),
+      owner_email: ownerEmail,
+      owner_id: uid,
     };
     addPet(petDetails, setLoading);
   };
