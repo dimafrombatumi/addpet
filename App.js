@@ -8,7 +8,7 @@ import MyPetsContext from "./context/MyPetsContext";
 import axios from "axios";
 import { auth } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import AllPetsContext from "./context/MyPetsContext copy";
+import AllPetsContext from "./context/AllPetsContext";
 
 export default function App() {
   const [registeredPets, setRegisteredPets] = useState([]);

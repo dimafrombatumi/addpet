@@ -1,24 +1,32 @@
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image, SafeAreaView } from "react-native";
 import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import AllPetsContext from "../context/MyPetsContext copy";
 import LostPetItem from "../components/LostPetItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import essentialstyles from "../styles";
 import SearchField from "../components/SearchField";
+import AllPetsContext from "../context/AllPetsContext";
+import UserContext from "../context/UserContext";
+import HeaderPart from "../components/HeaderPart";
 
 const SearchResultsScreen = ({ route }) => {
   const { searchPhrase } = route.params;
   const allpets = useContext(AllPetsContext);
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState(null);
+  const user = useContext(UserContext);
 
+  
   const filteredData = allpets.filter(
     (item) => item.petid.toUpperCase() === searchPhrase?.toUpperCase(),
   );
 
+
   return (
-    <View style={essentialstyles.container}>
+
+      <SafeAreaView>
+        <View style={essentialstyles.container}>
+          <HeaderPart userName={user.displayName}/>
       <SearchField searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <View style={styles.listContainer}>
@@ -52,7 +60,7 @@ const SearchResultsScreen = ({ route }) => {
       <View>
         <TouchableOpacity
           onPress={function () {
-            navigation.navigate("LostPetsListScreen", { lostpets: lostpets });
+            navigation.navigate("LostPetsListScreen", { lostpets: allpets });
           }}
           style={essentialstyles.pressMeBtn}
         >
@@ -60,6 +68,7 @@ const SearchResultsScreen = ({ route }) => {
         </TouchableOpacity>
       </View>
     </View>
+    </SafeAreaView>
   );
 };
 
@@ -73,7 +82,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 40,
     flexDirection: "column",
-  },
+    flex:1,
+justifyContent:'center'  
+},
 
   petId: {
     color: "#111",
