@@ -10,6 +10,7 @@ import ReportScreen from "../screens/ReportScreen";
 import LostPetsListScreen from "../screens/LostPetsListScreen";
 import SearchResultsScreen from "../screens/SearchResultsScreen";
 import AddPetScreen from "../screens/AddPetScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 
 const Navigation = () => {
@@ -103,6 +104,15 @@ const Navigation = () => {
           component={AddPetScreen}
           options={{
             title: "Add Pet in Database",
+            headerShown: false,
+          }}
+        />
+
+<Stack.Screen
+          name="UserProfileScreen"
+          component={UserProfileScreen}
+          options={{
+            title: "User Profile",
             headerShown: false,
           }}
         />

@@ -13,7 +13,6 @@ import essentialstyles from "../styles";
 import { auth } from "../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 

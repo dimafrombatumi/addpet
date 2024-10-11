@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -41,6 +42,7 @@ const ReportScreen = ({ route }) => {
   };
   return (
     <SafeAreaView>
+      <ScrollView>
       <View style={essentialstyles.container}>
       <HeaderPart />
 
@@ -116,6 +118,7 @@ const ReportScreen = ({ route }) => {
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

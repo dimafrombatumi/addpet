@@ -1,10 +1,17 @@
-import { View, Text, StyleSheet, FlatList, Pressable, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Pressable,
+  SafeAreaView,
+} from "react-native";
 import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import LostPetItem from "../components/LostPetItem.js";
 import essentialstyles from "../styles.js";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import RegisteredPetsContext from "../context/RegisteredPetsContext";
 import HeaderPart from "../components/HeaderPart.jsx";
 import UserContext from "../context/UserContext.js";
@@ -26,45 +33,46 @@ const LostPetsListScreen = () => {
     : lostPets;
 
   return (
-    <View style={essentialstyles.container}>
-      <SafeAreaView>
-      <HeaderPart userName={user.displayName}/>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={essentialstyles.container}>
+          <HeaderPart userName={user.displayName} />
 
+          <View style={styles.filterContainer}>
+            <TouchableOpacity onPress={() => setPetsTypeToFilter("CAT")}>
+              <Text style={styles.filterCategory}>🐈‍⬛ Cats</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setPetsTypeToFilter("DOG")}>
+              <Text style={styles.filterCategory}>🐕 Dogs</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setPetsTypeToFilter("")}>
+              <Text style={styles.filterCategory}>🐈‍⬛ + 🐕 All pets</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.listContainer}>
+            <Text style={essentialstyles.h2}>All Lost Pets</Text>
 
-      <View style={styles.filterContainer}>
-        <TouchableOpacity onPress={() => setPetsTypeToFilter("CAT")}>
-          <Text style={styles.filterCategory}>🐈‍⬛ Cats</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setPetsTypeToFilter("DOG")}>
-          <Text style={styles.filterCategory}>🐕 Dogs</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setPetsTypeToFilter("")}>
-          <Text style={styles.filterCategory}>🐈‍⬛ + 🐕 All pets</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.listContainer}>
-      <Text style={essentialstyles.h2}>All Lost Pets</Text>
-
-        <FlatList
-          data={filteredPets}
-          keyExtractor={(item) => item.petid}
-          numColumns={2}
-          renderItem={({ item }) => <LostPetItem item={item} navigation />}
-          columnWrapperStyle={styles.flatListWrap}
-        />
-      </View>
-      <View style={styles.allLostBtn}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("LostPetsListScreen", { registeredPets })
-          }
-          style={styles.pressMeBtn}
-        >
-          <Text style={styles.pressMeText}>See All Lost Pets</Text>
-        </Pressable>
-      </View>
-      </SafeAreaView>
-    </View>
+            <FlatList
+              data={filteredPets}
+              keyExtractor={(item) => item.petid}
+              numColumns={2}
+              renderItem={({ item }) => <LostPetItem item={item} navigation />}
+              columnWrapperStyle={styles.flatListWrap}
+            />
+          </View>
+          <View style={styles.allLostBtn}>
+            <Pressable
+              onPress={() =>
+                navigation.navigate("LostPetsListScreen", { registeredPets })
+              }
+              style={styles.pressMeBtn}
+            >
+              <Text style={styles.pressMeText}>See All Lost Pets</Text>
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -112,8 +120,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flexDirection: "row",
     gap: 20,
-    marginTop:40,
-    marginBottom:40
+    marginTop: 20,
+    marginBottom: 20,
   },
   filterCategory: {
     fontSize: 20,
@@ -124,7 +132,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   pressMeBtn: {
-    marginTop:20,
+    marginTop: 20,
     height: 60,
     justifyContent: "center",
     alignItems: "center",

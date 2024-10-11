@@ -114,12 +114,12 @@ const LostPetScreen = ({ route }) => {
           </View>
           <Text style={styles.petDescription}>{item.petdescription}</Text>
           <TouchableOpacity
-            style={styles.BottomButton}
+            style={essentialstyles.pressMeBtn}
             onPress={() => {
               navigation.navigate("ReportScreen", { lostpet: item });
             }}
           >
-            <Text style={styles.pressMeText}>Report About This Pet</Text>
+            <Text style={essentialstyles.pressMeText}>Report About This Pet</Text>
           </TouchableOpacity>
         </View>
       </View>
