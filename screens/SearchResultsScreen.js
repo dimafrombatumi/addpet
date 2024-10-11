@@ -1,39 +1,60 @@
-import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
-import React, { useContext } from "react";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import LostPetsContext from "../context/MyPetsContext";
+import AllPetsContext from "../context/MyPetsContext copy";
 import LostPetItem from "../components/LostPetItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import essentialstyles from "../styles";
+import SearchField from "../components/SearchField";
 
 const SearchResultsScreen = ({ route }) => {
   const { searchPhrase } = route.params;
-  const lostpets = useContext(LostPetsContext);
+  const allpets = useContext(AllPetsContext);
   const navigation = useNavigation();
+  const [searchQuery, setSearchQuery] = useState(null);
 
-  const filteredData = lostpets.filter(
-    (item) => item.petid.toUpperCase() === searchPhrase.toUpperCase()
+  const filteredData = allpets.filter(
+    (item) => item.petid.toUpperCase() === searchPhrase?.toUpperCase(),
   );
 
   return (
     <View style={essentialstyles.container}>
-      <Text style={essentialstyles.h2}>All Lost Pets</Text>
+      <SearchField searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
       <View style={styles.listContainer}>
-        {filteredData == "" && <Text>No data</Text>}
-        <FlatList
-          data={filteredData}
-          keyExtractor={(item) => item.petid}
-          numColumns={2}
-          renderItem={({ item }) => <LostPetItem item={item} navigation />}
-          columnWrapperStyle={styles.flatListWrap}
-        />
+        {filteredData.length === 0 ? (
+          <View style={styles.searchContainer}>
+            <View style={styles.searchImgContainer}>
+              <Image
+                style={styles.searchImg}
+                source={require("../assets/data/images/nodata.png")}
+              />
+            </View>
+            <Text style={styles.searchText}>No pets found</Text>
+          </View>
+        ) : (
+          <>
+           
+
+            <Text style={styles.petId}>
+              We found pet in our Database with chip number {searchPhrase}
+            </Text>
+            <FlatList
+              data={filteredData}
+              keyExtractor={(item) => item.petid}
+              numColumns={2}
+              renderItem={({ item }) => <LostPetItem item={item} navigation />}
+              columnWrapperStyle={styles.flatListWrap}
+            />
+          </>
+        )}
       </View>
-      <View style={styles.allLostBtn}>
+      <View>
         <TouchableOpacity
           onPress={function () {
             navigation.navigate("LostPetsListScreen", { lostpets: lostpets });
           }}
-          style={styles.pressMeBtn}
+          style={essentialstyles.pressMeBtn}
         >
           <Text style={essentialstyles.pressMeText}>See All Lost Pets</Text>
         </TouchableOpacity>
@@ -46,39 +67,36 @@ const styles = StyleSheet.create({
   flatListWrap: {
     marginBottom: 10,
     gap: 15,
-    paddingHorizontal: 15,
   },
+
   listContainer: {
+    marginTop: 20,
+    marginBottom: 40,
     flexDirection: "column",
   },
-  lostPetItem: {
-    flex: 1,
-    width: "45%",
-    maxWidth: "100%",
-    backgroundColor: "#Fff",
-    padding: 5,
-    borderWidth: 1,
-    borderColor: "#eee",
-    borderRadius: 5,
-  },
 
-  petImage: {
-    width: "100%",
-    height: 120,
-    borderRadius: 5,
-  },
-
-  petOptions: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    padding: 6,
-  },
   petId: {
     color: "#111",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "700",
+    marginBottom: 30,
+  },
+  searchContainer: {
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    gap: 20,
+  },
+  searchImgContainer: {
+   marginBottom:50
+  },
+  searchImg: {
+    alignSelf: "center",
+    width: 100,
+    height: 100,
+  },
+  searchText: {
+    fontSize: 24,
   },
 });
 

@@ -14,6 +14,8 @@ import LostPetsList from "../components/LostPetsList";
 import { useNavigation } from "@react-navigation/native";
 import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
+import SearchField from "../components/SearchField";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState(null);
@@ -22,39 +24,21 @@ const HomeScreen = () => {
   const user = useContext(UserContext);
 
   return (
+    <SafeAreaView>
     <ScrollView>
       <View style={essentialstyles.container}>
-        <HeaderPart />
-        <View style={styles.searchBar}>
-
-          <TextInput
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={styles.searchInput}
-            keyboardType="numeric"
-            placeholder="enter pet microchip ID number"
-          />
-          <Pressable
-            onPress={function () {
-              navigation.navigate("SearchResultsScreen", {
-                searchPhrase: searchQuery,
-              });
-            }}
-          >
-            <Ionicons
-              style={styles.searchIcon}
-              name="search"
-              size={24}
-              color="#1A3053"
-            />
-          </Pressable>
-        </View>
+        <HeaderPart userName={user.displayName}/>
+        <SearchField
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
 
         <View style={styles.contentContainerMain}>
           <View style={styles.reportBlock}>
             <Pressable
               onPress={function () {
                 navigation.navigate("ReportScreen");
+                console.log(user.displayName)
               }}
             >
               <Ionicons name="warning-outline" size={48} color="#fff" />
@@ -95,25 +79,10 @@ const HomeScreen = () => {
         <LostPetsList num="4" />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
-  searchBar: {
-    gap: 10,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    padding: 10,
-    paddingLeft: 6,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 20,
-  },
   contentContainerMain: {
     flexDirection: "row",
     gap: 15,

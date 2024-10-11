@@ -1,14 +1,17 @@
-import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
+import { View, Text, StyleSheet, FlatList, Pressable, SafeAreaView } from "react-native";
 import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import LostPetItem from "../components/LostPetItem.js";
-import MyPetsContext from "../context/MyPetsContext.js";
 import essentialstyles from "../styles.js";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import RegisteredPetsContext from "../context/RegisteredPetsContext";
+import HeaderPart from "../components/HeaderPart.jsx";
+import UserContext from "../context/UserContext.js";
 
 const LostPetsListScreen = () => {
+  const user = useContext(UserContext);
+
   const registeredPets = useContext(RegisteredPetsContext);
 
   const navigation = useNavigation();
@@ -16,17 +19,17 @@ const LostPetsListScreen = () => {
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
 
   // Фильтруем питомцев, у которых islost === true
-  const lostPets = registeredPets.filter(pet => pet.islost);
+  const lostPets = registeredPets.filter((pet) => pet.islost);
 
   const filteredPets = petsTypeToFilter
-    ? lostPets.filter(
-        (item) => item.pettype.toUpperCase() === petsTypeToFilter
-      )
+    ? lostPets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
     : lostPets;
 
   return (
     <View style={essentialstyles.container}>
-      <Text style={essentialstyles.h2}>All Lost Pets</Text>
+      <SafeAreaView>
+      <HeaderPart userName={user.displayName}/>
+
 
       <View style={styles.filterContainer}>
         <TouchableOpacity onPress={() => setPetsTypeToFilter("CAT")}>
@@ -40,6 +43,8 @@ const LostPetsListScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.listContainer}>
+      <Text style={essentialstyles.h2}>All Lost Pets</Text>
+
         <FlatList
           data={filteredPets}
           keyExtractor={(item) => item.petid}
@@ -50,20 +55,22 @@ const LostPetsListScreen = () => {
       </View>
       <View style={styles.allLostBtn}>
         <Pressable
-          onPress={() => navigation.navigate("LostPetsListScreen", { registeredPets })}
+          onPress={() =>
+            navigation.navigate("LostPetsListScreen", { registeredPets })
+          }
           style={styles.pressMeBtn}
         >
           <Text style={styles.pressMeText}>See All Lost Pets</Text>
         </Pressable>
       </View>
+      </SafeAreaView>
     </View>
   );
 };
 
-
 const styles = StyleSheet.create({
-  pressed:{
-    backgroundColor:"red"
+  pressed: {
+    backgroundColor: "red",
   },
   flatListWrap: {
     marginBottom: 10,
@@ -105,6 +112,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flexDirection: "row",
     gap: 20,
+    marginTop:40,
+    marginBottom:40
   },
   filterCategory: {
     fontSize: 20,
@@ -113,9 +122,9 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 10,
     alignSelf: "center",
-    
   },
   pressMeBtn: {
+    marginTop:20,
     height: 60,
     justifyContent: "center",
     alignItems: "center",

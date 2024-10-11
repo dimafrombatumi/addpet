@@ -19,7 +19,7 @@ const Navigation = () => {
       <Stack.Navigator
         initialRouteName="LoginScreen"
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
           headerBackTitleVisible: false,
           headerStyle: {
             backgroundColor: "#E8EBF1",
@@ -61,6 +61,8 @@ const Navigation = () => {
           component={HomeScreen}
           options={{
             title: "Add Pet App",
+            headerShown: false,
+
           }}
         />
 
@@ -69,7 +71,7 @@ const Navigation = () => {
           component={LostPetScreen}
           options={{
             title: "Lost Pet",
-            headerShown: true,
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -77,7 +79,7 @@ const Navigation = () => {
           component={ReportScreen}
           options={{
             title: "Report Lost Pet",
-            headerShown: true,
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -85,7 +87,7 @@ const Navigation = () => {
           component={LostPetsListScreen}
           options={{
             title: "All Lost Pets",
-            headerShown: true,
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -93,7 +95,7 @@ const Navigation = () => {
           component={SearchResultsScreen}
           options={{
             title: "Search Results",
-            headerShown: true,
+            headerShown: false,
           }}
         />
         <Stack.Screen

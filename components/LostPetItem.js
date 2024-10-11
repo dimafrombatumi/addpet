@@ -24,12 +24,14 @@ const LostPetItem = ({ item }) => {
     >
       <View>
         {!item.petimageurl && (
-          <Image style={styles.petImage} source={require("../assets/data/images/noimg.png")}
-          />)
-        }
+          <Image
+            style={styles.petImage}
+            source={require("../assets/data/images/noimg.png")}
+          />
+        )}
         {item.petimageurl && (
-          <Image style={styles.petImage} source={{ uri: item.petimageurl }} />)
-        }
+          <Image style={styles.petImage} source={{ uri: item.petimageurl }} />
+        )}
         <View style={styles.petOptions}>
           <Text style={styles.petName}>{item.petname}</Text>
 

@@ -1,19 +1,22 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import UserContext from "../context/UserContext";
-const HeaderPart = () => {
-  const user = useContext(UserContext);
+const HeaderPart = ({userName}) => {
 
   return (
     <View style={styles.headerContainer}>
-      <View style={styles.appLogo}>
-        <Text style={styles.appLogoText}>APP LOGO</Text>
+      <View style={styles.logoContainer}>
+      
+      <Image
+                style={styles.appLogo}
+                source={require("../assets/data/images/templogo.png")}
+              /> 
+              <Text style={styles.appLogoText}>ADD PET</Text>
       </View>
       <View style={styles.userAvatar}>
-        <Ionicons name="person-circle-outline" size={48} color="#1A3053" />
-        {/* <Text style={styles.userName}>Hi, {user.username}</Text> */}
+        <Ionicons name="person-circle-outline" size={50} color="#1A3053" />
+        <Text style={styles.userName}>Hi, {userName}</Text>
       </View>
     </View>
   );
@@ -24,15 +27,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  appLogo: {
-    flex: 2,
+  logoContainer:{
+    flex:1,
+    flexDirection:'row',
+    alignItems:'center',
+    gap:10
   },
+ 
   appLogoText: {
-    fontSize: 21,
-    fontWeight: "700",
+    fontSize: 22,
+    fontWeight: "500",
   },
   appLogo: {
-    flex: 3,
+    width:50,
+    height:50
   },
   userAvatar: {
     justifyContent: "center",

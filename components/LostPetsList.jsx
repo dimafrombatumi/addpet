@@ -12,8 +12,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import LostPetItem from "./LostPetItem";
-import RegisteredPetsContext from "../context/RegisteredPetsContext"
+import RegisteredPetsContext from "../context/RegisteredPetsContext";
 import MyPetsContext from "../context/MyPetsContext";
+import essentialstyles from "../styles";
 
 const LostPetsList = () => {
   const myPets = useContext(MyPetsContext);
@@ -23,24 +24,31 @@ const LostPetsList = () => {
     <View style={styles.container}>
       <Text style={styles.h2}>My Pets</Text>
       <View style={styles.listContainer}>
-        <FlatList
-          data={myPets}
-          keyExtractor={(item) => item.petid}
-          numColumns={2}
-          renderItem={({ item }) => <LostPetItem item={item} navigation />}
-          columnWrapperStyle={styles.flatListWrap}
-        />
+        {myPets.length === 0 ? (
+          <View style={styles.gapContainer}>
+           <Image style={styles.nopetsImg} source={require("../assets/data/images/nopets.png")}
+         />
+          <Text style={styles.nopetsText}t>No pets added</Text></View>
+        ) : (
+          <FlatList
+            data={myPets}
+            keyExtractor={(item) => item.petid}
+            numColumns={2}
+            renderItem={({ item }) => <LostPetItem item={item} navigation />}
+            columnWrapperStyle={styles.flatListWrap}
+          />
+        )}
       </View>
       <View>
         <TouchableOpacity
+          style={essentialstyles.pressMeBtn}
           onPress={function () {
             navigation.navigate("LostPetsListScreen", {
               registeredPets: registeredPets,
             });
           }}
-        
         >
-          <Text style={styles.lostPetsText}>See All Lost Pets</Text>
+          <Text style={essentialstyles.pressMeText}>See All Lost Pets</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -51,7 +59,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     padding: 10,
-    marginBottom:20
+    marginBottom: 20,
   },
   flatListWrap: {
     marginBottom: 10,
@@ -91,19 +99,41 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   lostPetsBlock: {
-  padding: 10,
-  paddingHorizontal: 10,
-  height: 130,
-  backgroundColor: "#ссс",
-  borderRadius: 10,
-  marginTop:10,
+    padding: 10,
+    paddingHorizontal: 10,
+    height: 130,
+    backgroundColor: "#ссс",
+    borderRadius: 10,
+    marginTop: 10,
   },
   lostPetsText: {
     fontSize: 22,
     fontWeight: "700",
     marginTop: 20,
     color: "#111",
+  },
+  nopetsImg:{
+    alignSelf: "center",
+    width: 80,
+    height: 80
+  
+  },
+
+    nopetsText:{
+      alignSelf:"center",
+      fontSize:22
     },
+
+    gapContainer:{
+      marginTop: 10,
+      marginBottom: 20,
+      borderColor:"#74C1FC",
+      borderRadius:10,
+      borderWidth:1,
+      padding:20,
+      gap:20
+    },
+
   h2: {
     fontSize: 22,
     fontWeight: "600",

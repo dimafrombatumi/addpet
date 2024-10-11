@@ -26,7 +26,7 @@ const essentialstyles = StyleSheet.create({
   },
 
   iconInput: {
-    color: "#74C1FC",
+    color: "#111",
   },
 
   inputBar: {

@@ -16,6 +16,8 @@ import essentialstyles from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { usePetActions } from "../hooks/usePetActions";
 import UserContext from "../context/UserContext";
+import HeaderPart from "../components/HeaderPart";
+
 
 const AddPetScreen = () => {
   const [petId, setPetId] = useState("");
@@ -39,7 +41,7 @@ const AddPetScreen = () => {
   const { pickImage, addPet } = usePetActions();
 
   const user = useContext(UserContext);
-   const uid = user.uid;
+  const uid = user.uid;
   const handleAddPet = () => {
     const petDetails = {
       uid: user.uid,
@@ -66,7 +68,8 @@ const AddPetScreen = () => {
     <SafeAreaView>
       <ScrollView>
         <View style={essentialstyles.container}>
-          <Text>{user.uid}</Text>
+        <HeaderPart userName={user.displayName}/>
+
           <View style={styles.imageContainer}>
             {image && (
               <Pressable
@@ -182,7 +185,7 @@ const AddPetScreen = () => {
                     keyboardType={keyboardType || "default"}
                   />
                 </View>
-              )
+              ),
             )}
 
             <TouchableOpacity onPress={handleAddPet} style={styles.pressMeBtn}>

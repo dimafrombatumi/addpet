@@ -16,6 +16,8 @@ import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 
 import essentialstyles from "../styles";
+import HeaderPart from "../components/HeaderPart";
+
 
 const ReportScreen = ({ route }) => {
   const lostpet = route.params?.lostpet;
@@ -40,6 +42,8 @@ const ReportScreen = ({ route }) => {
   return (
     <SafeAreaView>
       <View style={essentialstyles.container}>
+      <HeaderPart />
+
         <View style={styles.imageContainer}>
           {image && (
             <Pressable onPress={pickImage}>

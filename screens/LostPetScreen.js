@@ -8,6 +8,7 @@ import {
   Linking,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useContext } from "react";
 
@@ -16,10 +17,13 @@ import * as Clipboard from "expo-clipboard";
 
 import { useNavigation } from "@react-navigation/native";
 import essentialstyles from "../styles";
+import HeaderPart from "../components/HeaderPart";
+import UserContext from "../context/UserContext";
 
 const LostPetScreen = ({ route }) => {
   const [copiedText, setCopiedText] = React.useState("");
   const { item } = route.params;
+  const user = useContext(UserContext);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(item.petid);
@@ -46,8 +50,10 @@ const LostPetScreen = ({ route }) => {
   };
   const navigation = useNavigation();
   return (
+    <SafeAreaView>
     <ScrollView>
       <View style={essentialstyles.container}>
+      <HeaderPart userName={user.displayName}/>
 
         <View style={styles.imageContainer}>
           {item.petimageurl ? (
@@ -118,6 +124,7 @@ const LostPetScreen = ({ route }) => {
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
