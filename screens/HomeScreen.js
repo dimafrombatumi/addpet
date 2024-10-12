@@ -10,12 +10,13 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import HeaderPart from "../components/HeaderPart";
-import LostPetsList from "../components/LostPetsList";
+import PetsList from "../components/PetsList";
 import { useNavigation } from "@react-navigation/native";
 import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
 import SearchField from "../components/SearchField";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PetsButton from "../components/PetsButton";
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState(null);
@@ -76,7 +77,9 @@ const HomeScreen = () => {
             </Pressable>
           </View>
         </View>
-        <LostPetsList num="4" />
+        <PetsList num="4" />
+
+        
       </View>
     </ScrollView>
     </SafeAreaView>

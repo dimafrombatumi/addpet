@@ -21,7 +21,7 @@ import HeaderPart from "../components/HeaderPart";
 
 
 const ReportScreen = ({ route }) => {
-  const lostpet = route.params?.lostpet;
+  const lostpet = route.params?.petsData;
   const [image, setImage] = useState(null);
   const [petId, setPetId] = useState(lostpet?.petid);
 

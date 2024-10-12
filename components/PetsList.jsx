@@ -14,9 +14,9 @@ import { useNavigation } from "@react-navigation/native";
 import LostPetItem from "./LostPetItem";
 import RegisteredPetsContext from "../context/RegisteredPetsContext";
 import MyPetsContext from "../context/MyPetsContext";
-import essentialstyles from "../styles";
+import PetsButton from "./PetsButton";
 
-const LostPetsList = () => {
+const PetsList = () => {
   const myPets = useContext(MyPetsContext);
   const registeredPets = useContext(RegisteredPetsContext);
   const navigation = useNavigation();
@@ -39,18 +39,7 @@ const LostPetsList = () => {
           />
         )}
       </View>
-      <View>
-        <TouchableOpacity
-          style={essentialstyles.pressMeBtn}
-          onPress={function () {
-            navigation.navigate("LostPetsListScreen", {
-              registeredPets: registeredPets,
-            });
-          }}
-        >
-          <Text style={essentialstyles.pressMeText}>See All Lost Pets</Text>
-        </TouchableOpacity>
-      </View>
+   <PetsButton petsData={registeredPets} targetScreen={"LostPetsListScreen"} buttonText={"See all lost pets1"}/>
     </View>
   );
 };
@@ -141,4 +130,4 @@ const styles = StyleSheet.create({
     color: "#1A3053",
   },
 });
-export default LostPetsList;
+export default PetsList;

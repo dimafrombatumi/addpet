@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
+import PetsList from "../components/PetsList";
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +27,6 @@ const ProfileScreen = () => {
 
   const handleUpdateProfile = async () => {
     try {
-
       if (username) {
         await updateProfile(auth.currentUser, {
           displayName: username,
@@ -46,8 +46,10 @@ const ProfileScreen = () => {
   return (
     <SafeAreaView>
       <View style={essentialstyles.container}>
+      
         <HeaderPart userName={user.displayName} />
-        {user && (
+        
+        
           <View style={styles.container}>
             <Image
               source={
@@ -60,8 +62,14 @@ const ProfileScreen = () => {
             <Text style={styles.username}>
               {user.displayName || "Пользователь"}
             </Text>
+            <View style={styles.petListBlock}> 
+              <PetsList num="4" />
+            </View>
+
           </View>
-        )}
+
+       
+       
 
         <View style={styles.formContainer}>
           {[
@@ -109,8 +117,9 @@ const ProfileScreen = () => {
             <Text style={essentialstyles.pressMeText}>Update profile</Text>
           </Pressable>
         </View>
-
+        
         {message ? <Text>{message}</Text> : null}
+        
       </View>
     </SafeAreaView>
   );
@@ -123,6 +132,7 @@ const styles = StyleSheet.create({
     padding: 15,
     justifyContent: "center",
     alignItems: "center",
+    flex:1
   },
   username: {
     fontSize: 24,
@@ -141,6 +151,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     gap: 10,
   },
+  petListBlock:{
+    flex:1,
+    
+
+  }
+ 
 });
 
 export default ProfileScreen;

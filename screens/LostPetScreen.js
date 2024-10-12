@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import essentialstyles from "../styles";
 import HeaderPart from "../components/HeaderPart";
 import UserContext from "../context/UserContext";
+import PetsButton from "../components/PetsButton";
 
 const LostPetScreen = ({ route }) => {
   const [copiedText, setCopiedText] = React.useState("");
@@ -112,15 +113,11 @@ const LostPetScreen = ({ route }) => {
               <Text style={styles.petIdText}>{item.petownerphone}</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.petDescription}>{item.petdescription}</Text>
-          <TouchableOpacity
-            style={essentialstyles.pressMeBtn}
-            onPress={() => {
-              navigation.navigate("ReportScreen", { lostpet: item });
-            }}
-          >
-            <Text style={essentialstyles.pressMeText}>Report About This Pet</Text>
-          </TouchableOpacity>
+          <Text style={styles.petDescription}>Pet Description: {item.petdescription}</Text>
+
+          
+          <PetsButton petsData={item} targetScreen={"ReportScreen"} buttonText={"Report About Pet"}/>
+
         </View>
       </View>
     </ScrollView>
@@ -229,7 +226,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     borderColor: "#F8F5FF",
-    color: "#1A3053",
+    color: "#111",
+    height:100
   },
   pressMeBtn: {
     height: 60,

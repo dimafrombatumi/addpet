@@ -19,14 +19,14 @@ import UserContext from "../context/UserContext.js";
 const LostPetsListScreen = () => {
   const user = useContext(UserContext);
 
-  const registeredPets = useContext(RegisteredPetsContext);
+  const petsData = useContext(RegisteredPetsContext);
 
   const navigation = useNavigation();
 
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
 
   // Фильтруем питомцев, у которых islost === true
-  const lostPets = registeredPets.filter((pet) => pet.islost);
+  const lostPets = petsData.filter((pet) => pet.islost);
 
   const filteredPets = petsTypeToFilter
     ? lostPets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
