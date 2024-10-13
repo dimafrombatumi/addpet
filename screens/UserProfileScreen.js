@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
-import PetsList from "../components/PetsList";
+import MyPetsInProfile from "../components/MyPetsInProfile";
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState("");
@@ -62,13 +62,11 @@ const ProfileScreen = () => {
             <Text style={styles.username}>
               {user.displayName || "Пользователь"}
             </Text>
-            <View style={styles.petListBlock}> 
-              <PetsList num="4" />
-            </View>
 
           </View>
 
-       
+          <MyPetsInProfile />
+
        
 
         <View style={styles.formContainer}>
@@ -153,7 +151,7 @@ const styles = StyleSheet.create({
   },
   petListBlock:{
     flex:1,
-    
+
 
   }
  

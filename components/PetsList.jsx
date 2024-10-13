@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 80,
     height: 80
-  
   },
 
     nopetsText:{

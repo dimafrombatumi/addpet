@@ -15,6 +15,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import RegisteredPetsContext from "../context/RegisteredPetsContext";
 import HeaderPart from "../components/HeaderPart.jsx";
 import UserContext from "../context/UserContext.js";
+import PetsButton from "../components/PetsButton.jsx";
 
 const LostPetsListScreen = () => {
   const user = useContext(UserContext);
@@ -61,14 +62,8 @@ const LostPetsListScreen = () => {
             />
           </View>
           <View style={styles.allLostBtn}>
-            <Pressable
-              onPress={() =>
-                navigation.navigate("LostPetsListScreen", { registeredPets })
-              }
-              style={styles.pressMeBtn}
-            >
-              <Text style={styles.pressMeText}>See All Lost Pets</Text>
-            </Pressable>
+          <PetsButton petsData={filteredPets} targetScreen={"LostPetsListScreen"} buttonText={"See all lost pets"}/>
+
           </View>
         </View>
       </ScrollView>

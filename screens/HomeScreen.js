@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   Pressable,
   ScrollView,
 } from "react-native";
@@ -16,7 +15,6 @@ import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
 import SearchField from "../components/SearchField";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PetsButton from "../components/PetsButton";
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState(null);
