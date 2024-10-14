@@ -15,7 +15,7 @@ import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
 import SearchField from "../components/SearchField";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import AlertBlock from "../components/AlertBlock";
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState(null);
   const navigation = useNavigation();
@@ -27,6 +27,7 @@ const HomeScreen = () => {
     <ScrollView>
       <View style={essentialstyles.container}>
         <HeaderPart userName={user.displayName}/>
+        <AlertBlock />
         <SearchField
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -54,7 +55,7 @@ const HomeScreen = () => {
               <Ionicons name="add-circle-outline" size={48} color="#1A3053" />
               <Text style={styles.addPetText}>Add Pet</Text>
               <Text style={styles.addPetDesc}>
-                First Aid For injured Animal
+                Add your pet in Database
               </Text>
             </Pressable>
           </View>

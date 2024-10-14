@@ -2,12 +2,14 @@ import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import React,{useContext} from "react";
 import MyPetsContext from "../context/MyPetsContext";
 import MyPetItem from "./MyPetItem";
+import essentialstyles from "../styles";
+
 
 const MyPetsInProfile = () => {
   const myPets = useContext(MyPetsContext);
   return (
     <View>
-      <Text>List oF My Pets</Text>
+      <Text style={essentialstyles.h2}>List oF My Pets</Text>
       <View style={styles.myPetItemContainer}>
       {myPets.length === 0 ? (
           <View style={styles.gapContainer}>

@@ -9,6 +9,9 @@ const HeaderPart = ({userName}) => {
 
   return (
     <View style={styles.headerContainer}>
+      <TouchableOpacity onPress={function () {
+        navigation.navigate("HomeScreen")
+      }}>
       <View style={styles.logoContainer}>
       
       <Image
@@ -17,6 +20,7 @@ const HeaderPart = ({userName}) => {
               /> 
               <Text style={styles.appLogoText}>ADD PET</Text>
       </View>
+      </TouchableOpacity>
       <TouchableOpacity onPress={function () {
         navigation.navigate("UserProfileScreen", {userName});
       }}>

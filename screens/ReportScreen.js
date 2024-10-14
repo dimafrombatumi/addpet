@@ -13,20 +13,28 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
 
 import essentialstyles from "../styles";
 import HeaderPart from "../components/HeaderPart";
+import { usePetActions } from '../hooks/usePetActions';
 
 
 const ReportScreen = ({ route }) => {
+  const navigation = useNavigation();
   const lostpet = route.params?.petsData;
   const [image, setImage] = useState(null);
+  const [petIdFromFound, setPetIdFromFound] = useState("");
   const [petId, setPetId] = useState(lostpet?.petid);
+  const [foundDescription, setFoundDescription] = useState("");
+  const [foundPhone, setFoundPhone] = useState("");
+  const [foundLocation, setFoundLocation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const {foundPet} = usePetActions();
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -40,6 +48,20 @@ const ReportScreen = ({ route }) => {
       setImage(result.assets[0].uri);
     }
   };
+
+
+const handleFoundPet = () => {
+    const foundPetDetails = {
+      petId:petId,
+      founddescription: foundDescription,
+      foundphone: foundPhone,
+      foundlocation: foundLocation,
+      found_time: new Date().toISOString(),
+    };
+    foundPet(foundPetDetails, setLoading);
+  
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -86,11 +108,16 @@ const ReportScreen = ({ route }) => {
           </View>
           <View style={styles.inputBar}>
             <Ionicons name="location-outline" size={32} color="#5b5b5b" />
-            <TextInput style={styles.input} placeholder="Enter your location" />
+            <TextInput
+               onChangeText={setFoundLocation}
+               value={foundLocation}
+            style={styles.input} placeholder="Enter your location" />
           </View>
           <View style={styles.inputBar}>
             <Ionicons name="phone-portrait-outline" size={32} color="#5b5b5b" />
             <TextInput
+               onChangeText={setFoundPhone}
+               value={foundPhone}
               style={styles.input}
               placeholder="Enter your phone number"
               keyboardType="tel"
@@ -103,6 +130,8 @@ const ReportScreen = ({ route }) => {
               color="#5b5b5b"
             />
             <TextInput
+             onChangeText={setFoundDescription}
+             value={foundDescription}
               style={styles.input}
               placeholder="Enter other important information here"
               keyboardType="text"
@@ -110,7 +139,8 @@ const ReportScreen = ({ route }) => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              Alert.alert("Sent");
+              handleFoundPet()
+
             }}
             style={styles.pressMeBtn}
           >

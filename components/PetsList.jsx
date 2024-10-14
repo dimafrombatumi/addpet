@@ -15,6 +15,7 @@ import LostPetItem from "./LostPetItem";
 import RegisteredPetsContext from "../context/RegisteredPetsContext";
 import MyPetsContext from "../context/MyPetsContext";
 import PetsButton from "./PetsButton";
+import essentialstyles from "../styles";
 
 const PetsList = () => {
   const myPets = useContext(MyPetsContext);
@@ -22,7 +23,7 @@ const PetsList = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Text style={styles.h2}>My Pets</Text>
+      <Text style={essentialstyles.h2}>My Pets</Text>
       <View style={styles.listContainer}>
         {myPets.length === 0 ? (
           <View style={styles.gapContainer}>
@@ -39,7 +40,7 @@ const PetsList = () => {
           />
         )}
       </View>
-   <PetsButton petsData={registeredPets} targetScreen={"LostPetsListScreen"} buttonText={"See all lost pets1"}/>
+   <PetsButton petsData={registeredPets} targetScreen={"LostPetsListScreen"} buttonText={"See all lost pets"}/>
     </View>
   );
 };

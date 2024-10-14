@@ -42,11 +42,11 @@ const LostPetScreen = ({ route }) => {
       if (supported) {
         await Linking.openURL(phoneNumber);
       } else {
-        Alert.alert(`Не удалось открыть этот номер телефона: ${phoneNumber}`);
+        Alert.alert(`Failed to open this phone number: ${phoneNumber}`);
       }
     } catch (error) {
-      console.error("Ошибка при попытке открыть номер телефона:", error);
-      Alert.alert("Произошла ошибка при попытке открыть номер телефона");
+      console.error("Error when trying to open phone number:", error);
+      Alert.alert("There was an error when trying to open a phone number");
     }
   };
   const navigation = useNavigation();

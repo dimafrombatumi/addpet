@@ -1,9 +1,10 @@
-import { storage } from "../firebaseConfig"; // Импортируйте инициализированное хранилище
-
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
+import { Alert } from "react-native";
 
 export const usePetActions = () => {
+  const navigation = useNavigation();
   const pickImage = async (setImage, setLoading, setPetImageurl) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -59,5 +60,31 @@ export const usePetActions = () => {
     }
   };
 
-  return { pickImage, addPet };
+  const foundPet = async (foundPetDetails, setLoading) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3010/found-pet/${foundPetDetails.petId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(foundPetDetails),
+        }
+      );
+      const data = await response.json();
+      console.log("Information sent:", data);
+      Alert.alert("Information sent successfully!", "", [
+        { text: "OK", onPress:()=> navigation.navigate("HomeScreen") },
+      ]);
+    } catch (error) {
+      console.error("Information sent Error:", error);
+      alert("Failed to sent information.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { pickImage, addPet, foundPet };
 };

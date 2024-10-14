@@ -42,6 +42,7 @@ const AddPetScreen = () => {
 
   const user = useContext(UserContext);
   const uid = user.uid;
+  
   const handleAddPet = () => {
     const petDetails = {
       uid: user.uid,

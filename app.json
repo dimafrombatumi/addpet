@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "b9b24611-350d-4d18-9a65-be249e11545e"
+      }
+    },
+    "android": {
+      "package": "com.dimafrombatumi.addpetapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.dimafrombatumi.addpetapp"
+    }
+  }
+}
