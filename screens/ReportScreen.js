@@ -12,7 +12,6 @@ import {
   ScrollView
 } from "react-native";
 import React, { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -22,45 +21,33 @@ import HeaderPart from "../components/HeaderPart";
 import { usePetActions } from '../hooks/usePetActions';
 
 
-const ReportScreen = ({ route }) => {
+const ReportScreen = () => {
   const navigation = useNavigation();
-  const lostpet = route.params?.petsData;
   const [image, setImage] = useState(null);
-  const [petIdFromFound, setPetIdFromFound] = useState("");
-  const [petId, setPetId] = useState(lostpet?.petid);
+  const [foundPetId, setFoundPetId] = useState("");
   const [foundDescription, setFoundDescription] = useState("");
   const [foundPhone, setFoundPhone] = useState("");
   const [foundLocation, setFoundLocation] = useState("");
+  const [foundImg, setFoundImg] = useState("");
   const [loading, setLoading] = useState(false);
-  const {foundPet} = usePetActions();
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
+  const {reportPet, pickImage} = usePetActions();
+  
 
 
-const handleFoundPet = () => {
+const handleReportPet = () => {
     const foundPetDetails = {
-      petId:petId,
+      petid: foundPetId,
       founddescription: foundDescription,
       foundphone: foundPhone,
       foundlocation: foundLocation,
-      found_time: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      foundimg: foundImg
     };
-    foundPet(foundPetDetails, setLoading);
+    console.log("Found Pet Details to send:", foundPetDetails);
+
+    reportPet(foundPetDetails, setLoading);
   
-  };
+};
 
   return (
     <SafeAreaView>
@@ -83,28 +70,22 @@ const handleFoundPet = () => {
             </Pressable>
           )}
         </View>
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
+        <Button
+            title="Pick an image from camera roll"
+            onPress={() => pickImage(setImage, setLoading, setFoundImg)}
+          />
 
         <View style={styles.formContainer}>
           <View style={styles.inputBar}>
             <Ionicons name="qr-code-outline" size={32} color="#5b5b5b" />
-            {lostpet ? (
               <TextInput
-                onChange={setPetId}
-                value={petId}
+                onChangeText={setFoundPetId}
+                value={foundPetId}
                 style={styles.input}
                 placeholder="Enter pets microchip number"
                 keyboardType="numeric"
               />
-            ) : (
-              <TextInput
-                onChange={setPetId}
-                value={petId}
-                style={styles.input}
-                placeholder="Enter pets microchip number"
-                keyboardType="numeric"
-              />
-            )}
+          
           </View>
           <View style={styles.inputBar}>
             <Ionicons name="location-outline" size={32} color="#5b5b5b" />
@@ -139,7 +120,7 @@ const handleFoundPet = () => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              handleFoundPet()
+              handleReportPet()
 
             }}
             style={styles.pressMeBtn}

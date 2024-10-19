@@ -8,8 +8,6 @@ import {
   Pressable,
   SafeAreaView,
 } from "react-native";
-import { auth } from "../firebaseConfig";
-import { updateProfile, updateEmail } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
@@ -23,44 +21,28 @@ const ProfileScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
 
-  const user = useContext(UserContext);
+  const session = useContext(UserContext);
 
-  const handleUpdateProfile = async () => {
-    try {
-      if (username) {
-        await updateProfile(auth.currentUser, {
-          displayName: username,
-        });
-      }
+  const useremail = session.user.email;
 
-      if (email) {
-        await updateEmail(auth.currentUser, email);
-      }
-
-      setMessage("Profile data successfully updated!");
-    } catch (error) {
-      setMessage(`Error during data update: ${error.message}`);
-    }
-  };
 
   return (
     <SafeAreaView>
       <View style={essentialstyles.container}>
       
-        <HeaderPart userName={user.displayName} />
+        <HeaderPart />
         
         
           <View style={styles.container}>
             <Image
               source={
-                user.photoURL
-                  ? { uri: user.photoURL }
-                  : require("../assets/data/images/noimg.png")
+                
+                 require("../assets/data/images/noimg.png")
               }
               style={styles.avatar}
             />
             <Text style={styles.username}>
-              {user.displayName || "Пользователь"}
+              { useremail || "Пользователь"}
             </Text>
 
           </View>
@@ -110,7 +92,6 @@ const ProfileScreen = () => {
           )}
           <Pressable
             style={essentialstyles.pressMeBtn}
-            onPress={handleUpdateProfile}
           >
             <Text style={essentialstyles.pressMeText}>Update profile</Text>
           </Pressable>

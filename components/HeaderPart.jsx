@@ -3,10 +3,12 @@ import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import UserContext from "../context/UserContext";
 
-const HeaderPart = ({userName}) => {
+const HeaderPart = () => {
+  const session = useContext(UserContext)
   const navigation = useNavigation();
-
+ const useremail = session.user.email;
   return (
     <View style={styles.headerContainer}>
       <TouchableOpacity onPress={function () {
@@ -22,11 +24,11 @@ const HeaderPart = ({userName}) => {
       </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={function () {
-        navigation.navigate("UserProfileScreen", {userName});
+        navigation.navigate("UserProfileScreen");
       }}>
       <View style={styles.userAvatar}>
         <Ionicons name="person-circle-outline" size={50} color="#1A3053" />
-        <Text style={styles.userName}>Hi, {userName}</Text>
+        <Text style={styles.userName}>Hi, {useremail}</Text>
       </View>
       </TouchableOpacity>
     </View>

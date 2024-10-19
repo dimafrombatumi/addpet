@@ -36,7 +36,7 @@ const LostPetScreen = ({ route }) => {
     setCopiedText(text);
   };
   const callPhone = async () => {
-    const phoneNumber = `tel:${item.petownerphone}`;
+    const phoneNumber = `tel:${item.owner_phone}`;
     try {
       const supported = await Linking.canOpenURL(phoneNumber);
       if (supported) {
@@ -110,7 +110,7 @@ const LostPetScreen = ({ route }) => {
                 size={32}
                 color="#1A3053"
               />
-              <Text style={styles.petIdText}>{item.petownerphone}</Text>
+              <Text style={styles.petIdText}>{item.owner_phone}</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.petDescription}>Pet Description: {item.petdescription}</Text>

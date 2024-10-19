@@ -1,24 +1,26 @@
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
-import React,{useContext} from "react";
-import MyPetsContext from "../context/MyPetsContext";
+import React,{useEffect} from "react";
 import MyPetItem from "./MyPetItem";
 import essentialstyles from "../styles";
-
+import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const MyPetsInProfile = () => {
-  const myPets = useContext(MyPetsContext);
+  const fetchMyPets = useAllPetsStore((state => state.fetchMyPets))
+  const mypets = useAllPetsStore((state) => state.pets);
+  useEffect(()=>{fetchMyPets()},[])
+
   return (
     <View>
       <Text style={essentialstyles.h2}>List oF My Pets</Text>
       <View style={styles.myPetItemContainer}>
-      {myPets.length === 0 ? (
+      {mypets.length === 0 ? (
           <View style={styles.gapContainer}>
            <Image style={styles.nopetsImg} source={require("../assets/data/images/nopets.png")}
          />
           <Text style={styles.nopetsText}t>No pets added</Text></View>
           ):(
       <FlatList
-            data={myPets}
+            data={mypets}
             keyExtractor={(item) => item.petid}
             numColumns={2}
             renderItem={({ item }) => <MyPetItem item={item} navigation />}

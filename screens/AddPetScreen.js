@@ -17,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { usePetActions } from "../hooks/usePetActions";
 import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
+import axios from "axios";
 
 
 const AddPetScreen = () => {
@@ -43,7 +44,8 @@ const AddPetScreen = () => {
   const user = useContext(UserContext);
   const uid = user.uid;
   
-  const handleAddPet = () => {
+  const handleAddPet = async (fetchMyPets) => {
+  
     const petDetails = {
       uid: user.uid,
       petid: petId,
@@ -62,7 +64,32 @@ const AddPetScreen = () => {
       owner_email: ownerEmail,
       owner_id: uid,
     };
+
+    try {
     addPet(petDetails, setLoading);
+    await fetchMyPets(uid);
+  }catch(error){
+    console.lor(error);
+  }finally{
+    console.log("Done");
+
+  }
+  };
+  
+  const fetchMyPets = async (uid) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3010/registered-pets/${uid}`
+      );
+      const sortedData = response.data.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+      setMyPets(sortedData);
+    } catch (error) {
+      console.error("Error fetching pets:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -1,11 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   Pressable,
   ScrollView,
+  Touchable,
 } from "react-native";
+
 
 import { Ionicons } from "@expo/vector-icons";
 import HeaderPart from "../components/HeaderPart";
@@ -16,18 +18,23 @@ import UserContext from "../context/UserContext";
 import SearchField from "../components/SearchField";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AlertBlock from "../components/AlertBlock";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { supabase } from "../supabase";
+
+
 const HomeScreen = () => {
+
+  const session = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState(null);
   const navigation = useNavigation();
-
-  const user = useContext(UserContext);
-
+ 
   return (
+  
     <SafeAreaView>
     <ScrollView>
       <View style={essentialstyles.container}>
-        <HeaderPart userName={user.displayName}/>
-        <AlertBlock />
+        <HeaderPart />
+      <TouchableOpacity onPress={()=>{supabase.auth.signOut(); navigation.navigate("LoginScreen")}}><Text>Logout</Text></TouchableOpacity>  
         <SearchField
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -38,7 +45,7 @@ const HomeScreen = () => {
             <Pressable
               onPress={function () {
                 navigation.navigate("ReportScreen");
-                console.log(user.displayName)
+                
               }}
             >
               <Ionicons name="warning-outline" size={48} color="#fff" />

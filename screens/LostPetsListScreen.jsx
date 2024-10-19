@@ -6,9 +6,8 @@ import {
   Pressable,
   SafeAreaView,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import LostPetItem from "../components/LostPetItem.js";
 import essentialstyles from "../styles.js";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -16,22 +15,30 @@ import RegisteredPetsContext from "../context/RegisteredPetsContext";
 import HeaderPart from "../components/HeaderPart.jsx";
 import UserContext from "../context/UserContext.js";
 import PetsButton from "../components/PetsButton.jsx";
+import { supabase } from "../supabase.js";
+import { useAllPetsStore } from "../stores/AllPetsStore.js";
 
 const LostPetsListScreen = () => {
   const user = useContext(UserContext);
+  const fetchLostPets = useAllPetsStore((state => state.fetchLostPets))
+  
+  const allpets = useAllPetsStore((state) => state.pets);
 
-  const petsData = useContext(RegisteredPetsContext);
+  console.log(allpets);
 
   const navigation = useNavigation();
 
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
 
   // Фильтруем питомцев, у которых islost === true
-  const lostPets = petsData.filter((pet) => pet.islost);
+  // const lostPets = allpets.filter((pet) => pet.islost);
 
   const filteredPets = petsTypeToFilter
-    ? lostPets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
-    : lostPets;
+    ? allpets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
+    : allpets;
+
+  useEffect(()=>{fetchLostPets()},[])
+
 
   return (
     <SafeAreaView>
@@ -54,7 +61,7 @@ const LostPetsListScreen = () => {
             <Text style={essentialstyles.h2}>All Lost Pets</Text>
 
             <FlatList
-              data={filteredPets}
+              data={allpets}
               keyExtractor={(item) => item.petid}
               numColumns={2}
               renderItem={({ item }) => <LostPetItem item={item} navigation />}
@@ -62,8 +69,11 @@ const LostPetsListScreen = () => {
             />
           </View>
           <View style={styles.allLostBtn}>
-          <PetsButton petsData={filteredPets} targetScreen={"LostPetsListScreen"} buttonText={"See all lost pets"}/>
-
+            <PetsButton
+              petsData={allpets}
+              targetScreen={"LostPetsListScreen"}
+              buttonText={"See all lost pets"}
+            />
           </View>
         </View>
       </ScrollView>

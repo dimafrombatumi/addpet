@@ -1,18 +1,18 @@
 import React, { useState } from "react";
+import { supabase } from '../supabase'
+
 import {
   View,
   TextInput,
-  Button,
   Text,
+  Alert,
   StyleSheet,
   Image,
   TouchableOpacity,
 } from "react-native";
-import { auth, db, storage } from "../firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+
+
 import * as ImagePicker from "expo-image-picker";
-import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
 
@@ -23,6 +23,7 @@ const RegisterScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [avatarUri, setAvatarUri] = useState(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false)
 
   const handlePickAvatar = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -37,44 +38,21 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  const handleRegister = async () => {
-    try {
-      // Регистрируем пользователя
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-  
-      let avatarUrl = null;
-      if (avatarUri) {
-        const response = await fetch(avatarUri);
-        const blob = await response.blob();
-        const storageRef = ref(storage, `avatars/${user.uid}`);
-        await uploadBytes(storageRef, blob);
-        avatarUrl = await getDownloadURL(storageRef);
-      }
-  
-      // Обновляем профиль пользователя, добавляя имя пользователя (displayName)
-      await updateProfile(user, {
-        displayName: username,
-        photoURL: avatarUrl, // Можно также обновить аватар для профиля Firebase Auth
-      });
-  
-      // Сохраняем данные пользователя в Firestore
-      const userDoc = {
-        username,
-        phoneNumber,
-        avatarUrl,
-      };
-  
-      await setDoc(doc(db, "users", user.uid), userDoc);
-  
-      setMessage("Пользователь успешно зарегистрирован!");
-      navigation.navigate("Home");
-    } catch (error) {
-      setMessage(`Ошибка: ${error.message}`);
-      console.error("Ошибка при регистрации пользователя:", error);
-    }
-  };
+  async function signUpWithEmail() {
+    setLoading(true)
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    })
 
+    if (error) Alert.alert(error.message)
+    if (!session) Alert.alert('Please check your inbox for email verification!')
+    setLoading(false)
+  }
+ 
   return (
     <View style={styles.container}>
       <View style={styles.topImage}>
@@ -150,7 +128,7 @@ const RegisterScreen = ({ navigation }) => {
         )}
         <TouchableOpacity
           style={essentialstyles.pressMeBtn}
-          onPress={handleRegister}
+          onPress={signUpWithEmail}
         >
           <Text style={styles.pressMeText}>Create User</Text>
         </TouchableOpacity>

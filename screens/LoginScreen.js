@@ -7,31 +7,39 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
-import { auth } from "../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { supabase } from "../supabase";
+
 
 const LoginScreen = () => {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
 
-  const handleSignIn = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate("HomeScreen");
-    } catch (error) {
-      setMessage(error.message);
-    }
-  };
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function signInWithEmail() {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+
+    if (error) {Alert.alert(error.message)
+    setLoading(false)
+  }else{
+    navigation.navigate("HomeScreen")
+  }
+  }
+
+
 
   return (
+
     <View style={styles.container}>
       <View style={styles.topImage}>
         <Image
@@ -45,11 +53,10 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.topContainer}>
-        <Text style={essentialstyles.h1}>Login</Text>
+        <Text style={essentialstyles.h1}>Email</Text>
         <Text style={essentialstyles.text}>Please sign in to continue</Text>
       </View>
-      {message ? <Text>{message}</Text> : null}
-      <View style={styles.formContainer}>
+            <View style={styles.formContainer}>
         {[
           {
             icon: "person-circle-outline",
@@ -90,7 +97,7 @@ const LoginScreen = () => {
         )}
         <TouchableOpacity
           style={essentialstyles.pressMeBtn}
-          onPress={handleSignIn}
+          onPress={()=>signInWithEmail()}
         >
           <Text style={styles.pressMeText}>Sign In</Text>
         </TouchableOpacity>

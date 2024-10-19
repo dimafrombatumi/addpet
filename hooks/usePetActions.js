@@ -4,7 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import { Alert } from "react-native";
 
 export const usePetActions = () => {
+
   const navigation = useNavigation();
+
+
   const pickImage = async (setImage, setLoading, setPetImageurl) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -37,6 +40,7 @@ export const usePetActions = () => {
       }
     }
   };
+  
 
   const addPet = async (petDetails, setLoading) => {
     setLoading(true);
@@ -57,8 +61,37 @@ export const usePetActions = () => {
       alert("Failed to add pet.");
     } finally {
       setLoading(false);
+      fetchMyPets()
+
     }
   };
+
+  const reportPet = async (foundPetDetails, setLoading) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3010/found-pet/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(foundPetDetails),
+        }
+      );
+      const data = await response.json();
+      console.log("Information sent:", data);
+      Alert.alert("Information sent successfully!", "", [
+        { text: "OK", onPress:()=> navigation.navigate("HomeScreen") },
+      ]);
+    } catch (error) {
+      console.error("Information sent Error:", error);
+      alert("Failed to sent information.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const foundPet = async (foundPetDetails, setLoading) => {
     setLoading(true);
@@ -86,5 +119,5 @@ export const usePetActions = () => {
     }
   };
 
-  return { pickImage, addPet, foundPet };
+  return { pickImage, addPet, foundPet, reportPet };
 };
