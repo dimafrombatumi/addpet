@@ -1,18 +1,28 @@
-import { View, Text, StyleSheet, Image, Pressable, Alert, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
 const MyPetItem = ({ item }) => {
-
   const petId = item.petid;
 
   const handleDeletePet = async (petId) => {
     try {
-      const response = await fetch(`http://localhost:3010/delete-pet/${petId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://localhost:3010/delete-pet/${petId}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       if (!response.ok) {
         throw new Error("Error when deleting a pet");
@@ -33,20 +43,20 @@ const MyPetItem = ({ item }) => {
       [
         {
           text: "Cancel",
-          style: "cancel", 
+          style: "cancel",
         },
         {
           text: "Delete",
-          onPress: () => handleDeletePet(petId), 
-          style: "destructive", 
+          onPress: () => handleDeletePet(petId),
+          style: "destructive",
         },
       ],
-      { cancelable: true } // 
+      { cancelable: true }, //
     );
   };
 
   const navigation = useNavigation();
- 
+
   return (
     <Pressable
       style={styles.lostPetItem}
@@ -74,8 +84,11 @@ const MyPetItem = ({ item }) => {
               <Ionicons name="location-outline" size={14} color="#F37F3B" />
               {item.petlocation}
             </Text>
-            <TouchableOpacity onPress={() => confirmDelete(petId)} style={styles.deleteIconBlock}>
-            <Ionicons
+            <TouchableOpacity
+              onPress={() => confirmDelete(petId)}
+              style={styles.deleteIconBlock}
+            >
+              <Ionicons
                 style={styles.deleteIcon}
                 name="trash-outline"
                 size={28}
@@ -87,18 +100,17 @@ const MyPetItem = ({ item }) => {
       </View>
     </Pressable>
   );
-}
+};
 
 const styles = StyleSheet.create({
   lostPetItem: {
     flex: 1,
-    width: "45%",
-    maxWidth: "100%",
     backgroundColor: "#Fff",
     padding: 5,
     borderRadius: 10,
     borderColor: "rgba(80, 134, 231, 0.5)",
     borderWidth: 1,
+    marginHorizontal: 5,
   },
 
   petImage: {

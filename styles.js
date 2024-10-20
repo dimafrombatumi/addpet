@@ -44,11 +44,11 @@ const essentialstyles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 20,
-    height: 40,
+    height: 35,
   },
 
   pressMeBtn: {
-    height: 60,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
     padding: 10,

@@ -4,9 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Alert } from "react-native";
 
 export const usePetActions = () => {
-
   const navigation = useNavigation();
-
 
   const pickImage = async (setImage, setLoading, setPetImageurl) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -40,7 +38,6 @@ export const usePetActions = () => {
       }
     }
   };
-  
 
   const addPet = async (petDetails, setLoading) => {
     setLoading(true);
@@ -61,28 +58,24 @@ export const usePetActions = () => {
       alert("Failed to add pet.");
     } finally {
       setLoading(false);
-      fetchMyPets()
-
+      fetchMyPets();
     }
   };
 
   const reportPet = async (foundPetDetails, setLoading) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:3010/found-pet/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(foundPetDetails),
-        }
-      );
+      const response = await fetch(`http://localhost:3010/found-pet/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(foundPetDetails),
+      });
       const data = await response.json();
       console.log("Information sent:", data);
       Alert.alert("Information sent successfully!", "", [
-        { text: "OK", onPress:()=> navigation.navigate("HomeScreen") },
+        { text: "OK", onPress: () => navigation.navigate("HomeScreen") },
       ]);
     } catch (error) {
       console.error("Information sent Error:", error);
@@ -91,7 +84,6 @@ export const usePetActions = () => {
       setLoading(false);
     }
   };
-
 
   const foundPet = async (foundPetDetails, setLoading) => {
     setLoading(true);
@@ -104,12 +96,12 @@ export const usePetActions = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(foundPetDetails),
-        }
+        },
       );
       const data = await response.json();
       console.log("Information sent:", data);
       Alert.alert("Information sent successfully!", "", [
-        { text: "OK", onPress:()=> navigation.navigate("HomeScreen") },
+        { text: "OK", onPress: () => navigation.navigate("HomeScreen") },
       ]);
     } catch (error) {
       console.error("Information sent Error:", error);

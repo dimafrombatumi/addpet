@@ -19,7 +19,6 @@ import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
 import axios from "axios";
 
-
 const AddPetScreen = () => {
   const [petId, setPetId] = useState("");
   const [petName, setPetName] = useState("");
@@ -43,9 +42,8 @@ const AddPetScreen = () => {
 
   const user = useContext(UserContext);
   const uid = user.uid;
-  
+
   const handleAddPet = async (fetchMyPets) => {
-  
     const petDetails = {
       uid: user.uid,
       petid: petId,
@@ -66,23 +64,22 @@ const AddPetScreen = () => {
     };
 
     try {
-    addPet(petDetails, setLoading);
-    await fetchMyPets(uid);
-  }catch(error){
-    console.lor(error);
-  }finally{
-    console.log("Done");
-
-  }
+      addPet(petDetails, setLoading);
+      await fetchMyPets(uid);
+    } catch (error) {
+      console.lor(error);
+    } finally {
+      console.log("Done");
+    }
   };
-  
+
   const fetchMyPets = async (uid) => {
     try {
       const response = await axios.get(
-        `http://localhost:3010/registered-pets/${uid}`
+        `http://localhost:3010/registered-pets/${uid}`,
       );
       const sortedData = response.data.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        (a, b) => new Date(b.created_at) - new Date(a.created_at),
       );
       setMyPets(sortedData);
     } catch (error) {
@@ -96,7 +93,7 @@ const AddPetScreen = () => {
     <SafeAreaView>
       <ScrollView>
         <View style={essentialstyles.container}>
-        <HeaderPart userName={user.displayName}/>
+          <HeaderPart userName={user.displayName} />
 
           <View style={styles.imageContainer}>
             {image && (

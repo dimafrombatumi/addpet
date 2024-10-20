@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -18,8 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import essentialstyles from "../styles";
 import HeaderPart from "../components/HeaderPart";
-import { usePetActions } from '../hooks/usePetActions';
-
+import { usePetActions } from "../hooks/usePetActions";
 
 const ReportScreen = () => {
   const navigation = useNavigation();
@@ -30,54 +29,51 @@ const ReportScreen = () => {
   const [foundLocation, setFoundLocation] = useState("");
   const [foundImg, setFoundImg] = useState("");
   const [loading, setLoading] = useState(false);
-  const {reportPet, pickImage} = usePetActions();
-  
+  const { reportPet, pickImage } = usePetActions();
 
-
-const handleReportPet = () => {
+  const handleReportPet = () => {
     const foundPetDetails = {
       petid: foundPetId,
       founddescription: foundDescription,
       foundphone: foundPhone,
       foundlocation: foundLocation,
       created_at: new Date().toISOString(),
-      foundimg: foundImg
+      foundimg: foundImg,
     };
     console.log("Found Pet Details to send:", foundPetDetails);
 
     reportPet(foundPetDetails, setLoading);
-  
-};
+  };
 
   return (
     <SafeAreaView>
       <ScrollView>
-      <View style={essentialstyles.container}>
-      <HeaderPart />
+        <View style={essentialstyles.container}>
+          <HeaderPart />
 
-        <View style={styles.imageContainer}>
-          {image && (
-            <Pressable onPress={pickImage}>
-              <Image source={{ uri: image }} style={styles.petImage} />
-            </Pressable>
-          )}
-          {!image && (
-            <Pressable onPress={pickImage}>
-              <Image
-                source={require("../assets/data/images/noimg.png")}
-                style={styles.petImage}
-              />
-            </Pressable>
-          )}
-        </View>
-        <Button
+          <View style={styles.imageContainer}>
+            {image && (
+              <Pressable onPress={pickImage}>
+                <Image source={{ uri: image }} style={styles.petImage} />
+              </Pressable>
+            )}
+            {!image && (
+              <Pressable onPress={pickImage}>
+                <Image
+                  source={require("../assets/data/images/noimg.png")}
+                  style={styles.petImage}
+                />
+              </Pressable>
+            )}
+          </View>
+          <Button
             title="Pick an image from camera roll"
             onPress={() => pickImage(setImage, setLoading, setFoundImg)}
           />
 
-        <View style={styles.formContainer}>
-          <View style={styles.inputBar}>
-            <Ionicons name="qr-code-outline" size={32} color="#5b5b5b" />
+          <View style={styles.formContainer}>
+            <View style={styles.inputBar}>
+              <Ionicons name="qr-code-outline" size={32} color="#5b5b5b" />
               <TextInput
                 onChangeText={setFoundPetId}
                 value={foundPetId}
@@ -85,50 +81,54 @@ const handleReportPet = () => {
                 placeholder="Enter pets microchip number"
                 keyboardType="numeric"
               />
-          
+            </View>
+            <View style={styles.inputBar}>
+              <Ionicons name="location-outline" size={32} color="#5b5b5b" />
+              <TextInput
+                onChangeText={setFoundLocation}
+                value={foundLocation}
+                style={styles.input}
+                placeholder="Enter your location"
+              />
+            </View>
+            <View style={styles.inputBar}>
+              <Ionicons
+                name="phone-portrait-outline"
+                size={32}
+                color="#5b5b5b"
+              />
+              <TextInput
+                onChangeText={setFoundPhone}
+                value={foundPhone}
+                style={styles.input}
+                placeholder="Enter your phone number"
+                keyboardType="tel"
+              />
+            </View>
+            <View style={styles.inputBar}>
+              <Ionicons
+                name="information-circle-outline"
+                size={32}
+                color="#5b5b5b"
+              />
+              <TextInput
+                onChangeText={setFoundDescription}
+                value={foundDescription}
+                style={styles.input}
+                placeholder="Enter other important information here"
+                keyboardType="text"
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                handleReportPet();
+              }}
+              style={styles.pressMeBtn}
+            >
+              <Text style={styles.pressMeText}>Send report</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.inputBar}>
-            <Ionicons name="location-outline" size={32} color="#5b5b5b" />
-            <TextInput
-               onChangeText={setFoundLocation}
-               value={foundLocation}
-            style={styles.input} placeholder="Enter your location" />
-          </View>
-          <View style={styles.inputBar}>
-            <Ionicons name="phone-portrait-outline" size={32} color="#5b5b5b" />
-            <TextInput
-               onChangeText={setFoundPhone}
-               value={foundPhone}
-              style={styles.input}
-              placeholder="Enter your phone number"
-              keyboardType="tel"
-            />
-          </View>
-          <View style={styles.inputBar}>
-            <Ionicons
-              name="information-circle-outline"
-              size={32}
-              color="#5b5b5b"
-            />
-            <TextInput
-             onChangeText={setFoundDescription}
-             value={foundDescription}
-              style={styles.input}
-              placeholder="Enter other important information here"
-              keyboardType="text"
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              handleReportPet()
-
-            }}
-            style={styles.pressMeBtn}
-          >
-            <Text style={styles.pressMeText}>Send report</Text>
-          </TouchableOpacity>
         </View>
-      </View>
       </ScrollView>
     </SafeAreaView>
   );

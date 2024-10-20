@@ -15,7 +15,6 @@ export default function App() {
   const [myPets, setMyPets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [allPetsData, setAllPetsData] = useState([]);
- 
 
   const [session, setSession] = useState(null);
 
@@ -26,7 +25,7 @@ export default function App() {
       } = await supabase.auth.getSession();
 
       setSession(session);
-      console.log(session.user.id)
+      console.log(session.user.id);
       setLoading(false);
     };
 
@@ -39,12 +38,6 @@ export default function App() {
   useEffect(() => {
     fetchAllLostPets();
   }, []);
-
-
-  const fetchMyPets = async (uid) => {
-   
-  
-  };
 
   // const fetchAllLostPets = async () => {
   //   try {
@@ -65,10 +58,9 @@ export default function App() {
   // };
 
   const fetchAllLostPets = async () => {
-    const { data, error } = await supabase.from('all_pets').select();
+    const { data, error } = await supabase.from("all_pets").select();
     setRegisteredPets(data);
-    console.log(error)
-
+    console.log(error);
   };
 
   return (
@@ -76,9 +68,9 @@ export default function App() {
       <UserContext.Provider value={session}>
         <AllPetsContext.Provider value={allPetsData}>
           <RegisteredPetsContext.Provider value={registeredPets}>
-              <MyPetsContext.Provider value={myPets}>
-                <Navigation />
-              </MyPetsContext.Provider>
+            <MyPetsContext.Provider value={myPets}>
+              <Navigation />
+            </MyPetsContext.Provider>
           </RegisteredPetsContext.Provider>
         </AllPetsContext.Provider>
       </UserContext.Provider>

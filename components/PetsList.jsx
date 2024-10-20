@@ -13,26 +13,29 @@ import { useNavigation } from "@react-navigation/native";
 
 import LostPetItem from "./LostPetItem";
 import RegisteredPetsContext from "../context/RegisteredPetsContext";
-import MyPetsContext from "../context/MyPetsContext";
 import PetsButton from "./PetsButton";
 import essentialstyles from "../styles";
 
 const PetsList = () => {
-  const myPets = useContext(MyPetsContext);
   const registeredPets = useContext(RegisteredPetsContext);
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={essentialstyles.h2}>My Pets</Text>
       <View style={styles.listContainer}>
-        {myPets.length === 0 ? (
+        {!myPets ? (
           <View style={styles.gapContainer}>
-           <Image style={styles.nopetsImg} source={require("../assets/data/images/nopets.png")}
-         />
-          <Text style={styles.nopetsText}t>No pets added</Text></View>
+            <Image
+              style={styles.nopetsImg}
+              source={require("../assets/data/images/nopets.png")}
+            />
+            <Text style={styles.nopetsText} t>
+              No pets added
+            </Text>
+          </View>
         ) : (
           <FlatList
-            data={myPets}
+            data={mypets}
             keyExtractor={(item) => item.petid}
             numColumns={2}
             renderItem={({ item }) => <LostPetItem item={item} navigation />}
@@ -40,7 +43,6 @@ const PetsList = () => {
           />
         )}
       </View>
-   <PetsButton petsData={registeredPets} targetScreen={"LostPetsListScreen"} buttonText={"See all lost pets"}/>
     </View>
   );
 };
@@ -102,26 +104,26 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: "#111",
   },
-  nopetsImg:{
+  nopetsImg: {
     alignSelf: "center",
     width: 80,
-    height: 80
+    height: 80,
   },
 
-    nopetsText:{
-      alignSelf:"center",
-      fontSize:22
-    },
+  nopetsText: {
+    alignSelf: "center",
+    fontSize: 22,
+  },
 
-    gapContainer:{
-      marginTop: 10,
-      marginBottom: 20,
-      borderColor:"#74C1FC",
-      borderRadius:10,
-      borderWidth:1,
-      padding:20,
-      gap:20
-    },
+  gapContainer: {
+    marginTop: 10,
+    marginBottom: 20,
+    borderColor: "#74C1FC",
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 20,
+    gap: 20,
+  },
 
   h2: {
     fontSize: 22,

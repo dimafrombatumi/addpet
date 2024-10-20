@@ -1,4 +1,3 @@
-
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,30 +5,33 @@ import { useNavigation } from "@react-navigation/native";
 import UserContext from "../context/UserContext";
 
 const HeaderPart = () => {
-  const session = useContext(UserContext)
+  const session = useContext(UserContext);
   const navigation = useNavigation();
- const useremail = session.user.email;
+  const useremail = session?.user.email;
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity onPress={function () {
-        navigation.navigate("HomeScreen")
-      }}>
-      <View style={styles.logoContainer}>
-      
-      <Image
+      <TouchableOpacity
+        onPress={function () {
+          navigation.navigate("HomeScreen");
+        }}
+      >
+        <View style={styles.logoContainer}>
+          <Image
             style={styles.appLogo}
             source={require("../assets/data/images/templogo.png")}
-              /> 
-              <Text style={styles.appLogoText}>ADD PET</Text>
-      </View>
+          />
+          <Text style={styles.appLogoText}>ADD PET</Text>
+        </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={function () {
-        navigation.navigate("UserProfileScreen");
-      }}>
-      <View style={styles.userAvatar}>
-        <Ionicons name="person-circle-outline" size={50} color="#1A3053" />
-        <Text style={styles.userName}>Hi, {useremail}</Text>
-      </View>
+      <TouchableOpacity
+        onPress={function () {
+          navigation.navigate("UserProfileScreen");
+        }}
+      >
+        <View style={styles.userAvatar}>
+          <Ionicons name="person-circle-outline" size={50} color="#1A3053" />
+          <Text style={styles.userName}>Hi, {useremail}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -39,22 +41,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom:10
+    marginBottom: 10,
   },
-  logoContainer:{
-    flex:1,
-    flexDirection:'row',
-    alignItems:'center',
-    gap:10
+  logoContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
- 
+
   appLogoText: {
     fontSize: 22,
     fontWeight: "500",
   },
   appLogo: {
-    width:50,
-    height:50
+    width: 50,
+    height: 50,
   },
   userAvatar: {
     justifyContent: "center",

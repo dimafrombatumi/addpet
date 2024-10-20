@@ -52,75 +52,85 @@ const LostPetScreen = ({ route }) => {
   const navigation = useNavigation();
   return (
     <SafeAreaView>
-    <ScrollView>
-      <View style={essentialstyles.container}>
-      <HeaderPart userName={user.displayName}/>
+      <ScrollView>
+        <View style={essentialstyles.container}>
+          <HeaderPart userName={user.displayName} />
 
-        <View style={styles.imageContainer}>
-          {item.petimageurl ? (
-            <Image style={styles.petImage} source={{ uri: item.petimageurl }} />
-          ) : (
-            <Image
-              style={styles.petImage}
-              source={require("../assets/data/images/noimg.png")}
-            />
-          )}
-        </View>
-        <View style={styles.contentContainer}>
-          <View style={styles.titleBlock}>
-            <Text style={styles.petName}>{item.petname}</Text>
-            <View style={styles.petOptions}>
-              <Text>
-                {item.pettype} - {item.petbreed}
-              </Text>
-              <Text>{item.petage} y</Text>
-
-              {item.petsex == "Male" ? (
-                <>
-                  <Ionicons name="male" size={18} color="black" />
-                  <Text>Male</Text>
-                </>
-              ) : (
-                <>
-                  <Text>Female</Text>
-
-                  <Ionicons name="female-sharp" size={18} color="black" />
-                </>
-              )}
-            </View>
-            <Text style={styles.petLocation}>
-              <Ionicons name="location-outline" size={18} color="red" />
-              {item.petlocation}
-            </Text>
-          </View>
-          <View style={styles.petIdBlockWrapper}>
-            <View style={styles.petIdBlock}>
-              <Ionicons name="qr-code-outline" size={24} color="#1A3053" />
-              <Text style={styles.petIdText}> {item.petid}</Text>
-            </View>
-            <TouchableOpacity onPress={copyToClipboard}>
-              <Ionicons name="copy-outline" size={40} color="#1A3053" />
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text style={essentialstyles.h2}>Call pet owner now</Text>
-            <TouchableOpacity style={styles.petOwnerBlock} onPress={callPhone}>
-              <Ionicons
-                name="phone-portrait-outline"
-                size={32}
-                color="#1A3053"
+          <View style={styles.imageContainer}>
+            {item.petimageurl ? (
+              <Image
+                style={styles.petImage}
+                source={{ uri: item.petimageurl }}
               />
-              <Text style={styles.petIdText}>{item.owner_phone}</Text>
-            </TouchableOpacity>
+            ) : (
+              <Image
+                style={styles.petImage}
+                source={require("../assets/data/images/noimg.png")}
+              />
+            )}
           </View>
-          <Text style={styles.petDescription}>Pet Description: {item.petdescription}</Text>
+          <View style={styles.contentContainer}>
+            <View style={styles.titleBlock}>
+              <Text style={styles.petName}>{item.petname}</Text>
+              <View style={styles.petOptions}>
+                <Text>
+                  {item.pettype} - {item.petbreed}
+                </Text>
+                <Text>{item.petage} y</Text>
 
-          
-          <PetsButton petsData={item} targetScreen={"ReportScreen"} buttonText={"Report About Pet"}/>
+                {item.petsex == "Male" ? (
+                  <>
+                    <Ionicons name="male" size={18} color="black" />
+                    <Text>Male</Text>
+                  </>
+                ) : (
+                  <>
+                    <Text>Female</Text>
 
+                    <Ionicons name="female-sharp" size={18} color="black" />
+                  </>
+                )}
+              </View>
+              <Text style={styles.petLocation}>
+                <Ionicons name="location-outline" size={18} color="red" />
+                {item.petlocation}
+              </Text>
+            </View>
+            <View style={styles.petIdBlockWrapper}>
+              <View style={styles.petIdBlock}>
+                <Ionicons name="qr-code-outline" size={24} color="#1A3053" />
+                <Text style={styles.petIdText}> {item.petid}</Text>
+              </View>
+              <TouchableOpacity onPress={copyToClipboard}>
+                <Ionicons name="copy-outline" size={40} color="#1A3053" />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text style={essentialstyles.h2}>Call pet owner now</Text>
+              <TouchableOpacity
+                style={styles.petOwnerBlock}
+                onPress={callPhone}
+              >
+                <Ionicons
+                  name="phone-portrait-outline"
+                  size={32}
+                  color="#1A3053"
+                />
+                <Text style={styles.petIdText}>{item.owner_phone}</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.petDescription}>
+              Pet Description: {item.petdescription}
+            </Text>
+
+            <PetsButton
+              petsData={item}
+              targetScreen={"ReportScreen"}
+              buttonText={"Report About Pet"}
+            />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -227,7 +237,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "#F8F5FF",
     color: "#111",
-    height:100
+    height: 100,
   },
   pressMeBtn: {
     height: 60,

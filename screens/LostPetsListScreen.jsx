@@ -15,16 +15,14 @@ import RegisteredPetsContext from "../context/RegisteredPetsContext";
 import HeaderPart from "../components/HeaderPart.jsx";
 import UserContext from "../context/UserContext.js";
 import PetsButton from "../components/PetsButton.jsx";
-import { supabase } from "../supabase.js";
 import { useAllPetsStore } from "../stores/AllPetsStore.js";
 
 const LostPetsListScreen = () => {
   const user = useContext(UserContext);
-  const fetchLostPets = useAllPetsStore((state => state.fetchLostPets))
-  
-  const allpets = useAllPetsStore((state) => state.pets);
 
-  console.log(allpets);
+  const fetchLostPets = useAllPetsStore((state) => state.fetchLostPets);
+
+  const allpets = useAllPetsStore((state) => state.pets);
 
   const navigation = useNavigation();
 
@@ -37,8 +35,9 @@ const LostPetsListScreen = () => {
     ? allpets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
     : allpets;
 
-  useEffect(()=>{fetchLostPets()},[])
-
+  useEffect(() => {
+    fetchLostPets();
+  }, []);
 
   return (
     <SafeAreaView>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,16 @@ import {
   StyleSheet,
   Pressable,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
 import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
 import MyPetsInProfile from "../components/MyPetsInProfile";
+import { supabase } from "../supabase";
+import { useNavigation } from "@react-navigation/native";
+import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState("");
@@ -21,35 +25,31 @@ const ProfileScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
 
-  const session = useContext(UserContext);
-
-  const useremail = session.user.email;
-
+  const navigation = useNavigation();
+  // const useremail = session?.user.id;
 
   return (
     <SafeAreaView>
       <View style={essentialstyles.container}>
-      
         <HeaderPart />
-        
-        
-          <View style={styles.container}>
-            <Image
-              source={
-                
-                 require("../assets/data/images/noimg.png")
-              }
-              style={styles.avatar}
-            />
-            <Text style={styles.username}>
-              { useremail || "Пользователь"}
-            </Text>
 
-          </View>
+        <View style={styles.container}>
+          <Image
+            source={require("../assets/data/images/noimg.png")}
+            style={styles.avatar}
+          />
+          <Text style={styles.username}>Пользователь</Text>
+          <TouchableOpacity
+            onPress={() => {
+              supabase.auth.signOut();
+              navigation.navigate("LoginScreen");
+            }}
+          >
+            <Text style={styles.logoutBtn}>Logout</Text>
+          </TouchableOpacity>
+        </View>
 
-          <MyPetsInProfile />
-
-       
+        <MyPetsInProfile />
 
         <View style={styles.formContainer}>
           {[
@@ -71,7 +71,7 @@ const ProfileScreen = () => {
           ].map(
             (
               { icon, placeholder, value, setter, keyboardType, secure },
-              index
+              index,
             ) => (
               <View key={index} style={essentialstyles.inputBar}>
                 <Ionicons
@@ -88,17 +88,14 @@ const ProfileScreen = () => {
                   secureTextEntry={secure}
                 />
               </View>
-            )
+            ),
           )}
-          <Pressable
-            style={essentialstyles.pressMeBtn}
-          >
+          <Pressable style={essentialstyles.pressMeBtn}>
             <Text style={essentialstyles.pressMeText}>Update profile</Text>
           </Pressable>
         </View>
-        
+
         {message ? <Text>{message}</Text> : null}
-        
       </View>
     </SafeAreaView>
   );
@@ -111,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 15,
     justifyContent: "center",
     alignItems: "center",
-    flex:1
+    flex: 1,
   },
   username: {
     fontSize: 24,
@@ -130,12 +127,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     gap: 10,
   },
-  petListBlock:{
-    flex:1,
-
-
-  }
- 
+  petListBlock: {
+    flex: 1,
+  },
+  logoutBtn: {
+    fontSize: 18,
+    color: "#FFF",
+    backgroundColor: "#FF5844",
+    paddingHorizontal: 5,
+  },
 });
 
 export default ProfileScreen;
