@@ -4,7 +4,7 @@ const essentialstyles = StyleSheet.create({
   container: {
     gap: 15,
     backgroundColor: "#fff",
-    padding: 15,
+    paddingHorizontal: 15,
     height: "100%",
   },
 

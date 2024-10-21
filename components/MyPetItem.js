@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-
+import { supabase } from "../supabase";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,23 +16,14 @@ const MyPetItem = ({ item }) => {
   const petId = item.petid;
 
   const handleDeletePet = async (petId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3010/delete-pet/${petId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Error when deleting a pet");
-      }
-
-      Alert.alert("Success”, ”Pet successfully deleted");
-      // Тут можно обновить локальное состояние или сделать запрос на обновление списка
-    } catch (error) {
-      console.error("Error when deleting a pet:", error);
-      Alert.alert("Error", "Failed to delete pet");
+    const { data, error } = await supabase
+      .from("all_pets")
+      .delete()
+      .eq("petid", petId);
+    if (error) {
+      console.log("Delete error:", error.message);
+    } else {
+      console.log("Pet deleted:", data);
     }
   };
 
@@ -105,13 +96,11 @@ const MyPetItem = ({ item }) => {
 const styles = StyleSheet.create({
   lostPetItem: {
     flex: 1,
-    backgroundColor: "#Fff",
+    backgroundColor: "#FFF",
     padding: 5,
     borderRadius: 10,
     borderColor: "rgba(80, 134, 231, 0.5)",
     borderWidth: 1,
-    marginHorizontal: 5,
-    marginVertical: 5,
   },
 
   petImage: {

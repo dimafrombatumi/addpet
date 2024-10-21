@@ -63,7 +63,9 @@ const LostPetsListScreen = () => {
               keyExtractor={(item) => item.petid}
               numColumns={2}
               renderItem={({ item }) => <LostPetItem item={item} navigation />}
-              columnWrapperStyle={styles.flatListWrap}
+              columnWrapperStyle={{ gap: 10 }}
+              contentContainerStyle={{ gap: 10 }}
+              scrollEnabled={false}
             />
           </View>
           <View style={styles.allLostBtn}>
@@ -83,10 +85,7 @@ const styles = StyleSheet.create({
   pressed: {
     backgroundColor: "red",
   },
-  flatListWrap: {
-    marginBottom: 10,
-    gap: 15,
-  },
+
   listContainer: {
     flexDirection: "column",
   },

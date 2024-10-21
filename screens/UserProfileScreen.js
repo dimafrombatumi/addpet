@@ -8,6 +8,8 @@ import {
   Pressable,
   SafeAreaView,
   TouchableOpacity,
+  SectionList,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
@@ -30,80 +32,83 @@ const ProfileScreen = () => {
 
   return (
     <SafeAreaView>
-      <View style={essentialstyles.container}>
-        <HeaderPart />
+      <ScrollView>
+        <View style={essentialstyles.container}>
+          <HeaderPart />
+          <View style={styles.topContainer}>
+            <Image
+              source={require("../assets/data/images/noimg.png")}
+              style={styles.avatar}
+            />
+            <Text style={styles.username}>Пользователь</Text>
+            <TouchableOpacity
+              style={styles.logoutBtn}
+              onPress={() => {
+                supabase.auth.signOut();
+                navigation.navigate("LoginScreen");
+              }}
+            >
+              <Text style={styles.logoutBtnTxt} logoutBtnTxt>
+                Logout
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <MyPetsInProfile />
 
-        <View style={styles.container}>
-          <Image
-            source={require("../assets/data/images/noimg.png")}
-            style={styles.avatar}
-          />
-          <Text style={styles.username}>Пользователь</Text>
-          <TouchableOpacity
-            onPress={() => {
-              supabase.auth.signOut();
-              navigation.navigate("LoginScreen");
-            }}
-          >
-            <Text style={styles.logoutBtn}>Logout</Text>
-          </TouchableOpacity>
+          <View style={styles.formContainer}>
+            {[
+              {
+                icon: "person-outline",
+                placeholder: "Enter user name",
+                value: username,
+                setter: setUsername,
+                secure: false,
+              },
+              {
+                icon: "call-outline",
+                placeholder: "Enter phone number",
+                value: phoneNumber,
+                setter: setPhoneNumber,
+                keyboardType: "phone-pad",
+                secure: false,
+              },
+            ].map(
+              (
+                { icon, placeholder, value, setter, keyboardType, secure },
+                index
+              ) => (
+                <View key={index} style={essentialstyles.inputBar}>
+                  <Ionicons
+                    style={essentialstyles.iconInput}
+                    name={icon}
+                    size={32}
+                  />
+                  <TextInput
+                    onChangeText={setter}
+                    value={value}
+                    style={essentialstyles.input}
+                    placeholder={placeholder}
+                    keyboardType={keyboardType || "default"}
+                    secureTextEntry={secure}
+                  />
+                </View>
+              )
+            )}
+            <Pressable style={essentialstyles.pressMeBtn}>
+              <Text style={essentialstyles.pressMeText}>Update profile</Text>
+            </Pressable>
+          </View>
+
+          {message ? <Text>{message}</Text> : null}
         </View>
-
-        <MyPetsInProfile />
-
-        <View style={styles.formContainer}>
-          {[
-            {
-              icon: "person-outline",
-              placeholder: "Enter user name",
-              value: username,
-              setter: setUsername,
-              secure: false,
-            },
-            {
-              icon: "call-outline",
-              placeholder: "Enter phone number",
-              value: phoneNumber,
-              setter: setPhoneNumber,
-              keyboardType: "phone-pad",
-              secure: false,
-            },
-          ].map(
-            (
-              { icon, placeholder, value, setter, keyboardType, secure },
-              index,
-            ) => (
-              <View key={index} style={essentialstyles.inputBar}>
-                <Ionicons
-                  style={essentialstyles.iconInput}
-                  name={icon}
-                  size={32}
-                />
-                <TextInput
-                  onChangeText={setter}
-                  value={value}
-                  style={essentialstyles.input}
-                  placeholder={placeholder}
-                  keyboardType={keyboardType || "default"}
-                  secureTextEntry={secure}
-                />
-              </View>
-            ),
-          )}
-          <Pressable style={essentialstyles.pressMeBtn}>
-            <Text style={essentialstyles.pressMeText}>Update profile</Text>
-          </Pressable>
-        </View>
-
-        {message ? <Text>{message}</Text> : null}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    gap: 15,
+  topContainer: {
+    gap: 5,
     backgroundColor: "#fff",
     padding: 15,
     justifyContent: "center",
@@ -131,10 +136,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logoutBtn: {
+    borderWidth: 1,
+    borderRadius: 15,
+    backgroundColor: "#FF5844",
+    borderColor: "#FF5844",
+  },
+  logoutBtnTxt: {
     fontSize: 18,
     color: "#FFF",
-    backgroundColor: "#FF5844",
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+
+    borderRadius: 15,
   },
 });
 

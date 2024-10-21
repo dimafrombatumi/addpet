@@ -14,8 +14,8 @@ const MyPetsInProfile = () => {
   const mypets = useAllPetsStore((state) => state.pets);
 
   return (
-    <View>
-      <Text style={essentialstyles.h2}>List oF My Pets</Text>
+    <View style={{ marginVertical: 15 }}>
+      <Text style={essentialstyles.h2}>List of my pets</Text>
       <View style={styles.myPetItemContainer}>
         {!mypets ? (
           <View style={styles.gapContainer}>
@@ -33,7 +33,9 @@ const MyPetsInProfile = () => {
             keyExtractor={(item) => item.petid}
             numColumns={2}
             renderItem={({ item }) => <MyPetItem item={item} navigation />}
-            columnWrapperStyle={styles.flatListWrap}
+            scrollEnabled={false}
+            columnWrapperStyle={{ gap: 10 }}
+            contentContainerStyle={{ gap: 10 }}
           />
         )}
       </View>
