@@ -24,7 +24,6 @@
     "expo-image-picker": "~15.0.7",
     "expo-modules-core": "~1.12.25",
     "expo-status-bar": "~1.12.1",
-    "firebase": "^10.14.0",
     "flatted": "^3.3.1",
     "react": "18.2.0",
     "react-native": "0.74.5",

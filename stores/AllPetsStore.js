@@ -26,6 +26,7 @@ export const useAllPetsStore = create((set) => ({
         set({ pets: data });
       }
     } else {
+      set({ pets: [] });
       console.error("Пользователь не залогинен");
     }
   },

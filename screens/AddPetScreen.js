@@ -11,12 +11,12 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import essentialstyles from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { usePetActions } from "../hooks/usePetActions";
-import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
+import { supabase } from "../supabase";
 import axios from "axios";
 
 const AddPetScreen = () => {
@@ -38,54 +38,33 @@ const AddPetScreen = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const { pickImage, addPet } = usePetActions();
+  const { pickImage } = usePetActions();
 
-  const user = useContext(UserContext);
-  const uid = user.uid;
+  const addNewPet = async () => {
+    const { data, error } = await supabase
+      .from("all_pets") // укажите свою таблицу
+      .insert([
+        {
+          petid: petId,
+          petname: petName,
+          pettype: petType,
+          petsex: petSex,
+          petage: petAge,
+          petlocation: petLocation,
+          owner_phone: petOwnerphone,
+          petimgurl: petImageurl,
+          petcolor: petColor,
+          petweight: petWeight,
+          petbreed: petBreed,
+          petdescription: petDescription,
+          owner_email: ownerEmail,
+        }, // объект с данными, которые нужно вставить
+      ]);
 
-  const handleAddPet = async (fetchMyPets) => {
-    const petDetails = {
-      uid: user.uid,
-      petid: petId,
-      pettype: petType,
-      petname: petName,
-      petsex: petSex,
-      petage: petAge,
-      petcolor: petColor,
-      petweight: petWeight,
-      petimageurl: petImageurl,
-      petlocation: petLocation,
-      petownerphone: petOwnerphone,
-      petdescription: petDescription,
-      petbreed: petBreed,
-      created_at: new Date().toISOString(),
-      owner_email: ownerEmail,
-      owner_id: uid,
-    };
-
-    try {
-      addPet(petDetails, setLoading);
-      await fetchMyPets(uid);
-    } catch (error) {
-      console.lor(error);
-    } finally {
-      console.log("Done");
-    }
-  };
-
-  const fetchMyPets = async (uid) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3010/registered-pets/${uid}`,
-      );
-      const sortedData = response.data.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at),
-      );
-      setMyPets(sortedData);
-    } catch (error) {
-      console.error("Error fetching pets:", error);
-    } finally {
-      setLoading(false);
+    if (error) {
+      console.log("Ошибка при вставке:", error.message);
+    } else {
+      console.log("Данные добавлены:", data);
     }
   };
 
@@ -93,7 +72,7 @@ const AddPetScreen = () => {
     <SafeAreaView>
       <ScrollView>
         <View style={essentialstyles.container}>
-          <HeaderPart userName={user.displayName} />
+          <HeaderPart userName="USER" />
 
           <View style={styles.imageContainer}>
             {image && (
@@ -124,96 +103,202 @@ const AddPetScreen = () => {
           {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
           <View style={styles.formContainer}>
-            {[
-              {
-                icon: "qr-code-outline",
-                placeholder: "Enter pets microchip number",
-                value: petId,
-                setter: setPetId,
-                keyboardType: "numeric",
-              },
-              {
-                icon: "text-outline",
-                placeholder: "Enter pet name",
-                value: petName,
-                setter: setPetName,
-              },
-              {
-                icon: "paw-outline",
-                placeholder: "Enter pet type",
-                value: petType,
-                setter: setPetType,
-              },
-              {
-                icon: "male-female-outline",
-                placeholder: "Enter pet sex",
-                value: petSex,
-                setter: setPetSex,
-              },
-              {
-                icon: "location-outline",
-                placeholder: "Enter pet location (city)",
-                value: petLocation,
-                setter: setPetLocation,
-              },
-              {
-                icon: "phone-portrait-outline",
-                placeholder: "Enter pet owner phone number",
-                value: petOwnerphone,
-                setter: setPetOwnerphone,
-                keyboardType: "phone-pad",
-              },
-              {
-                icon: "information-circle-outline",
-                placeholder: "Enter other important information here",
-                value: petDescription,
-                setter: setPetDescription,
-              },
-              {
-                icon: "calendar-outline",
-                placeholder: "Enter pet age",
-                value: petAge,
-                setter: setPetAge,
-                keyboardType: "phone-pad",
-              },
-              {
-                icon: "color-palette-outline",
-                placeholder: "Enter pet color",
-                value: petColor,
-                setter: setPetColor,
-              },
-              {
-                icon: "scale-outline",
-                placeholder: "Enter pet weight",
-                value: petWeight,
-                setter: setPetWeight,
-              },
-              {
-                icon: "ribbon-outline",
-                placeholder: "Enter pet breed",
-                value: petBreed,
-                setter: setPetBreed,
-              },
-            ].map(
-              ({ icon, placeholder, value, setter, keyboardType }, index) => (
-                <View key={index} style={essentialstyles.inputBar}>
-                  <Ionicons
-                    style={essentialstyles.iconInput}
-                    name={icon}
-                    size={32}
-                  />
-                  <TextInput
-                    onChangeText={setter}
-                    value={value}
-                    style={essentialstyles.input}
-                    placeholder={placeholder}
-                    keyboardType={keyboardType || "default"}
-                  />
-                </View>
-              ),
-            )}
-
-            <TouchableOpacity onPress={handleAddPet} style={styles.pressMeBtn}>
+            <View style={styles.selectComponent}>
+              <Text style={styles.fieldlabel}>Pet type</Text>
+              <View style={styles.selectItemWrap}>
+                <Pressable
+                  onPress={() => setPetType("Cat")}
+                  style={[
+                    styles.selectItem,
+                    {
+                      backgroundColor: petType === "Cat" ? "#C9E9D2" : "white",
+                    },
+                  ]}
+                >
+                  <Text style={styles.selectItemText}>Cat</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => setPetType("Dog")}
+                  style={[
+                    styles.selectItem,
+                    {
+                      backgroundColor: petType === "Dog" ? "#C9E9D2" : "white",
+                    },
+                  ]}
+                >
+                  <Text style={styles.selectItemText}>Dog</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="qr-code-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetId}
+                value={petId}
+                style={essentialstyles.input}
+                placeholder="Enter pet microchip number"
+                keyboardType="default"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="text-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetName}
+                value={petName}
+                style={essentialstyles.input}
+                placeholder="Enter pet name"
+                keyboardType="default"
+              />
+            </View>
+            <View style={styles.selectComponent}>
+              <Text style={styles.fieldlabel}>Pet sex</Text>
+              <View style={styles.selectItemWrap}>
+                <Pressable
+                  onPress={() => setPetSex("Female")}
+                  style={[
+                    styles.selectItem,
+                    {
+                      backgroundColor:
+                        petSex === "Female" ? "#C9E9D2" : "white",
+                    },
+                  ]}
+                >
+                  <Text style={styles.selectItemText}>Female</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => setPetSex("Male")}
+                  style={[
+                    styles.selectItem,
+                    {
+                      backgroundColor: petSex === "Male" ? "#C9E9D2" : "white",
+                    },
+                  ]}
+                >
+                  <Text style={styles.selectItemText}>Male</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="location-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetLocation}
+                value={petLocation}
+                style={essentialstyles.input}
+                placeholder="Enter pet location City"
+                keyboardType="default"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="phone-portrait-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetOwnerphone}
+                value={petOwnerphone}
+                style={essentialstyles.input}
+                placeholder="Enter pet owner phone number"
+                keyboardType="phone-pad"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="mail-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setOwnerEmail}
+                value={ownerEmail}
+                style={essentialstyles.input}
+                placeholder="Enter your email"
+                keyboardType="email-address"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="calendar-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetAge}
+                value={petAge}
+                style={essentialstyles.input}
+                placeholder="Enter pet age in months"
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="color-palette-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetColor}
+                value={petColor}
+                style={essentialstyles.input}
+                placeholder="Enter pet color"
+                keyboardType="default"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="scale-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetWeight}
+                value={petWeight}
+                style={essentialstyles.input}
+                placeholder="Enter pet weight"
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="ribbon-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetBreed}
+                value={petBreed}
+                style={essentialstyles.input}
+                placeholder="Enter pet breed"
+                keyboardType="default"
+              />
+            </View>
+            <View style={essentialstyles.inputBar}>
+              <Ionicons
+                style={essentialstyles.iconInput}
+                name="information-circle-outline"
+                size={32}
+              />
+              <TextInput
+                onChangeText={setPetDescription}
+                value={petDescription}
+                style={[essentialstyles.input, { height: 60 }]}
+                placeholder="Enter other important information here"
+                multiline={true}
+              />
+            </View>
+            <TouchableOpacity onPress={addNewPet} style={styles.pressMeBtn}>
               <Text style={styles.pressMeText}>Send report</Text>
             </TouchableOpacity>
           </View>
@@ -224,9 +309,37 @@ const AddPetScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  selectComponent: {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: 10,
+  },
+
+  selectItemWrap: { flexDirection: "row", gap: 10 },
+
+  selectItem: {
+    flex: 1,
+    flexDirection: "row",
+    fontWeight: "700",
+    height: 48,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#C9E9D2",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  selectItemText: {
+    fontSize: 20,
+  },
+
+  fieldlabel: {
+    fontSize: 19,
+  },
+
   formContainer: {
     flex: 1,
-    gap: 15,
+    gap: 17,
   },
   pressMeBtn: {
     height: 60,

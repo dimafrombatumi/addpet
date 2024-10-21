@@ -21,7 +21,7 @@ const MyPetItem = ({ item }) => {
         `http://localhost:3010/delete-pet/${petId}`,
         {
           method: "DELETE",
-        },
+        }
       );
 
       if (!response.ok) {
@@ -51,7 +51,7 @@ const MyPetItem = ({ item }) => {
           style: "destructive",
         },
       ],
-      { cancelable: true }, //
+      { cancelable: true } //
     );
   };
 
@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(80, 134, 231, 0.5)",
     borderWidth: 1,
     marginHorizontal: 5,
+    marginVertical: 5,
   },
 
   petImage: {

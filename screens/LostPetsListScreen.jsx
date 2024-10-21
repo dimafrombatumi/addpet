@@ -28,12 +28,11 @@ const LostPetsListScreen = () => {
 
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
 
-  // Фильтруем питомцев, у которых islost === true
-  // const lostPets = allpets.filter((pet) => pet.islost);
+  const lostPets = allpets.filter((pet) => pet.islost);
 
   const filteredPets = petsTypeToFilter
-    ? allpets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
-    : allpets;
+    ? lostPets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
+    : lostPets;
 
   useEffect(() => {
     fetchLostPets();
@@ -60,7 +59,7 @@ const LostPetsListScreen = () => {
             <Text style={essentialstyles.h2}>All Lost Pets</Text>
 
             <FlatList
-              data={allpets}
+              data={filteredPets}
               keyExtractor={(item) => item.petid}
               numColumns={2}
               renderItem={({ item }) => <LostPetItem item={item} navigation />}
@@ -69,7 +68,7 @@ const LostPetsListScreen = () => {
           </View>
           <View style={styles.allLostBtn}>
             <PetsButton
-              petsData={allpets}
+              petsData={filteredPets}
               targetScreen={"LostPetsListScreen"}
               buttonText={"See all lost pets"}
             />

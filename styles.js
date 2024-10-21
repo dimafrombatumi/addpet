@@ -35,7 +35,7 @@ const essentialstyles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#FFF",
-    padding: 10,
+    padding: 7,
     paddingLeft: 6,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -43,8 +43,8 @@ const essentialstyles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 20,
-    height: 35,
+    fontSize: 18,
+    height: 30,
   },
 
   pressMeBtn: {

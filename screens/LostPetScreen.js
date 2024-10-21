@@ -57,10 +57,10 @@ const LostPetScreen = ({ route }) => {
           <HeaderPart userName={user.displayName} />
 
           <View style={styles.imageContainer}>
-            {item.petimageurl ? (
+            {item.petimgurl ? (
               <Image
                 style={styles.petImage}
-                source={{ uri: item.petimageurl }}
+                source={{ uri: item.petimgurl }}
               />
             ) : (
               <Image
@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
   },
+
   contentContainer: {
     paddingHorizontal: 15,
     gap: 15,
