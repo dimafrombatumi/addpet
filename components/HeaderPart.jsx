@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+
 import UserContext from "../context/UserContext";
+import { useNavigation } from "@react-navigation/native";
+
+import { Ionicons } from "@expo/vector-icons";
 
 const HeaderPart = () => {
   const session = useContext(UserContext);
@@ -29,8 +31,12 @@ const HeaderPart = () => {
         }}
       >
         <View style={styles.userAvatar}>
-          <Ionicons name="person-circle-outline" size={50} color="#1A3053" />
-          <Text style={styles.userName}>Hi, {useremail}</Text>
+          <Image
+            style={styles.appLogo}
+            source={require("../assets/data/images/ava.jpg")}
+          />
+          {/* <Ionicons name="person-circle-outline" size={50} color="#1A3053" /> */}
+          <Text style={styles.userName}>Hi, John</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -55,10 +61,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   appLogo: {
+    borderRadius: 25,
     width: 50,
     height: 50,
   },
   userAvatar: {
+    gap: 15,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row-reverse",

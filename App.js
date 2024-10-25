@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import Navigation from "./navigation";
-import axios from "axios";
 import { supabase } from "./supabase";
 import UserContext from "./context/UserContext";
 import AllPetsContext from "./context/AllPetsContext";
 import MyPetsContext from "./context/MyPetsContext";
 import RegisteredPetsContext from "./context/RegisteredPetsContext";
-// import ReportedPetsContext from "./context/ReportedPetsContext";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -35,33 +33,15 @@ export default function App() {
     });
   }, []);
 
-  useEffect(() => {
-    fetchAllLostPets();
-  }, []);
+  // useEffect(() => {
+  //   fetchAllLostPets();
+  // }, []);
 
   // const fetchAllLostPets = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:3010/lost-pets/` // Передаем булевое значение
-  //     );
-
-  //     const sortedData = response.data.sort(
-  //       (a, b) => new Date(b.created_at) - new Date(a.created_at)
-  //     );
-
-  //     setRegisteredPets(sortedData);
-  //   } catch (error) {
-  //     console.error("Error fetching pets:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
+  //   const { data, error } = await supabase.from("all_pets").select();
+  //   setRegisteredPets(data);
+  //   console.log(error);
   // };
-
-  const fetchAllLostPets = async () => {
-    const { data, error } = await supabase.from("all_pets").select();
-    setRegisteredPets(data);
-    console.log(error);
-  };
 
   return (
     <>

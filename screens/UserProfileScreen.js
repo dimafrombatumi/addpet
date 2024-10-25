@@ -8,12 +8,10 @@ import {
   Pressable,
   SafeAreaView,
   TouchableOpacity,
-  SectionList,
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
-import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
 import MyPetsInProfile from "../components/MyPetsInProfile";
 import { supabase } from "../supabase";
@@ -21,15 +19,19 @@ import { useNavigation } from "@react-navigation/native";
 import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const ProfileScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // Для обновления пароля можете сделать дополнительное поле, если нужно
   const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
 
   const navigation = useNavigation();
   // const useremail = session?.user.id;
+  const fetchMyPets = useAllPetsStore((state) => state.fetchMyPets);
 
+  const mypets = useAllPetsStore((state) => state.mypets);
+
+  useEffect(() => {
+    fetchMyPets();
+  }, []);
   return (
     <SafeAreaView>
       <ScrollView>
@@ -53,7 +55,7 @@ const ProfileScreen = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <MyPetsInProfile />
+          <MyPetsInProfile mypets={mypets} />
 
           <View style={styles.formContainer}>
             {[

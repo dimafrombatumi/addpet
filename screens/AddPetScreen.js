@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,13 +12,18 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
-import essentialstyles from "../styles";
-import { Ionicons } from "@expo/vector-icons";
-import { usePetActions } from "../hooks/usePetActions";
-import HeaderPart from "../components/HeaderPart";
+
 import { supabase } from "../supabase";
-import axios from "axios";
+import { decode } from "base64-arraybuffer";
+import { randomUUID } from "expo-crypto";
+
+import HeaderPart from "../components/HeaderPart";
+import RemoteImage from "../components/RemoteImage";
+
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import { Ionicons } from "@expo/vector-icons";
+import essentialstyles from "../styles";
 
 const AddPetScreen = () => {
   const [petId, setPetId] = useState("");
@@ -33,14 +39,52 @@ const AddPetScreen = () => {
   const [petBreed, setPetBreed] = useState("");
   const [petDescription, setPetDescription] = useState("");
   const [image, setImage] = useState(null);
-  const [ownerId, setOwnerId] = useState(null);
   const [ownerEmail, setOwnerEmail] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
-  const { pickImage } = usePetActions();
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!image?.startsWith("file://")) {
+      return;
+    }
+
+    const base64 = await FileSystem.readAsStringAsync(image, {
+      encoding: "base64",
+    });
+    const filePath = `${randomUUID()}.png`;
+    const contentType = "image/png";
+
+    const { data, error } = await supabase.storage
+      .from("assets")
+      .upload(filePath, decode(base64), { contentType });
+
+    console.log(error);
+
+    if (data) {
+      setPetImageurl(data.path);
+      console.log(data);
+      console.log("IMAGE----", data.path);
+
+      return data.path;
+    }
+  };
 
   const addNewPet = async () => {
+    const ImagePath = await uploadImage();
     const { data, error } = await supabase
       .from("all_pets") // укажите свою таблицу
       .insert([
@@ -52,7 +96,7 @@ const AddPetScreen = () => {
           petage: petAge,
           petlocation: petLocation,
           owner_phone: petOwnerphone,
-          petimgurl: petImageurl,
+          petimgurl: ImagePath,
           petcolor: petColor,
           petweight: petWeight,
           petbreed: petBreed,
@@ -76,18 +120,12 @@ const AddPetScreen = () => {
 
           <View style={styles.imageContainer}>
             {image && (
-              <Pressable
-                onPress={() =>
-                  pickImage(setImage, setLoading, setPetImageurl, petId)
-                }
-              >
+              <Pressable onPress={() => pickImage(setImage, setLoading)}>
                 <Image source={{ uri: image }} style={styles.petImage} />
               </Pressable>
             )}
             {!image && (
-              <Pressable
-                onPress={() => pickImage(setImage, setLoading, setPetImageurl)}
-              >
+              <Pressable onPress={() => pickImage(petId)}>
                 <Image
                   source={require("../assets/data/images/noimg.png")}
                   style={styles.petImage}
@@ -97,7 +135,7 @@ const AddPetScreen = () => {
           </View>
           <Button
             title="Pick an image from camera roll"
-            onPress={() => pickImage(setImage, setLoading, setPetImageurl)}
+            onPress={() => pickImage(petId)}
           />
 
           {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -115,7 +153,7 @@ const AddPetScreen = () => {
                     },
                   ]}
                 >
-                  <Text style={styles.selectItemText}>Cat</Text>
+                  <Text style={styles.selectItemText}>🐈‍⬛ Cat</Text>
                 </Pressable>
                 <Pressable
                   onPress={() => setPetType("Dog")}
@@ -126,7 +164,7 @@ const AddPetScreen = () => {
                     },
                   ]}
                 >
-                  <Text style={styles.selectItemText}>Dog</Text>
+                  <Text style={styles.selectItemText}>🐕 Dog</Text>
                 </Pressable>
               </View>
             </View>
@@ -171,7 +209,9 @@ const AddPetScreen = () => {
                     },
                   ]}
                 >
-                  <Text style={styles.selectItemText}>Female</Text>
+                  <Text style={styles.selectItemText}>
+                    <Text style={{ fontSize: 26 }}>♀️ </Text>Female
+                  </Text>
                 </Pressable>
                 <Pressable
                   onPress={() => setPetSex("Male")}
@@ -182,7 +222,9 @@ const AddPetScreen = () => {
                     },
                   ]}
                 >
-                  <Text style={styles.selectItemText}>Male</Text>
+                  <Text style={styles.selectItemText}>
+                    <Text style={{ fontSize: 26 }}>♂️ </Text>Male
+                  </Text>
                 </Pressable>
               </View>
             </View>

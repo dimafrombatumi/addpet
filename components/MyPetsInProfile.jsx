@@ -1,18 +1,11 @@
+import React from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
-import React, { useEffect } from "react";
+
 import MyPetItem from "./MyPetItem";
+
 import essentialstyles from "../styles";
-import { useAllPetsStore } from "../stores/AllPetsStore";
 
-const MyPetsInProfile = () => {
-  const fetchMyPets = useAllPetsStore((state) => state.fetchMyPets);
-
-  useEffect(() => {
-    fetchMyPets();
-  }, []);
-
-  const mypets = useAllPetsStore((state) => state.pets);
-
+const MyPetsInProfile = ({ mypets }) => {
   return (
     <View style={{ marginVertical: 15 }}>
       <Text style={essentialstyles.h2}>List of my pets</Text>
@@ -45,8 +38,8 @@ const MyPetsInProfile = () => {
 
 const styles = StyleSheet.create({
   petImg: {
-    height: 60,
-    width: 60,
+    height: 80,
+    width: 80,
   },
   nopetsImg: {
     alignSelf: "center",

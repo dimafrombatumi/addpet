@@ -1,7 +1,7 @@
-import React, { createContext } from "react";
+import { createContext } from "react";
 
 const ReportedPetsContext = createContext(
-  "ReportedPetsContext Without provider",
+  "ReportedPetsContext Without provider"
 );
 
 export default ReportedPetsContext;

@@ -10,11 +10,13 @@ import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import LostPetItem from "../components/LostPetItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import essentialstyles from "../styles";
+
 import SearchField from "../components/SearchField";
 import AllPetsContext from "../context/AllPetsContext";
 import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
+
+import essentialstyles from "../styles";
 
 const SearchResultsScreen = ({ route }) => {
   const { searchPhrase } = route.params;
@@ -24,7 +26,7 @@ const SearchResultsScreen = ({ route }) => {
   const user = useContext(UserContext);
 
   const filteredData = allpets.filter(
-    (item) => item.petid.toUpperCase() === searchPhrase?.toUpperCase(),
+    (item) => item.petid.toUpperCase() === searchPhrase?.toUpperCase()
   );
 
   return (

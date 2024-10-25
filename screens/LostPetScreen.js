@@ -11,15 +11,17 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useContext } from "react";
+import UserContext from "../context/UserContext";
+import { useNavigation } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 
-import { useNavigation } from "@react-navigation/native";
-import essentialstyles from "../styles";
 import HeaderPart from "../components/HeaderPart";
-import UserContext from "../context/UserContext";
 import PetsButton from "../components/PetsButton";
+import RemoteImage from "../components/RemoteImage";
+
+import essentialstyles from "../styles";
 
 const LostPetScreen = ({ route }) => {
   const [copiedText, setCopiedText] = React.useState("");
@@ -57,17 +59,13 @@ const LostPetScreen = ({ route }) => {
           <HeaderPart userName={user.displayName} />
 
           <View style={styles.imageContainer}>
-            {item.petimgurl ? (
-              <Image
-                style={styles.petImage}
-                source={{ uri: item.petimgurl }}
-              />
-            ) : (
-              <Image
-                style={styles.petImage}
-                source={require("../assets/data/images/noimg.png")}
-              />
-            )}
+            <RemoteImage
+              path={item.petimgurl}
+              fallback={
+                "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
+              }
+              style={styles.petImage}
+            />
           </View>
           <View style={styles.contentContainer}>
             <View style={styles.titleBlock}>

@@ -9,10 +9,12 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import essentialstyles from "../styles";
 import { useNavigation } from "@react-navigation/native";
+
 import { supabase } from "../supabase";
+import { Ionicons } from "@expo/vector-icons";
+
+import essentialstyles from "../styles";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -72,7 +74,7 @@ const LoginScreen = () => {
         ].map(
           (
             { icon, placeholder, value, setter, keyboardType, secure },
-            index,
+            index
           ) => (
             <View key={index} style={essentialstyles.inputBar}>
               <Ionicons
@@ -89,7 +91,7 @@ const LoginScreen = () => {
                 secureTextEntry={secure}
               />
             </View>
-          ),
+          )
         )}
         <TouchableOpacity
           style={essentialstyles.pressMeBtn}

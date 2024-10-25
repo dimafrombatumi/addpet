@@ -5,7 +5,6 @@ import {
   TextInput,
   Pressable,
   Button,
-  Alert,
   SafeAreaView,
   Image,
   TouchableOpacity,
@@ -13,12 +12,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
+import { usePetActions } from "../hooks/usePetActions";
 import { Ionicons } from "@expo/vector-icons";
 
-import essentialstyles from "../styles";
 import HeaderPart from "../components/HeaderPart";
-import { usePetActions } from "../hooks/usePetActions";
+
+import essentialstyles from "../styles";
 
 const ReportScreen = () => {
   const navigation = useNavigation();

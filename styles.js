@@ -4,10 +4,11 @@ const essentialstyles = StyleSheet.create({
   container: {
     gap: 15,
     backgroundColor: "#fff",
+    paddingVertical: 30,
     paddingHorizontal: 15,
     height: "100%",
+    marginBottom: 50,
   },
-
   h1: {
     fontSize: 44,
     fontWeight: "700",
@@ -28,7 +29,6 @@ const essentialstyles = StyleSheet.create({
   iconInput: {
     color: "#111",
   },
-
   inputBar: {
     gap: 10,
     flexDirection: "row",

@@ -3,18 +3,16 @@ import { supabase } from "../supabase";
 
 export const useAllPetsStore = create((set) => ({
   uid: null,
-  pets: [],
-
+  allpets: [],
+  mypets: [],
   fetchMyPets: async () => {
-    // Получаем текущего пользователя
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (user) {
-      const uid = user.id; // Получаем UID текущего пользователя
+      const uid = user.id;
 
-      // Получаем питомцев, принадлежащих этому пользователю
       const { data, error } = await supabase
         .from("all_pets")
         .select("*")
@@ -23,16 +21,16 @@ export const useAllPetsStore = create((set) => ({
       if (error) {
         console.error("Ошибка получения питомцев:", error.message);
       } else {
-        set({ pets: data });
+        set({ mypets: data });
       }
     } else {
-      set({ pets: [] });
+      set({ mypets: [] });
       console.error("Пользователь не залогинен");
     }
   },
 
   fetchLostPets: async () => {
     const { data } = await supabase.from("all_pets").select("*");
-    set({ pets: data });
+    set({ allpets: data });
   },
 }));
