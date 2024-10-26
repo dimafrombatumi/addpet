@@ -5,6 +5,7 @@ export const useAllPetsStore = create((set) => ({
   uid: null,
   allpets: [],
   mypets: [],
+
   fetchMyPets: async () => {
     const {
       data: { user },
