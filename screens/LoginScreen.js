@@ -7,39 +7,37 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  Alert
+  Alert,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import essentialstyles from "../styles";
 import { useNavigation } from "@react-navigation/native";
-import { supabase } from "../supabase";
 
+import { supabase } from "../supabase";
+import { Ionicons } from "@expo/vector-icons";
+
+import essentialstyles from "../styles";
 
 const LoginScreen = () => {
-
   const navigation = useNavigation();
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function signInWithEmail() {
-    setLoading(true)
+    setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
-    })
+    });
 
-    if (error) {Alert.alert(error.message)
-    setLoading(false)
-  }else{
-    navigation.navigate("HomeScreen")
+    if (error) {
+      Alert.alert(error.message);
+      setLoading(false);
+    } else {
+      navigation.navigate("HomeScreen");
+    }
   }
-  }
-
-
 
   return (
-
     <View style={styles.container}>
       <View style={styles.topImage}>
         <Image
@@ -53,10 +51,10 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.topContainer}>
-        <Text style={essentialstyles.h1}>Email</Text>
+        <Text style={essentialstyles.h1}>Sign In</Text>
         <Text style={essentialstyles.text}>Please sign in to continue</Text>
       </View>
-            <View style={styles.formContainer}>
+      <View style={styles.formContainer}>
         {[
           {
             icon: "person-circle-outline",
@@ -76,7 +74,7 @@ const LoginScreen = () => {
         ].map(
           (
             { icon, placeholder, value, setter, keyboardType, secure },
-            index,
+            index
           ) => (
             <View key={index} style={essentialstyles.inputBar}>
               <Ionicons
@@ -93,11 +91,11 @@ const LoginScreen = () => {
                 secureTextEntry={secure}
               />
             </View>
-          ),
+          )
         )}
         <TouchableOpacity
           style={essentialstyles.pressMeBtn}
-          onPress={()=>signInWithEmail()}
+          onPress={() => signInWithEmail()}
         >
           <Text style={styles.pressMeText}>Sign In</Text>
         </TouchableOpacity>

@@ -63,7 +63,6 @@ const Navigation = () => {
           options={{
             title: "Add Pet App",
             headerShown: false,
-
           }}
         />
 
@@ -108,7 +107,7 @@ const Navigation = () => {
           }}
         />
 
-<Stack.Screen
+        <Stack.Screen
           name="UserProfileScreen"
           component={UserProfileScreen}
           options={{

@@ -1,76 +1,93 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList, SafeAreaView } from "react-native";
+
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import LostPetItem from "../components/LostPetItem.js";
-import essentialstyles from "../styles.js";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import RegisteredPetsContext from "../context/RegisteredPetsContext";
-import HeaderPart from "../components/HeaderPart.jsx";
 import UserContext from "../context/UserContext.js";
-import PetsButton from "../components/PetsButton.jsx";
-import { supabase } from "../supabase.js";
 import { useAllPetsStore } from "../stores/AllPetsStore.js";
 
+import HeaderPart from "../components/HeaderPart.jsx";
+import LostPetItem from "../components/LostPetItem.js";
+import PetsButton from "../components/PetsButton.jsx";
+
+import essentialstyles from "../styles.js";
+
 const LostPetsListScreen = () => {
-  const user = useContext(UserContext);
-  const fetchLostPets = useAllPetsStore((state => state.fetchLostPets))
-  
-  const allpets = useAllPetsStore((state) => state.pets);
-
-  console.log(allpets);
-
-  const navigation = useNavigation();
-
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
+  const user = useContext(UserContext);
+  const fetchLostPets = useAllPetsStore((state) => state.fetchLostPets);
+  const allpets = useAllPetsStore((state) => state.allpets);
+  const lostPets = allpets.filter((pet) => pet.islost);
 
-  // Фильтруем питомцев, у которых islost === true
-  // const lostPets = allpets.filter((pet) => pet.islost);
+  useEffect(() => {
+    fetchLostPets();
+  }, []);
 
   const filteredPets = petsTypeToFilter
-    ? allpets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
-    : allpets;
-
-  useEffect(()=>{fetchLostPets()},[])
-
+    ? lostPets.filter((item) => item.pettype.toUpperCase() === petsTypeToFilter)
+    : lostPets;
 
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={essentialstyles.container}>
           <HeaderPart userName={user.displayName} />
-
           <View style={styles.filterContainer}>
             <TouchableOpacity onPress={() => setPetsTypeToFilter("CAT")}>
-              <Text style={styles.filterCategory}>🐈‍⬛ Cats</Text>
+              <Text
+                style={[
+                  styles.filterCategory,
+                  {
+                    backgroundColor:
+                      petsTypeToFilter === "CAT" ? "#C9E9D2" : "#fff",
+                  },
+                ]}
+              >
+                🐈‍⬛ Cats
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setPetsTypeToFilter("DOG")}>
-              <Text style={styles.filterCategory}>🐕 Dogs</Text>
+              <Text
+                style={[
+                  styles.filterCategory,
+                  {
+                    backgroundColor:
+                      petsTypeToFilter === "DOG" ? "#C9E9D2" : "#fff",
+                  },
+                ]}
+              >
+                🐕 Dogs
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setPetsTypeToFilter("")}>
-              <Text style={styles.filterCategory}>🐈‍⬛ + 🐕 All pets</Text>
+              <Text
+                style={[
+                  styles.filterCategory,
+                  {
+                    backgroundColor:
+                      petsTypeToFilter === "" ? "#C9E9D2" : "#fff",
+                  },
+                ]}
+              >
+                🐈‍⬛ + 🐕 All pets
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.listContainer}>
             <Text style={essentialstyles.h2}>All Lost Pets</Text>
 
             <FlatList
-              data={allpets}
+              data={filteredPets}
               keyExtractor={(item) => item.petid}
               numColumns={2}
               renderItem={({ item }) => <LostPetItem item={item} navigation />}
-              columnWrapperStyle={styles.flatListWrap}
+              columnWrapperStyle={{ gap: 10 }}
+              contentContainerStyle={{ gap: 10 }}
+              scrollEnabled={false}
             />
           </View>
           <View style={styles.allLostBtn}>
             <PetsButton
-              petsData={allpets}
+              petsData={filteredPets}
               targetScreen={"LostPetsListScreen"}
               buttonText={"See all lost pets"}
             />
@@ -82,13 +99,6 @@ const LostPetsListScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  pressed: {
-    backgroundColor: "red",
-  },
-  flatListWrap: {
-    marginBottom: 10,
-    gap: 15,
-  },
   listContainer: {
     flexDirection: "column",
   },
@@ -114,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    padding: 6,
+    padding: 5,
   },
   petId: {
     color: "#111",
@@ -124,32 +134,17 @@ const styles = StyleSheet.create({
   filterContainer: {
     backgroundColor: "#fff",
     flexDirection: "row",
-    gap: 20,
+    gap: 8,
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   filterCategory: {
-    fontSize: 20,
-    padding: 10,
+    fontSize: 18,
+    padding: 5,
     borderWidth: 2,
     borderColor: "#ccc",
     borderRadius: 10,
     alignSelf: "center",
-  },
-  pressMeBtn: {
-    marginTop: 20,
-    height: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    flexDirection: "row-reverse",
-    backgroundColor: "#E8EBF1",
-    borderRadius: 10,
-    borderColor: "1.5px solid rgba(80, 134, 231, 0.5)",
-    borderWidth: 3,
-  },
-  pressMeText: {
-    color: "#01222A",
   },
 });
 

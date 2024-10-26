@@ -42,15 +42,15 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#FFF",
-    padding: 10,
+    padding: 6,
     paddingLeft: 6,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
+    borderRadius: 10,
   },
   searchInput: {
     flex: 1,
-    fontSize: 20,
+    fontSize: 18,
   },
 });
 export default SearchField;

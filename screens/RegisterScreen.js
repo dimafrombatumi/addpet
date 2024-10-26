@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from '../supabase'
+import { supabase } from "../supabase";
 
 import {
   View,
@@ -11,9 +11,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
+
 import essentialstyles from "../styles";
 
 const RegisterScreen = ({ navigation }) => {
@@ -23,7 +23,7 @@ const RegisterScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [avatarUri, setAvatarUri] = useState(null);
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handlePickAvatar = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -39,20 +39,21 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   async function signUpWithEmail() {
-    setLoading(true)
+    setLoading(true);
     const {
       data: { session },
       error,
     } = await supabase.auth.signUp({
       email: email,
       password: password,
-    })
+    });
 
-    if (error) Alert.alert(error.message)
-    if (!session) Alert.alert('Please check your inbox for email verification!')
-    setLoading(false)
+    if (error) Alert.alert(error.message);
+    if (!session)
+      Alert.alert("Please check your inbox for email verification!");
+    setLoading(false);
   }
- 
+
   return (
     <View style={styles.container}>
       <View style={styles.topImage}>
@@ -107,7 +108,7 @@ const RegisterScreen = ({ navigation }) => {
         ].map(
           (
             { icon, placeholder, value, setter, keyboardType, secure },
-            index,
+            index
           ) => (
             <View key={index} style={essentialstyles.inputBar}>
               <Ionicons
@@ -124,7 +125,7 @@ const RegisterScreen = ({ navigation }) => {
                 secureTextEntry={secure}
               />
             </View>
-          ),
+          )
         )}
         <TouchableOpacity
           style={essentialstyles.pressMeBtn}

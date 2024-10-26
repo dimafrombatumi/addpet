@@ -4,10 +4,11 @@ const essentialstyles = StyleSheet.create({
   container: {
     gap: 15,
     backgroundColor: "#fff",
-    padding: 15,
+    paddingVertical: 30,
+    paddingHorizontal: 15,
     height: "100%",
+    marginBottom: 50,
   },
-
   h1: {
     fontSize: 44,
     fontWeight: "700",
@@ -28,14 +29,13 @@ const essentialstyles = StyleSheet.create({
   iconInput: {
     color: "#111",
   },
-
   inputBar: {
     gap: 10,
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#FFF",
-    padding: 10,
+    padding: 7,
     paddingLeft: 6,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -43,12 +43,12 @@ const essentialstyles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 20,
-    height: 40,
+    fontSize: 18,
+    height: 30,
   },
 
   pressMeBtn: {
-    height: 60,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
     padding: 10,

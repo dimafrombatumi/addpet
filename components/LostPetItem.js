@@ -1,15 +1,8 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  Pressable,
-} from "react-native";
 import React from "react";
-
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import RemoteImage from "../components/RemoteImage";
 
 const LostPetItem = ({ item }) => {
   const navigation = useNavigation();
@@ -18,23 +11,19 @@ const LostPetItem = ({ item }) => {
     <Pressable
       style={styles.lostPetItem}
       keyExtractor={(item) => item.petid}
-      onPress={function () {
-        navigation.navigate("LostPetScreen", { item });
-      }}
+      onPress={() => navigation.navigate("LostPetScreen", { item })}
     >
       <View>
-        {!item.petimgurl && (
-          <Image
-            style={styles.petImage}
-            source={require("../assets/data/images/noimg.png")}
-          />
-        )}
-        {item.petimgurl && (
-          <Image style={styles.petImage} source={{ uri: item.petimgurl }} />
-        )}
+        <RemoteImage
+          path={item.petimgurl}
+          fallback={
+            "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
+          }
+          size={"small"}
+          style={styles.petImage}
+        />
         <View style={styles.petOptions}>
           <Text style={styles.petName}>{item.petname}</Text>
-
           <View style={styles.petOptionsBlock}>
             <Text style={styles.petSex}>{item.petsex}</Text>
             <Text style={styles.petCity}>
@@ -62,7 +51,7 @@ const styles = StyleSheet.create({
 
   petImage: {
     width: "100%",
-    height: 120,
+    height: "100%",
     borderRadius: 10,
   },
 
