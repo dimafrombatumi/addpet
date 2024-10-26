@@ -64,7 +64,7 @@ const LostPetScreen = ({ route }) => {
               fallback={
                 "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
               }
-              style={styles.petImage}
+              size={"large"}
             />
           </View>
           <View style={styles.contentContainer}>

@@ -33,7 +33,10 @@ const RemoteImage = ({ path, fallback, size }) => {
   }
 
   return (
-    <Image style={[styles.petImage]} source={{ uri: image || fallback }} />
+    <Image
+      style={[size === "large" ? styles.petImageLg : styles.petImageSm]}
+      source={{ uri: image || fallback }}
+    />
   );
 };
 
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   petImageLg: {
-    minHeight: 130,
+    height: "100%",
     width: "100%",
     borderRadius: 10,
   },

@@ -19,6 +19,7 @@ const LostPetItem = ({ item }) => {
           fallback={
             "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
           }
+          size={"small"}
           style={styles.petImage}
         />
         <View style={styles.petOptions}>
