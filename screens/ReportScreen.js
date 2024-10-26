@@ -39,7 +39,6 @@ const ReportScreen = () => {
       created_at: new Date().toISOString(),
       foundimg: foundImg,
     };
-    console.log("Found Pet Details to send:", foundPetDetails);
 
     reportPet(foundPetDetails, setLoading);
   };

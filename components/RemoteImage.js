@@ -26,7 +26,6 @@ const RemoteImage = ({ path, fallback, size }) => {
         };
       }
     })();
-    console.log(fallback);
   }, [path]);
 
   if (!image) {

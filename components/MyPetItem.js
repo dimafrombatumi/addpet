@@ -16,22 +16,18 @@ import { supabase } from "../supabase";
 import { Ionicons } from "@expo/vector-icons";
 import RemoteImage from "./RemoteImage";
 
+import { useAllPetsStore } from "../stores/AllPetsStore";
+
 const MyPetItem = ({ item }) => {
   const petId = item.petid;
+  const deletePet = useAllPetsStore((state) => state.deletePet);
 
   const handleDeletePet = async (petId) => {
-    const { data, error } = await supabase
-      .from("all_pets")
-      .delete()
-      .eq("petid", petId);
-    if (error) {
-      console.log("Delete error:", error.message);
-    } else {
-      console.log("Pet deleted:", data);
-    }
+    await deletePet(petId);
   };
 
   const confirmDelete = (petId) => {
+    console.log("Confirm delete called for pet ID:", petId);
     Alert.alert(
       "Deletion Confirmation",
       `Are you sure you want to delete pet ${item.petname}? This action cannot be undone.`,
@@ -46,7 +42,7 @@ const MyPetItem = ({ item }) => {
           style: "destructive",
         },
       ],
-      { cancelable: true } //
+      { cancelable: true }
     );
   };
 

@@ -25,9 +25,7 @@ const MyPetsInProfile = ({ mypets }) => {
             data={mypets}
             keyExtractor={(item) => item.petid}
             numColumns={2}
-            renderItem={({ item }) => (
-              <MyPetItem item={item} navigation size={"small"} />
-            )}
+            renderItem={({ item }) => <MyPetItem item={item} size={"small"} />}
             scrollEnabled={false}
             columnWrapperStyle={{ gap: 10 }}
             contentContainerStyle={{ gap: 10 }}

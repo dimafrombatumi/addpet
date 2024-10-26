@@ -16,9 +16,9 @@ import {
 import { supabase } from "../supabase";
 import { decode } from "base64-arraybuffer";
 import { randomUUID } from "expo-crypto";
+import { useNavigation } from "@react-navigation/native";
 
 import HeaderPart from "../components/HeaderPart";
-import RemoteImage from "../components/RemoteImage";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -42,6 +42,7 @@ const AddPetScreen = () => {
   const [ownerEmail, setOwnerEmail] = useState(null);
 
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -76,9 +77,6 @@ const AddPetScreen = () => {
 
     if (data) {
       setPetImageurl(data.path);
-      console.log(data);
-      console.log("IMAGE----", data.path);
-
       return data.path;
     }
   };
@@ -109,6 +107,7 @@ const AddPetScreen = () => {
       console.log("Ошибка при вставке:", error.message);
     } else {
       console.log("Данные добавлены:", data);
+      navigation.navigate("HomeScreen");
     }
   };
 

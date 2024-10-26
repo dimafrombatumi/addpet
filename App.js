@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
 import Navigation from "./navigation";
 import { supabase } from "./supabase";
 import UserContext from "./context/UserContext";
@@ -33,16 +32,6 @@ export default function App() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   fetchAllLostPets();
-  // }, []);
-
-  // const fetchAllLostPets = async () => {
-  //   const { data, error } = await supabase.from("all_pets").select();
-  //   setRegisteredPets(data);
-  //   console.log(error);
-  // };
-
   return (
     <>
       <UserContext.Provider value={session}>
@@ -57,12 +46,3 @@ export default function App() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
