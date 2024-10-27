@@ -41,7 +41,7 @@ const RemoteImage = ({ path, fallback, size }) => {
 
 const styles = StyleSheet.create({
   petImageSm: {
-    minHeight: 130,
+    minHeight: 140,
     width: "100%",
     borderRadius: 10,
   },

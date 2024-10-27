@@ -22,8 +22,14 @@ const MyPetItem = ({ item }) => {
   const petId = item.petid;
   const deletePet = useAllPetsStore((state) => state.deletePet);
 
+  const navigation = useNavigation();
+
   const handleDeletePet = async (petId) => {
     await deletePet(petId);
+  };
+
+  const handleEditPet = (item) => {
+    navigation.navigate("EditPetScreen", { item });
   };
 
   const confirmDelete = (petId) => {
@@ -46,7 +52,25 @@ const MyPetItem = ({ item }) => {
     );
   };
 
-  const navigation = useNavigation();
+  const confirmEdit = (petId) => {
+    console.log("Confirm edit called for pet ID:", petId);
+    Alert.alert(
+      "Edition Confirmation",
+      `Are you sure you want to Edit pet ${item.petname}?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Edit",
+          onPress: () => handleEditPet(item),
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   return (
     <Pressable
@@ -80,6 +104,17 @@ const MyPetItem = ({ item }) => {
                 color="#F37F3B"
               />
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => confirmEdit(petId)}
+              style={styles.editIconBlock}
+            >
+              <Ionicons
+                style={styles.editIcon}
+                name="create-outline"
+                size={24}
+                color="#1A3053"
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -89,18 +124,12 @@ const MyPetItem = ({ item }) => {
 
 const styles = StyleSheet.create({
   lostPetItem: {
-    flex: 1,
+    width: "50%",
     backgroundColor: "#FFF",
     padding: 5,
     borderRadius: 10,
     borderColor: "rgba(80, 134, 231, 0.5)",
     borderWidth: 1,
-  },
-
-  petImage: {
-    width: "100%",
-    height: 130,
-    borderRadius: 10,
   },
 
   petOptions: {
@@ -126,6 +155,7 @@ const styles = StyleSheet.create({
   deleteIconBlock: {
     flex: 1,
     alignItems: "flex-end",
+    marginRight: 25,
   },
 });
 
