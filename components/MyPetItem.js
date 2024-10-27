@@ -124,7 +124,7 @@ const MyPetItem = ({ item }) => {
 
 const styles = StyleSheet.create({
   lostPetItem: {
-    flex: 1,
+    width: "50%",
     backgroundColor: "#FFF",
     padding: 5,
     borderRadius: 10,
