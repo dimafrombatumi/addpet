@@ -24,6 +24,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
+import RemoteImage from "../components/RemoteImage";
 
 const EditPetScreen = ({ route }) => {
   const { item } = route.params;
@@ -124,19 +125,13 @@ const EditPetScreen = ({ route }) => {
           <HeaderPart userName="USER" />
 
           <View style={styles.imageContainer}>
-            {image && (
-              <Pressable onPress={() => pickImage(setImage, setLoading)}>
-                <Image source={{ uri: image }} style={styles.petImage} />
-              </Pressable>
-            )}
-            {!image && (
-              <Pressable onPress={() => pickImage(petId)}>
-                <Image
-                  source={require("../assets/data/images/noimg.png")}
-                  style={styles.petImage}
-                />
-              </Pressable>
-            )}
+            <RemoteImage
+              path={item.petimgurl}
+              fallback={
+                "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
+              }
+              size="large"
+            />
           </View>
           <Button
             title="Pick an image from camera roll"
