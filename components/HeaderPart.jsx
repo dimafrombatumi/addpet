@@ -9,36 +9,32 @@ import { Ionicons } from "@expo/vector-icons";
 const HeaderPart = () => {
   const session = useContext(UserContext);
   const navigation = useNavigation();
-  const useremail = session?.user.email;
+
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity
-        onPress={function () {
-          navigation.navigate("HomeScreen");
-        }}
-      >
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.appLogo}
-            source={require("../assets/data/images/templogo.png")}
-          />
-          <Text style={styles.appLogoText}>ADD PET</Text>
+      <View style={styles.headerContainerRight}>
+        <Image
+          style={styles.userAvatar}
+          source={require("../assets/data/images/ava.jpg")}
+        />
+        <View style={styles.userTitle}>
+          <Text style={styles.userName}>Hi, John 👋</Text>
+          <Text style={styles.userLocation}>Batumi, Georgia</Text>
         </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={function () {
-          navigation.navigate("UserProfileScreen");
-        }}
-      >
-        <View style={styles.userAvatar}>
-          <Image
-            style={styles.appLogo}
-            source={require("../assets/data/images/ava.jpg")}
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={function () {
+            navigation.navigate("UserProfileScreen");
+          }}
+        >
+          <Ionicons
+            style={styles.editProfileIcon}
+            name="create-outline"
+            size={25}
           />
-          {/* <Ionicons name="person-circle-outline" size={50} color="#1A3053" /> */}
-          <Text style={styles.userName}>Hi, John</Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -46,33 +42,46 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginVertical: 10,
-  },
-  logoContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 10,
+    gap: 20,
+    marginTop: 45,
   },
 
-  appLogoText: {
-    fontSize: 22,
-    fontWeight: "500",
+  headerContainerRight: {
+    flexDirection: "row",
+    gap: 20,
   },
-  appLogo: {
-    borderRadius: 25,
-    width: 50,
-    height: 50,
-  },
+
   userAvatar: {
-    gap: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row-reverse",
+    height: 80,
+    width: 80,
+    borderRadius: 20,
+  },
+
+  userTitle: {
+    gap: 10,
+    marginTop: 10,
   },
   userName: {
-    fontSize: 18,
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#1A3053",
+  },
+
+  userLocation: {
+    fontSize: 14,
+    color: "#F6821F",
+  },
+  editProfileIcon: {
+    color: "#111",
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#E9E9E9",
+    padding: 10,
   },
 });
 export default HeaderPart;

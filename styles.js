@@ -3,8 +3,7 @@ import { StyleSheet } from "react-native";
 const essentialstyles = StyleSheet.create({
   container: {
     gap: 15,
-    backgroundColor: "#fff",
-    paddingVertical: 30,
+    backgroundColor: "#F0F3F4",
     paddingHorizontal: 15,
     height: "100%",
     marginBottom: 50,
@@ -27,7 +26,7 @@ const essentialstyles = StyleSheet.create({
   },
 
   iconInput: {
-    color: "#111",
+    color: "#ccc",
   },
   inputBar: {
     gap: 10,

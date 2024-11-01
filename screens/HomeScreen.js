@@ -40,58 +40,38 @@ const HomeScreen = () => {
           />
 
           <View style={styles.contentContainerMain}>
-            <View style={styles.contentContainerLeft}>
-              <View style={styles.reportBlock}>
-                <Pressable
-                  onPress={function () {
-                    navigation.navigate("ReportScreen");
-                  }}
-                >
-                  <Ionicons name="warning-outline" size={38} color="#fff" />
-                  <Text style={styles.reportText}>Report</Text>
-                  <Text style={styles.reportDesc}>Report Lost animal</Text>
-                </Pressable>
-              </View>
-              <View style={styles.addpetBlock}>
-                <Pressable
-                  onPress={function () {
-                    navigation.navigate("AddPetScreen");
-                  }}
-                >
-                  <Ionicons
-                    name="add-circle-outline"
-                    size={38}
-                    color="#1A3053"
-                  />
-                  <Text style={styles.addPetText}>Add Pet</Text>
-                  <Text style={styles.addPetDesc}>
-                    Add your pet in Database
-                  </Text>
-                </Pressable>
-              </View>
+            <View style={styles.topItemBlock}>
+              <Pressable
+                style={styles.topItemBlockPress}
+                onPress={function () {
+                  navigation.navigate("ReportScreen");
+                }}
+              >
+                <Ionicons name="alert-circle" size={45} color="#EC6837" />
+                <Text style={styles.reportText}>Report</Text>
+              </Pressable>
             </View>
-            <View style={styles.contentContainerRight}>
-              <View style={styles.donateBlock}>
-                <Pressable>
-                  <View style={styles.donateBlockBottom}>
-                    <Image
-                      style={styles.ImageInBlock}
-                      source={require("../assets/data/images/donate.jpeg")}
-                    />
-                  </View>
-                  <View style={styles.donateBlockTop}>
-                    <Ionicons
-                      name="heart-circle-outline"
-                      size={38}
-                      color="#1A3053"
-                    />
-                    <Text style={styles.donateText}>Donate</Text>
-                    <Text style={styles.donateDesc}>
-                      Donate for homeless animals
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
+            <View style={[styles.topItemBlock, { backgroundColor: "#E6F8FF" }]}>
+              <Pressable
+                style={styles.topItemBlockPress}
+                onPress={function () {
+                  navigation.navigate("ReportScreen");
+                }}
+              >
+                <Ionicons name="heart-circle" size={45} color="#255779" />
+                <Text style={styles.reportText}>Donate</Text>
+              </Pressable>
+            </View>
+            <View style={[styles.topItemBlock, { backgroundColor: "#EEEFFE" }]}>
+              <Pressable
+                style={styles.topItemBlockPress}
+                onPress={function () {
+                  navigation.navigate("ReportScreen");
+                }}
+              >
+                <Ionicons name="compass" size={45} color="#393B62" />
+                <Text style={styles.reportText}>Veterinars</Text>
+              </Pressable>
             </View>
           </View>
           <View style={styles.container50}>
@@ -99,7 +79,7 @@ const HomeScreen = () => {
           </View>
           <PetsButton
             targetScreen={"LostPetsListScreen"}
-            buttonText={"See all lost pets"}
+            buttonText={"See all"}
           />
         </View>
       </ScrollView>
@@ -108,104 +88,36 @@ const HomeScreen = () => {
 };
 const styles = StyleSheet.create({
   contentContainerMain: {
+    height: 80,
     flexDirection: "row",
-    gap: 15,
-  },
-  container50: {
-    width: "100%",
-    flexDirection: "column",
-  },
-  contentContainerLeft: {
-    flexDirection: "column",
-    gap: 15,
-  },
-  addPetButton: {
-    width: "50%",
-    padding: 20,
-    backgroundColor: "#ccc",
-  },
-  reportBlock: {
     padding: 10,
-    paddingHorizontal: 10,
+    borderRadius: 20,
+    backgroundColor: "#fff",
     flex: 1,
-    height: 60,
-    backgroundColor: "#FB9FFD",
-    borderRadius: 10,
+    gap: 10,
   },
-  reportText: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#fff",
+
+  topItemBlock: {
+    backgroundColor: "#FCEFE9",
+    borderRadius: 20,
+    flex: 3,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  reportDesc: {
-    fontSize: 12,
-    color: "#fff",
+
+  topItemBlockPress: {
+    justifyContent: "center",
+    alignItems: "center",
   },
-  addpetBlock: {
-    padding: 10,
-    paddingHorizontal: 10,
-    flex: 1,
-    height: 60,
-    width: "auto",
-    backgroundColor: "#B2EAB8",
-    borderRadius: 10,
-  },
-  addPetText: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#1A3053",
-  },
-  addPetDesc: {
-    fontSize: 12,
-    color: "#1A3053",
-  },
+
   contentContainerRight: {
     gap: 15,
     flex: 1,
-  },
-  donateBlock: {
-    backgroundColor: "#B7EDF5",
-    borderRadius: 10,
-  },
-
-  ImageInBlock: {
-    // marginTop: 22,
-    width: "100%",
-    height: 90,
-    borderRadius: 10,
-    borderColor: "#Fff",
-    borderWidth: 5,
-  },
-
-  donateBlockTop: {
-    padding: 10,
   },
 
   donateBlockBottom: {
     minWidth: "100%",
     justifyContent: "center",
-  },
-
-  donateText: {
-    fontSize: 18,
-    fontWeight: "700",
-    marginBottom: 10,
-    color: "#1A3053",
-  },
-  donateDesc: {
-    fontSize: 12,
-    color: "#1A3053",
-  },
-  volunteersText: {
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 10,
-    color: "#1A3053",
-  },
-
-  volunteersDesc: {
-    fontSize: 12,
-    color: "#1A3053",
   },
 });
 export default HomeScreen;

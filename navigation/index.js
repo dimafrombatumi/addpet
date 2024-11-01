@@ -12,7 +12,6 @@ import SearchResultsScreen from "../screens/SearchResultsScreen";
 import AddPetScreen from "../screens/AddPetScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import EditPetScreen from "../screens/EditPetScreen";
-
 import { Ionicons } from "@expo/vector-icons";
 
 const Navigation = () => {

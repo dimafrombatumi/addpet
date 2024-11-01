@@ -6,6 +6,27 @@ export const useAllPetsStore = create((set) => ({
   allpets: [],
   mypets: [],
 
+  addMyPet: async () => {
+    const { data, error } = await supabase.from("all_pets").insert([
+      {
+        petid: petId,
+        petname: petName,
+        pettype: petType,
+        petsex: petSex,
+        petage: petAge,
+        petlocation: petLocation,
+        owner_phone: petOwnerphone,
+        petimgurl: ImagePath,
+        petcolor: petColor,
+        petweight: petWeight,
+        petbreed: petBreed,
+        petdescription: petDescription,
+        owner_email: ownerEmail,
+      }, // объект с данными, которые нужно вставить
+    ]);
+    set({ mypets: data });
+  },
+
   fetchMyPets: async () => {
     const {
       data: { user },
@@ -54,5 +75,43 @@ export const useAllPetsStore = create((set) => ({
       }));
     }
     return data;
+  },
+
+  reportPet: async (
+    petId,
+    petType,
+    petLocation,
+    petOwnerphone,
+    ImagePath,
+    petDescription,
+    ownerEmail
+  ) => {
+    const { error } = await supabase.from("lost_pets").insert({
+      petid: petId,
+      pettype: petType,
+      petlocation: petLocation,
+      owner_phone: petOwnerphone,
+      petimgurl: ImagePath,
+      petdescription: petDescription,
+      owner_email: ownerEmail,
+    });
+  },
+
+  markAsLost: async (petId) => {
+    const { error } = await supabase
+      .from("all_pets")
+      .update({
+        islost: true,
+      })
+      .eq("petid", petId);
+  },
+
+  markAsFound: async (petId) => {
+    const { error } = await supabase
+      .from("all_pets")
+      .update({
+        islost: false,
+      })
+      .eq("petid", petId);
   },
 }));

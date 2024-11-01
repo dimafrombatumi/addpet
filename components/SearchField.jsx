@@ -10,43 +10,50 @@ const SearchField = ({ searchQuery, setSearchQuery }) => {
     setSearchQuery(text);
   };
   return (
-    <View style={styles.searchBar}>
-      <TextInput
-        onChangeText={handleSetSearchQuery}
-        value={searchQuery}
-        style={styles.searchInput}
-        keyboardType="numeric"
-        placeholder="enter pet microchip ID number"
-      />
-      <Pressable
-        onPress={function () {
-          navigation.navigate("SearchResultsScreen", {
-            searchPhrase: searchQuery,
-          });
-        }}
-      >
-        <Ionicons
-          style={styles.searchIcon}
-          name="search"
-          size={24}
-          color="#1A3053"
+    <View style={styles.searchBarContainer}>
+      <View style={styles.searchBar}>
+        <TextInput
+          onChangeText={handleSetSearchQuery}
+          value={searchQuery}
+          style={styles.searchInput}
+          keyboardType="numeric"
+          placeholder="enter pet microchip ID number"
         />
-      </Pressable>
+        <Pressable
+          onPress={function () {
+            navigation.navigate("SearchResultsScreen", {
+              searchPhrase: searchQuery,
+            });
+          }}
+        >
+          <Ionicons
+            style={styles.searchIcon}
+            name="search"
+            size={24}
+            color="#1A3053"
+          />
+        </Pressable>
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
+  searchBarContainer: {
+    backgroundColor: "#fff",
+    padding: 10,
+    borderRadius: 20,
+  },
   searchBar: {
     gap: 10,
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#FFF",
-    padding: 6,
+    padding: 10,
     paddingLeft: 6,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 10,
+    borderRadius: 15,
   },
   searchInput: {
     flex: 1,

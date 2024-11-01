@@ -31,7 +31,9 @@ const RemoteImage = ({ path, fallback, size }) => {
   if (!image) {
   }
 
-  return (
+  return size === "mikro" ? (
+    <Image style={styles.petImageMk} source={{ uri: image || fallback }} />
+  ) : (
     <Image
       style={[size === "large" ? styles.petImageLg : styles.petImageSm]}
       source={{ uri: image || fallback }}
@@ -40,6 +42,11 @@ const RemoteImage = ({ path, fallback, size }) => {
 };
 
 const styles = StyleSheet.create({
+  petImageMk: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+  },
   petImageSm: {
     minHeight: 140,
     width: "100%",

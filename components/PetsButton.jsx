@@ -13,15 +13,15 @@ const PetsButton = ({ buttonText }) => {
 
       <View style={styles.LostPetsContainer}>
         <Image
-          style={styles.lostImg}
+          style={[styles.lostImg, { borderColor: "#EEEFFE" }]}
           source={require("../assets/data/images/lost1.png")}
         />
         <Image
-          style={styles.lostImg}
+          style={[styles.lostImg, { borderColor: "#fcefe9" }]}
           source={require("../assets/data/images/lost2.png")}
         />
         <Image
-          style={styles.lostImg}
+          style={[styles.lostImg, { borderColor: "#E6F8FF" }]}
           source={require("../assets/data/images/lost3.png")}
         />
         <TouchableOpacity
@@ -38,30 +38,36 @@ const PetsButton = ({ buttonText }) => {
 };
 const styles = StyleSheet.create({
   LostPetsContainer: {
-    flex: 1,
     flexDirection: "row",
-    height: 85,
-    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#B2EAB8",
-    borderRadius: 10,
-    marginBottom: 20,
+    marginVertical: 10,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 10,
+    gap: 5,
+    height: 110,
   },
   lostImg: {
-    height: "100%",
+    borderColor: "#E9E9E9",
+    borderWidth: 4,
+    height: "90%",
     flex: 3,
+    borderRadius: 20,
   },
   seeAllTextBlock: {
     flex: 3,
     height: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     padding: 8,
   },
   seeAllText: {
-    marginLeft: 10,
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: 15,
     color: "#1A3053",
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#E9E9E9",
+    padding: 10,
+    alignSelf: "center",
   },
 });
 export default PetsButton;

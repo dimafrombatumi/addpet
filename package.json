@@ -14,6 +14,7 @@
     "@react-native-firebase/firestore": "^21.0.0",
     "@react-native-firebase/storage": "^21.0.0",
     "@react-native-masked-view/masked-view": "0.3.1",
+    "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
     "@rneui/themed": "^4.0.0-rc.8",
@@ -22,6 +23,7 @@
     "base64-arraybuffer": "^1.0.2",
     "expo": "^51.0.0",
     "expo-clipboard": "~6.0.3",
+    "expo-crypto": "~13.0.2",
     "expo-file-system": "~17.0.1",
     "expo-image-picker": "~15.0.7",
     "expo-modules-core": "~1.12.25",
@@ -34,8 +36,7 @@
     "react-native-safe-area-context": "4.10.5",
     "react-native-screens": "3.31.1",
     "react-native-url-polyfill": "^2.0.0",
-    "zustand": "^5.0.0",
-    "expo-crypto": "~13.0.2"
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"
