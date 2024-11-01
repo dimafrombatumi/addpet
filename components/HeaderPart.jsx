@@ -43,12 +43,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginVertical: 10,
     backgroundColor: "#fff",
     borderRadius: 20,
     padding: 10,
     gap: 20,
-    marginTop: 45,
+    marginTop: 40,
   },
 
   headerContainerRight: {

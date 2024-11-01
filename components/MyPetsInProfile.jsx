@@ -67,7 +67,6 @@ const MyPetsInProfile = ({ mypets }) => {
 
 const styles = StyleSheet.create({
   myPetsBlock: {
-    marginVertical: 15,
     backgroundColor: "#FFF",
     padding: 10,
     borderRadius: 20,
