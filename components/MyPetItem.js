@@ -35,33 +35,6 @@ const MyPetItem = ({ item }) => {
     navigation.navigate("EditPetScreen", { item });
   };
 
-  const handleIsLost = async () => {
-    await markAsLost(petId);
-  };
-
-  const handleIsFound = async () => {
-    await markAsFound(petId);
-  };
-  const confirmDelete = (petId) => {
-    console.log("Confirm delete called for pet ID:", petId);
-    Alert.alert(
-      "Deletion Confirmation",
-      `Are you sure you want to delete pet ${item.petname}? This action cannot be undone.`,
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: () => handleDeletePet(petId),
-          style: "destructive",
-        },
-      ],
-      { cancelable: true }
-    );
-  };
-
   const confirmEdit = (petId) => {
     console.log("Confirm edit called for pet ID:", petId);
     Alert.alert(
@@ -75,46 +48,6 @@ const MyPetItem = ({ item }) => {
         {
           text: "Edit",
           onPress: () => handleEditPet(item),
-          style: "destructive",
-        },
-      ],
-      { cancelable: true }
-    );
-  };
-
-  const confirmIsLost = (petId) => {
-    console.log("Confirm Is Lost called for pet ID:", petId);
-    Alert.alert(
-      "Is Lost Confirmation",
-      `Are you sure you want to mark pet ${item.petname} as lost?`,
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-          onPress: () => handleIsLost(petId),
-          style: "destructive",
-        },
-      ],
-      { cancelable: true }
-    );
-  };
-
-  const confirmIsFound = (petId) => {
-    console.log("Confirm Is Lost called for pet ID:", petId);
-    Alert.alert(
-      "Your pet is found Confirmation",
-      `Are you sure you want to mark pet ${item.petname} as found?`,
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-          onPress: () => handleIsFound(petId),
           style: "destructive",
         },
       ],

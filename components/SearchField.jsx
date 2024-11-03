@@ -1,7 +1,8 @@
 import React from "react";
-import { View, TextInput, Pressable, StyleSheet } from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import essentialstyles from "../styles";
 
 const SearchField = ({ searchQuery, setSearchQuery }) => {
   const navigation = useNavigation();
@@ -11,6 +12,8 @@ const SearchField = ({ searchQuery, setSearchQuery }) => {
   };
   return (
     <View style={styles.searchBarContainer}>
+      <Text style={essentialstyles.h2}>Search by ID</Text>
+
       <View style={styles.searchBar}>
         <TextInput
           onChangeText={handleSetSearchQuery}

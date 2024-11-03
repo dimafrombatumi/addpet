@@ -38,7 +38,7 @@ const essentialstyles = StyleSheet.create({
     paddingLeft: 6,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
+    borderRadius: 15,
   },
   input: {
     flex: 1,
@@ -53,7 +53,7 @@ const essentialstyles = StyleSheet.create({
     padding: 10,
     flexDirection: "row-reverse",
     backgroundColor: "#E8EBF1",
-    borderRadius: 10,
+    borderRadius: 20,
     borderColor: "1.5px solid rgba(80, 134, 231, 0.5)",
     borderWidth: 3,
   },

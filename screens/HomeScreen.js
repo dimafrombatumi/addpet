@@ -6,7 +6,6 @@ import {
   Pressable,
   ScrollView,
   SafeAreaView,
-  Image,
 } from "react-native";
 
 import HeaderPart from "../components/HeaderPart";
@@ -14,6 +13,7 @@ import SearchField from "../components/SearchField";
 import MyPetsInProfile from "../components/MyPetsInProfile";
 import PetsButton from "../components/PetsButton";
 
+import { COLORS, SPACING, RADIUS } from "../constants/constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import essentialstyles from "../styles";
@@ -47,30 +47,40 @@ const HomeScreen = () => {
                   navigation.navigate("ReportScreen");
                 }}
               >
-                <Ionicons name="alert-circle" size={45} color="#EC6837" />
+                <Ionicons name="alert-circle" size={45} color={COLORS.roze} />
                 <Text style={styles.reportText}>Report</Text>
               </Pressable>
             </View>
-            <View style={[styles.topItemBlock, { backgroundColor: "#E6F8FF" }]}>
+            <View
+              style={[
+                styles.topItemBlock,
+                { backgroundColor: COLORS.ligth_blue },
+              ]}
+            >
               <Pressable
                 style={styles.topItemBlockPress}
                 onPress={function () {
                   navigation.navigate("ReportScreen");
                 }}
               >
-                <Ionicons name="heart-circle" size={45} color="#255779" />
+                <Ionicons name="heart-circle" size={45} color={COLORS.blue} />
                 <Text style={styles.reportText}>Donate</Text>
               </Pressable>
             </View>
-            <View style={[styles.topItemBlock, { backgroundColor: "#EEEFFE" }]}>
+            <View
+              style={[
+                styles.topItemBlock,
+                { backgroundColor: COLORS.ligth_violet },
+              ]}
+            >
               <Pressable
                 style={styles.topItemBlockPress}
                 onPress={function () {
                   navigation.navigate("ReportScreen");
                 }}
               >
-                <Ionicons name="compass" size={45} color="#393B62" />
-                <Text style={styles.reportText}>Veterinars</Text>
+                <Ionicons name="compass" size={45} color={COLORS.violet} />
+                <Text style={styles.reportText}>Vet Clinics</Text>
               </Pressable>
             </View>
           </View>
@@ -90,16 +100,16 @@ const styles = StyleSheet.create({
   contentContainerMain: {
     height: 80,
     flexDirection: "row",
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#fff",
+    padding: SPACING.sm,
+    borderRadius: RADIUS.default,
+    backgroundColor: COLORS.white,
     flex: 1,
     gap: 10,
   },
 
   topItemBlock: {
-    backgroundColor: "#FCEFE9",
-    borderRadius: 20,
+    backgroundColor: COLORS.ligth_roze,
+    borderRadius: RADIUS.default,
     flex: 3,
     justifyContent: "center",
     alignItems: "center",

@@ -31,8 +31,10 @@ const LostPetsListScreen = () => {
       <ScrollView>
         <View style={essentialstyles.container}>
           <HeaderPart userName={user.displayName} />
-          <View style={styles.filterContainer}>
-            <TouchableOpacity onPress={() => setPetsTypeToFilter("CAT")}>
+          {/* <TouchableOpacity
+              style={styles.filterCategoryTouch}
+              onPress={() => setPetsTypeToFilter("CAT")}
+            >
               <Text
                 style={[
                   styles.filterCategory,
@@ -45,7 +47,10 @@ const LostPetsListScreen = () => {
                 🐈‍⬛ Cats
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setPetsTypeToFilter("DOG")}>
+            <TouchableOpacity
+              style={styles.filterCategoryTouch}
+              onPress={() => setPetsTypeToFilter("DOG")}
+            >
               <Text
                 style={[
                   styles.filterCategory,
@@ -58,7 +63,10 @@ const LostPetsListScreen = () => {
                 🐕 Dogs
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setPetsTypeToFilter("")}>
+            <TouchableOpacity
+              style={styles.filterCategoryTouch}
+              onPress={() => setPetsTypeToFilter("")}
+            >
               <Text
                 style={[
                   styles.filterCategory,
@@ -70,6 +78,25 @@ const LostPetsListScreen = () => {
               >
                 🐈‍⬛ + 🐕 All pets
               </Text>
+            </TouchableOpacity> */}
+          <View style={styles.filterContainer}>
+            <TouchableOpacity
+              style={[styles.topItemBlock, { backgroundColor: "#FCEFE9" }]}
+              onPress={() => setPetsTypeToFilter("CAT")}
+            >
+              <Text>CAT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.topItemBlock, { backgroundColor: "#E6F8FF" }]}
+              onPress={() => setPetsTypeToFilter("DOG")}
+            >
+              <Text>DOG</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.topItemBlock, { backgroundColor: "#EEEFFE" }]}
+              onPress={() => setPetsTypeToFilter("")}
+            >
+              <Text>CAT & DOG</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.listContainer}>
@@ -83,13 +110,6 @@ const LostPetsListScreen = () => {
               columnWrapperStyle={{ gap: 10 }}
               contentContainerStyle={{ gap: 10 }}
               scrollEnabled={false}
-            />
-          </View>
-          <View style={styles.allLostBtn}>
-            <PetsButton
-              petsData={filteredPets}
-              targetScreen={"LostPetsListScreen"}
-              buttonText={"See all lost pets"}
             />
           </View>
         </View>
@@ -126,25 +146,22 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     padding: 5,
   },
-  petId: {
-    color: "#111",
-    fontSize: 18,
-    fontWeight: "700",
-  },
+
   filterContainer: {
     backgroundColor: "#fff",
+    height: 90,
     flexDirection: "row",
-    gap: 8,
-    marginTop: 20,
-    marginBottom: 15,
+    gap: 20,
+    borderRadius: 20,
+    padding: 20,
   },
-  filterCategory: {
-    fontSize: 18,
-    padding: 5,
-    borderWidth: 2,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    alignSelf: "center",
+
+  topItemBlock: {
+    borderRadius: 20,
+    flex: 3,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
   },
 });
 

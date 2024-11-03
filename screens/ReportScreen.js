@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     fontWeight: "700",
     height: 48,
-    borderRadius: 10,
+    borderRadius: 15,
     borderWidth: 1,
     borderColor: "#C9E9D2",
     justifyContent: "center",

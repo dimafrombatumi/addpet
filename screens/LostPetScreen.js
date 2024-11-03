@@ -10,23 +10,24 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import React, { useContext } from "react";
-import UserContext from "../context/UserContext";
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 
-import HeaderPart from "../components/HeaderPart";
-import PetsButton from "../components/PetsButton";
 import RemoteImage from "../components/RemoteImage";
 
 import essentialstyles from "../styles";
+import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const LostPetScreen = ({ route }) => {
   const [copiedText, setCopiedText] = React.useState("");
   const { item } = route.params;
-  const user = useContext(UserContext);
+  const petId = item.petid;
+
+  const deletePet = useAllPetsStore((state) => state.deletePet);
+  const markAsLost = useAllPetsStore((state) => state.markAsLost);
+  const markAsFound = useAllPetsStore((state) => state.markAsFound);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(item.petid);
@@ -51,210 +52,381 @@ const LostPetScreen = ({ route }) => {
       Alert.alert("There was an error when trying to open a phone number");
     }
   };
+
+  const handleDeletePet = async (petId) => {
+    await deletePet(petId);
+  };
+
+  const handleIsLost = async () => {
+    await markAsLost(petId);
+    navigation.navigate("LostPetsListScreen");
+  };
+
+  const handleIsFound = async () => {
+    await markAsFound(petId);
+    navigation.navigate("UserProfileScreen");
+  };
+  const confirmDelete = (petId) => {
+    console.log("Confirm delete called for pet ID:", petId);
+    Alert.alert(
+      "Deletion Confirmation",
+      `Are you sure you want to delete pet ${item.petname}? This action cannot be undone.`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => handleDeletePet(petId),
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const confirmIsLost = (petId) => {
+    console.log("Confirm Is Lost called for pet ID:", petId);
+    Alert.alert(
+      "Is Lost Confirmation",
+      `Are you sure you want to mark pet ${item.petname} as lost?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => handleIsLost(petId),
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const confirmIsFound = (petId) => {
+    console.log("Confirm Is Lost called for pet ID:", petId);
+    Alert.alert(
+      "Your pet is found Confirmation",
+      `Are you sure you want to mark pet ${item.petname} as found?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => handleIsFound(petId),
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
   const navigation = useNavigation();
   return (
     <SafeAreaView>
-      <ScrollView>
-        <View style={essentialstyles.container}>
-          <HeaderPart userName={user.displayName} />
-
-          <View style={styles.imageContainer}>
-            <RemoteImage
-              path={item.petimgurl}
-              fallback={
-                "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
-              }
-              size={"large"}
-            />
-          </View>
-          <View style={styles.contentContainer}>
-            <View style={styles.titleBlock}>
-              <Text style={styles.petName}>{item.petname}</Text>
-              <View style={styles.petOptions}>
-                <Text>
-                  {item.pettype} - {item.petbreed}
-                </Text>
-                <Text>{item.petage} y</Text>
-
-                {item.petsex == "Male" ? (
-                  <>
-                    <Ionicons name="male" size={18} color="black" />
-                    <Text>Male</Text>
-                  </>
-                ) : (
-                  <>
-                    <Text>Female</Text>
-
-                    <Ionicons name="female-sharp" size={18} color="black" />
-                  </>
-                )}
-              </View>
-              <Text style={styles.petLocation}>
-                <Ionicons name="location-outline" size={18} color="red" />
-                {item.petlocation}
-              </Text>
-            </View>
-            <View style={styles.petIdBlockWrapper}>
-              <View style={styles.petIdBlock}>
-                <Ionicons name="qr-code-outline" size={24} color="#1A3053" />
-                <Text style={styles.petIdText}> {item.petid}</Text>
-              </View>
-              <TouchableOpacity onPress={copyToClipboard}>
-                <Ionicons name="copy-outline" size={40} color="#1A3053" />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text style={essentialstyles.h2}>Call pet owner now</Text>
-              <TouchableOpacity
-                style={styles.petOwnerBlock}
-                onPress={callPhone}
-              >
-                <Ionicons
-                  name="phone-portrait-outline"
-                  size={32}
-                  color="#1A3053"
+      <View style={essentialstyles.container}>
+        <View style={styles.petInfoContainer}>
+          <View style={styles.petInfoContainerTop}>
+            <View style={styles.petInfoContainerLeft}>
+              <View style={styles.imageContainer}>
+                <RemoteImage
+                  path={item.petimgurl}
+                  fallback={
+                    "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
+                  }
+                  size={"large"}
                 />
-                <Text style={styles.petIdText}>{item.owner_phone}</Text>
-              </TouchableOpacity>
+              </View>
+              <View style={styles.petTitle}>
+                <Text style={styles.petName}>{item.petname}</Text>
+                <Text style={styles.petBreed}>{item.petbreed}</Text>
+              </View>
             </View>
-            <Text style={styles.petDescription}>
-              Pet Description: {item.petdescription}
-            </Text>
-
-            <PetsButton
-              petsData={item}
-              targetScreen={"ReportScreen"}
-              buttonText={"Report About Pet"}
-            />
+            <TouchableOpacity
+              onPress={function () {
+                navigation.navigate("EditPetScreen");
+              }}
+            >
+              <Ionicons
+                style={styles.editProfileIcon}
+                name="create-outline"
+                size={25}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.petOptionsContainer}>
+            <View style={styles.topItemBlock}>
+              <Text style={styles.optionTitle}>Gender</Text>
+              <Text style={styles.optionText}>{item.petsex}</Text>
+            </View>
+            <View style={[styles.topItemBlock, { backgroundColor: "#E6F8FF" }]}>
+              <Text style={styles.optionTitle}>Age</Text>
+              <Text style={styles.optionText}>{item.petage}</Text>
+            </View>
+            <View style={[styles.topItemBlock, { backgroundColor: "#EEEFFE" }]}>
+              <Text style={styles.optionTitle}>Weigth</Text>
+              <Text style={styles.optionText}>{item.petweight}</Text>
+            </View>
           </View>
         </View>
-      </ScrollView>
+        <View style={styles.petTasksContainer}>
+          <View style={styles.petTasksContainerTitle}>
+            <Text style={essentialstyles.h2}>Tasks for {item.petname}</Text>
+            <TouchableOpacity
+              onPress={function () {
+                navigation.navigate("AddPetScreen");
+              }}
+            >
+              <Ionicons
+                style={styles.addPetIcon}
+                name="add-outline"
+                size={25}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.petTasks}>
+            <TouchableOpacity
+              onPress={function () {
+                navigation.navigate("");
+              }}
+            >
+              <View style={styles.petTasksItem}>
+                <View style={styles.petTasksItemLeft}>
+                  <Ionicons
+                    name="checkmark-circle-outline"
+                    size={30}
+                    color="#8fcfaa"
+                    style={styles.checkmarks}
+                  />
+                  <View style={styles.petTasksItemDescription}>
+                    <Text style={styles.petTaskTitle}>
+                      Vaccination for Mike
+                    </Text>
+                    <Text style={styles.petTaskDesc}>Vaccination for Mike</Text>
+                  </View>
+                </View>
+                <Text>18 Aprl 2025</Text>
+              </View>
+            </TouchableOpacity>
+            <View style={styles.petTasksItem}>
+              <View style={styles.petTasksItemLeft}>
+                <Ionicons
+                  name="checkmark-circle-outline"
+                  size={30}
+                  color="#8fcfaa"
+                  style={styles.checkmarks}
+                />
+                <View style={styles.petTasksItemDescription}>
+                  <Text style={styles.petTaskTitle}>Vaccination for Mike</Text>
+                  <Text style={styles.petTaskDesc}>Vaccination for Mike</Text>
+                </View>
+              </View>
+              <Text>18 Aprl 2025</Text>
+            </View>
+            <View style={styles.petTasksItem}>
+              <View style={styles.petTasksItemLeft}>
+                <Ionicons
+                  name="checkmark-circle-outline"
+                  size={30}
+                  color="#8fcfaa"
+                  style={styles.checkmarks}
+                />
+                <View style={styles.petTasksItemDescription}>
+                  <Text style={styles.petTaskTitle}>Vaccination for Mike</Text>
+                  <Text style={styles.petTaskDesc}>Vaccination for Mike</Text>
+                </View>
+              </View>
+              <Text>18 Aprl 2025</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity
+            onPress={() => confirmDelete(petId)}
+            style={styles.bottomBtnBlock}
+          >
+            <View style={styles.bottomBtn}>
+              <Ionicons name="trash" size={30} color="#EC6837" />
+              <Text style={styles.optionTitle}>Delete pet</Text>
+            </View>
+          </TouchableOpacity>
+          {item.islost === false ? (
+            <TouchableOpacity
+              onPress={() => confirmIsLost(petId)}
+              style={styles.bottomBtnBlock}
+            >
+              <View style={[styles.bottomBtn, { backgroundColor: "#E6F8FF" }]}>
+                <Ionicons name="alert-circle" size={30} color="#EC6837" />
+                <Text style={styles.optionTitle}>I lost pet</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => confirmIsFound(petId)}
+              style={styles.bottomBtnBlock}
+            >
+              <View style={[styles.bottomBtn, { backgroundColor: "#E8FCC1" }]}>
+                <Ionicons name="happy" size={30} color="#EC6837" />
+                <Text style={styles.optionTitle}>I found pet</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   imageContainer: {
-    height: 360,
+    height: 110,
+    width: 110,
     justifyContent: "center",
     alignItems: "center",
   },
-
+  petInfoContainerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   petImage: {
     height: "100%",
     width: "100%",
-    borderRadius: 10,
+    borderRadius: 20,
+  },
+  petInfoContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    marginVertical: 10,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 10,
+    gap: 5,
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    maxHeight: 80,
+    flex: 1,
+    marginVertical: 10,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 10,
+    gap: 5,
+  },
+  petTasksContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
   },
 
+  petInfoContainerLeft: {
+    flexDirection: "row",
+    gap: 25,
+  },
   contentContainer: {
     paddingHorizontal: 15,
     gap: 15,
   },
-  titleBlock: {
-    height: 100,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  petOptions: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
+  petTitle: {
+    paddingVertical: 20,
     gap: 10,
   },
+
+  optionTitle: {
+    fontSize: 14,
+  },
+  optionText: {
+    fontSize: 24,
+  },
+  editProfileIcon: {
+    color: "#111",
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#E9E9E9",
+    padding: 10,
+  },
+  petOptionsContainer: {
+    height: 90,
+    flexDirection: "row",
+    marginVertical: 20,
+    gap: 10,
+  },
+
   petName: {
-    fontSize: 26,
-    marginBottom: 10,
+    fontSize: 28,
     color: "#1A3053",
   },
   petBreed: {
+    color: "#1A3053",
+    fontSize: 16,
+  },
+  topItemBlock: {
+    height: "100%",
+    backgroundColor: "#FCEFE9",
+    borderRadius: 20,
     flex: 3,
-    color: "#1A3053",
-    fontSize: 16,
-    padding: 10,
-    borderRadius: 10,
-  },
-  petAge: {
-    flex: 1,
-    fontSize: 16,
-    padding: 10,
-    color: "#1A3053",
-    borderRadius: 10,
-  },
-  petLocation: {
-    fontSize: 16,
-    color: "#1A3053",
-    marginTop: 10,
-    borderRadius: 10,
-  },
-  petSex: {
-    flex: 1,
-    color: "#1A3053",
-    padding: 10,
-    borderRadius: 10,
-  },
-  petIdBlockWrapper: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-    marginBottom: 20,
-  },
-  petIdBlock: {
-    flex: 2,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    backgroundColor: "#F8F5FF2",
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    height: 60,
-  },
-  petOwnerBlock: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-    backgroundColor: "#F8F5FF2",
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    height: 60,
-  },
-  petIdText: {
-    fontSize: 18,
-    color: "#1A3053",
-  },
-  petDescription: {
-    fontSize: 18,
-    marginTop: 20,
-    marginBottom: 20,
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 5,
-    borderColor: "#F8F5FF",
-    color: "#111",
-    height: 100,
-  },
-  pressMeBtn: {
-    height: 60,
     justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#E8EBF1",
-    borderRadius: 10,
-    borderColor: "1.5px solid rgba(80, 134, 231, 0.5)",
-    borderWidth: 3,
-    flexDirection: "row-reverse",
-  },
-  pressMeText: {
-    color: "#01222A",
+    alignItems: "flex-start",
+    gap: 5,
+    padding: 15,
   },
 
-  BottomButton: {
-    paddingBottom: 30,
+  bottomBtn: {
+    height: "100%",
+    flexDirection: "row",
+    backgroundColor: "#FCEFE9",
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 5,
+    padding: 15,
+  },
+
+  bottomBtnBlock: {
+    flex: 2,
+  },
+  petTasksContainerTitle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+
+    marginBottom: 15,
+  },
+
+  petTasks: {
+    gap: 25,
+  },
+
+  petTasksItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  petTasksItemLeft: {
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  petTaskTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 5,
+  },
+
+  petTaskDesc: {
+    fontSize: 15,
+  },
+
+  addPetIcon: {
+    padding: 8,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#E9E9E9",
   },
 });
 export default LostPetScreen;

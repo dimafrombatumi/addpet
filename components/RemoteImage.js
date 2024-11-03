@@ -50,12 +50,12 @@ const styles = StyleSheet.create({
   petImageSm: {
     minHeight: 140,
     width: "100%",
-    borderRadius: 10,
+    borderRadius: 20,
   },
   petImageLg: {
     height: "100%",
     width: "100%",
-    borderRadius: 10,
+    borderRadius: 20,
   },
 });
 export default RemoteImage;
