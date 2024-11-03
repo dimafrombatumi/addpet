@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -25,7 +25,7 @@ import * as FileSystem from "expo-file-system";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
 
-const ReportScreen = () => {
+const ReportScreen = ({ route }) => {
   const [petId, setPetId] = useState("");
   const [petType, setPetType] = useState("");
   const [petSex, setPetSex] = useState("");
@@ -38,7 +38,6 @@ const ReportScreen = () => {
 
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -51,7 +50,15 @@ const ReportScreen = () => {
       setImage(result.assets[0].uri);
     }
   };
+  const lostpet = route.params?.lostpet.toString();
 
+  useEffect(() => {
+    if (lostpet) {
+      setPetId(lostpet);
+      console.log("PET IDDD", lostpet);
+      // Устанавливаем petId, если параметр передан
+    }
+  }, []);
   const uploadImage = async () => {
     if (!image?.startsWith("file://")) {
       return;
@@ -104,7 +111,6 @@ const ReportScreen = () => {
       <ScrollView>
         <View style={essentialstyles.container}>
           <HeaderPart userName="USER" />
-
           <View style={styles.imageContainer}>
             {image && (
               <Pressable onPress={() => pickImage(setImage, setLoading)}>
@@ -155,6 +161,7 @@ const ReportScreen = () => {
                 </Pressable>
               </View>
             </View>
+
             <View style={essentialstyles.inputBar}>
               <Ionicons
                 style={essentialstyles.iconInput}
@@ -165,7 +172,7 @@ const ReportScreen = () => {
                 onChangeText={setPetId}
                 value={petId}
                 style={essentialstyles.input}
-                placeholder="Enter pet microchip number"
+                placeholder="Pet id"
                 keyboardType="default"
               />
             </View>

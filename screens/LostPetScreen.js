@@ -10,12 +10,14 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 
 import RemoteImage from "../components/RemoteImage";
+
+import { COLORS, FONT_SIZES, RADIUS, PETTYPE } from "../constants/constants";
 
 import essentialstyles from "../styles";
 import { useAllPetsStore } from "../stores/AllPetsStore";
@@ -146,17 +148,6 @@ const LostPetScreen = ({ route }) => {
                 <Text style={styles.petBreed}>{item.petbreed}</Text>
               </View>
             </View>
-            <TouchableOpacity
-              onPress={function () {
-                navigation.navigate("EditPetScreen");
-              }}
-            >
-              <Ionicons
-                style={styles.editProfileIcon}
-                name="create-outline"
-                size={25}
-              />
-            </TouchableOpacity>
           </View>
           <View style={styles.petOptionsContainer}>
             <View style={styles.topItemBlock}>
@@ -173,38 +164,47 @@ const LostPetScreen = ({ route }) => {
             </View>
           </View>
         </View>
-        <View style={styles.detailsContainer}></View>
+        <View style={styles.detailsContainer}>
+          <View style={styles.detailsItem}>
+            <Text style={styles.detailsItemLabel}>Microchip number:</Text>
+            <Text>{item.petid}</Text>
+          </View>
+          <View style={styles.detailsItem}>
+            <Text style={styles.detailsItemLabel}>Owner phone:</Text>
+            <Text>{item.owner_phone}</Text>
+          </View>
+          <View style={styles.detailsItem}>
+            <Text style={styles.detailsItemLabel}>Location:</Text>
+            <Text>{item.petlocation}</Text>
+          </View>
+          <View style={styles.detailsItem}>
+            <Text style={styles.detailsItemLabel}>Color:</Text>
+            <Text>{item.petcolor}</Text>
+          </View>
+          <View style={styles.detailsItemDesc}>
+            <Text style={styles.detailsItemLabel}>Description:</Text>
+            <Text>{item.petdescription}</Text>
+          </View>
+        </View>
         <View style={styles.actionsContainer}>
           <TouchableOpacity
-            onPress={() => confirmDelete(petId)}
+            onPress={() =>
+              navigation.navigate("ReportScreen", { lostpet: item.petid })
+            }
             style={styles.bottomBtnBlock}
           >
-            <View style={styles.bottomBtn}>
-              <Ionicons name="trash" size={30} color="#EC6837" />
-              <Text style={styles.optionTitle}>Delete pet</Text>
+            <View
+              style={[
+                styles.bottomBtn,
+                { backgroundColor: COLORS.ligth_green },
+              ]}
+            >
+              <Ionicons name="happy" size={30} color={COLORS.roze} />
+              <Text style={styles.optionTitle}>
+                I found this {item.pettype.toLowerCase()}
+              </Text>
             </View>
           </TouchableOpacity>
-          {item.islost === false ? (
-            <TouchableOpacity
-              onPress={() => confirmIsLost(petId)}
-              style={styles.bottomBtnBlock}
-            >
-              <View style={[styles.bottomBtn, { backgroundColor: "#E6F8FF" }]}>
-                <Ionicons name="alert-circle" size={30} color="#EC6837" />
-                <Text style={styles.optionTitle}>I lost pet</Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => confirmIsFound(petId)}
-              style={styles.bottomBtnBlock}
-            >
-              <View style={[styles.bottomBtn, { backgroundColor: "#E8FCC1" }]}>
-                <Ionicons name="happy" size={30} color="#EC6837" />
-                <Text style={styles.optionTitle}>I found pet</Text>
-              </View>
-            </TouchableOpacity>
-          )}
         </View>
       </View>
     </SafeAreaView>
@@ -213,8 +213,8 @@ const LostPetScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    height: 110,
-    width: 110,
+    height: 190,
+    width: 190,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -241,18 +241,33 @@ const styles = StyleSheet.create({
     maxHeight: 80,
     flex: 1,
     marginVertical: 10,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.white,
     borderRadius: 20,
     padding: 10,
     gap: 5,
   },
   detailsContainer: {
+    gap: 10,
     flexDirection: "column",
     justifyContent: "space-between",
     backgroundColor: "#fff",
-    borderRadius: 20,
+    borderRadius: RADIUS.default,
     paddingHorizontal: 15,
     paddingVertical: 20,
+  },
+
+  detailsItem: {
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  detailsItemLabel: {
+    color: COLORS.grey,
+    fontSize: FONT_SIZES.small,
+  },
+
+  detailsItemDesc: {
+    gap: 10,
   },
 
   petInfoContainerLeft: {
@@ -326,37 +341,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
 
     marginBottom: 15,
-  },
-
-  petTasks: {
-    gap: 25,
-  },
-
-  petTasksItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  petTasksItemLeft: {
-    flexDirection: "row",
-    gap: 10,
-  },
-
-  petTaskTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 5,
-  },
-
-  petTaskDesc: {
-    fontSize: 15,
-  },
-
-  addPetIcon: {
-    padding: 8,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: "#E9E9E9",
   },
 });
 export default LostPetScreen;

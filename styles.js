@@ -44,6 +44,7 @@ const essentialstyles = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     height: 30,
+    color: "#111",
   },
 
   pressMeBtn: {
