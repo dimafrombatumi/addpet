@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import {
   View,
@@ -10,26 +10,13 @@ import {
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
+import { COLORS, FONT_SIZES, RADIUS, PETTYPE } from "../constants/constants";
 
-import { Ionicons } from "@expo/vector-icons";
 import RemoteImage from "./RemoteImage";
-
-import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const MyPetItem = ({ item }) => {
   const petId = item.petid;
-
-  const deletePet = useAllPetsStore((state) => state.deletePet);
-  const markAsLost = useAllPetsStore((state) => state.markAsLost);
-  const markAsFound = useAllPetsStore((state) => state.markAsFound);
-
   const navigation = useNavigation();
-
-  const [lost, setLost] = useState(false);
-
-  const handleDeletePet = async (petId) => {
-    await deletePet(petId);
-  };
 
   const handleEditPet = (item) => {
     navigation.navigate("EditPetScreen", { item });
@@ -59,11 +46,13 @@ const MyPetItem = ({ item }) => {
     <Pressable
       style={[
         styles.lostPetItem,
-        { backgroundColor: item.pettype === "Cat" ? "#E8FCC1" : "#FECEB0" },
+        {
+          backgroundColor: item.pettype === PETTYPE.cat ? "#E8FCC1" : "#FECEB0",
+        },
       ]}
       keyExtractor={(item) => item.petid}
       onPress={() => {
-        navigation.navigate("LostPetScreen", { item });
+        navigation.navigate("MyPetScreen", { item });
       }}
     >
       <View style={styles.itemContainer}>
@@ -80,49 +69,7 @@ const MyPetItem = ({ item }) => {
         <View style={styles.petOptions}>
           <Text style={styles.petName}>{item.petname}</Text>
 
-          <View style={styles.petOptionsBlock}>
-            {/* <TouchableOpacity
-              onPress={() => confirmDelete(petId)}
-              style={styles.deleteIconBlock}
-            >
-              <Ionicons
-                style={styles.deleteIcon}
-                name="trash-outline"
-                size={24}
-                color="#F37F3B"
-              />
-            </TouchableOpacity> */}
-
-            {/* {item.islost === false ? (
-              <TouchableOpacity
-                onPress={() => confirmIsLost(petId)}
-                style={styles.isLostIconBlock}
-              >
-                <Ionicons
-                  style={[
-                    styles.isLostIcon,
-                    {
-                      color: lost === false ? "#F37F3B" : "#88C273",
-                    },
-                  ]}
-                  name="alert-circle"
-                  size={24}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => confirmIsFound(petId)}
-                style={styles.isFoundIconBlock}
-              >
-                <Ionicons
-                  style={styles.isFound}
-                  name="checkmark-done-circle"
-                  size={24}
-                  color="#88C273"
-                />
-              </TouchableOpacity>
-            )} */}
-          </View>
+          <View style={styles.petOptionsBlock}></View>
           <TouchableOpacity
             onPress={() => confirmEdit(petId)}
             style={styles.editIconBlock}
@@ -130,7 +77,12 @@ const MyPetItem = ({ item }) => {
             <View
               style={[
                 styles.editPetButton,
-                { borderColor: item.pettype === "Cat" ? "#c8e098" : "#C7813C" },
+                {
+                  borderColor:
+                    item.pettype === PETTYPE.cat
+                      ? COLORS.border_green
+                      : COLORS.border_brown,
+                },
               ]}
             >
               <Text>Edit pet</Text>
@@ -143,12 +95,10 @@ const MyPetItem = ({ item }) => {
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {},
-
   lostPetItem: {
     width: "49%",
-    backgroundColor: "#E8FCC1",
-    borderRadius: 20,
+    backgroundColor: COLORS.ligth_green,
+    borderRadius: RADIUS.default,
     padding: 10,
   },
 
@@ -166,18 +116,16 @@ const styles = StyleSheet.create({
   },
 
   petName: {
-    color: "#111",
-    fontSize: 18,
+    color: COLORS.black,
+    fontSize: FONT_SIZES.large,
     fontWeight: "700",
   },
-  deleteIconBlock: {
-    alignItems: "flex-start",
-  },
+
   editPetButton: {
     padding: 10,
-    borderRadius: 20,
+    borderRadius: RADIUS.default,
     borderWidth: 1,
-    borderColor: "#9ec157",
+    borderColor: COLORS.border_green,
     alignItems: "center",
     marginTop: 20,
   },

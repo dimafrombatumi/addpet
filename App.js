@@ -22,7 +22,6 @@ export default function App() {
       } = await supabase.auth.getSession();
 
       setSession(session);
-      console.log(session.user.id);
       setLoading(false);
     };
 

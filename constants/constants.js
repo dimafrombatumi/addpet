@@ -10,6 +10,7 @@ export const COLORS = {
   background: "#F0F3F4",
   white: "#FFFFFF",
   black: "#1A3053",
+  light_grey: "#E9E9E9",
   green: "#10B981",
   border_green: "#C8E098",
   border_brown: "#C7813C",
@@ -17,10 +18,10 @@ export const COLORS = {
 
 // Шрифты и размеры текста
 export const FONT_SIZES = {
-  small: 12,
-  medium: 16,
-  large: 20,
-  extraLarge: 24,
+  small: 14,
+  medium: 18,
+  large: 22,
+  extraLarge: 26,
 };
 
 export const FONTS = {
@@ -51,6 +52,11 @@ export const SCREENS = {
   profile: "User Profile Screen",
 };
 
+export const PETTYPE = {
+  cat: "Cat",
+  dog: "Dog",
+};
+
 export default {
   COLORS,
   FONT_SIZES,
@@ -58,4 +64,5 @@ export default {
   SPACING,
   RADIUS,
   SCREENS,
+  PETTYPE,
 };
