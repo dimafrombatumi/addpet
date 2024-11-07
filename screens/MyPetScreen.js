@@ -25,21 +25,22 @@ import { COLORS, SPACING, FONT_SIZES, RADIUS } from "../constants/constants";
 const MyPetScreen = ({ route }) => {
   const [copiedText, setCopiedText] = React.useState("");
   const { item } = route.params;
-  const petId = item.petid;
+  const petId = item.petid.toString();
 
   const deletePet = useAllPetsStore((state) => state.deletePet);
   const markAsLost = useAllPetsStore((state) => state.markAsLost);
   const markAsFound = useAllPetsStore((state) => state.markAsFound);
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(item.petid);
-    Alert.alert("Copied id " + item.petid);
+    await Clipboard.setStringAsync(petId);
+    Alert.alert("Copied id " + petId);
   };
 
   const fetchCopiedText = async () => {
     const text = await Clipboard.getStringAsync();
     setCopiedText(text);
   };
+
   const callPhone = async () => {
     const phoneNumber = `tel:${item.owner_phone}`;
     try {
@@ -127,7 +128,9 @@ const MyPetScreen = ({ route }) => {
       { cancelable: true }
     );
   };
+
   const navigation = useNavigation();
+
   return (
     <SafeAreaView>
       <View style={essentialstyles.container}>
@@ -172,7 +175,7 @@ const MyPetScreen = ({ route }) => {
               ]}
             >
               <Text style={styles.optionTitle}>Age</Text>
-              <Text style={styles.optionText}>{item.petage}</Text>
+              <Text style={styles.optionText}>{item.petage} years</Text>
             </View>
             <View
               style={[
@@ -181,31 +184,40 @@ const MyPetScreen = ({ route }) => {
               ]}
             >
               <Text style={styles.optionTitle}>Weigth</Text>
-              <Text style={styles.optionText}>{item.petweight}</Text>
+              <Text style={styles.optionText}>{item.petweight} kg</Text>
+            </View>
+          </View>
+          <View style={styles.petidBlock}>
+            <Text style={styles.optionTitle}>Pet microchip ID:</Text>
+            <View style={styles.petidBlockInner}>
+              <Text style={styles.petidText}>{item.petid}</Text>
+
+              <TouchableOpacity onPress={copyToClipboard}>
+                <Text style={styles.copyLabel}>COPY</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
         <View style={styles.petTasksContainer}>
           <View style={styles.petTasksContainerTitle}>
             <Text style={essentialstyles.h2}>Tasks for {item.petname}</Text>
-            <TouchableOpacity
-              onPress={function () {
-                navigation.navigate("AddPetScreen");
-              }}
-            >
+            <TouchableOpacity>
               <Ionicons
                 style={styles.addPetIcon}
                 name="add-outline"
                 size={25}
               />
             </TouchableOpacity>
-          </View>
-          <View style={styles.petTasks}>
             <TouchableOpacity
               onPress={function () {
-                navigation.navigate("");
+                navigation.navigate("PetTasksListScreen", { idpet: petId });
               }}
             >
+              <Text style={styles.seeAllPetsButton}>See all</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.petTasks}>
+            <TouchableOpacity>
               <View style={styles.petTasksItem}>
                 <View style={styles.petTasksItemLeft}>
                   <Ionicons
@@ -216,7 +228,7 @@ const MyPetScreen = ({ route }) => {
                   />
                   <View style={styles.petTasksItemDescription}>
                     <Text style={styles.petTaskTitle}>
-                      Vaccination for Mike
+                      1111111Vaccination for Mike
                     </Text>
                     <Text style={styles.petTaskDesc}>Vaccination for Mike</Text>
                   </View>
@@ -362,6 +374,7 @@ const styles = StyleSheet.create({
 
   optionTitle: {
     fontSize: FONT_SIZES.small,
+    color: COLORS.grey,
   },
   optionText: {
     fontSize: 24,
@@ -399,6 +412,29 @@ const styles = StyleSheet.create({
     padding: 15,
   },
 
+  petidBlock: {
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  petidText: {
+    fontSize: FONT_SIZES.medium,
+    color: COLORS.black,
+  },
+
+  petidBlockInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 20,
+  },
+
+  copyLabel: {
+    fontSize: FONT_SIZES.small,
+    padding: 10,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.light_grey,
+  },
+
   bottomBtn: {
     height: "100%",
     flexDirection: "row",
@@ -417,6 +453,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 15,
+  },
+
+  seeAllPetsButton: {
+    flex: 1,
+    padding: 10,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: COLORS.light_grey,
   },
 
   petTasks: {

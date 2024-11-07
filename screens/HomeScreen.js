@@ -12,12 +12,15 @@ import HeaderPart from "../components/HeaderPart";
 import SearchField from "../components/SearchField";
 import MyPetsInProfile from "../components/MyPetsInProfile";
 import PetsButton from "../components/PetsButton";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
 
 import { COLORS, SPACING, RADIUS } from "../constants/constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import essentialstyles from "../styles";
 import { useAllPetsStore } from "../stores/AllPetsStore";
+const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState(null);

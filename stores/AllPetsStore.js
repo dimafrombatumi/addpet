@@ -5,6 +5,7 @@ export const useAllPetsStore = create((set) => ({
   uid: null,
   allpets: [],
   mypets: [],
+  pettasks: [],
 
   addMyPet: async () => {
     const { data, error } = await supabase.from("all_pets").insert([
@@ -56,6 +57,45 @@ export const useAllPetsStore = create((set) => ({
   fetchLostPets: async () => {
     const { data } = await supabase.from("all_pets").select("*");
     set({ allpets: data });
+  },
+
+  addPetTask: async () => {
+    const { data, error } = await supabase.from("pet_tasks").insert([
+      {
+        task_title: taskTitle,
+        task_description: taskDescription,
+        notify_before: notifyBefore,
+        task_type: taskType,
+        place: place,
+        task_status: taskStatus,
+      }, // объект с данными, которые нужно вставить
+    ]);
+    set({ pettasks: data });
+  },
+
+  fetchPetTasks: async (idpet) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const uid = user.id;
+      const { data, error } = await supabase
+        .from("pet_tasks")
+        .select("*")
+        .eq("petid", idpet);
+
+      if (error) {
+        console.error("Ошибка получения записей:", error.message);
+      } else {
+        console.log("PETTASKS__________", data);
+
+        set({ pettasks: data });
+      }
+    } else {
+      set({ pettasks: [] });
+      console.error("Пользователь не залогинен");
+    }
   },
 
   deletePet: async (petId) => {

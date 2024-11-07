@@ -10,6 +10,7 @@ import LostPetItem from "../components/LostPetItem.js";
 import PetsButton from "../components/PetsButton.jsx";
 
 import essentialstyles from "../styles.js";
+import { COLORS } from "../constants/constants.js";
 
 const LostPetsListScreen = () => {
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
@@ -31,69 +32,36 @@ const LostPetsListScreen = () => {
       <ScrollView>
         <View style={essentialstyles.container}>
           <HeaderPart userName={user.displayName} />
-          {/* <TouchableOpacity
-              style={styles.filterCategoryTouch}
-              onPress={() => setPetsTypeToFilter("CAT")}
-            >
-              <Text
-                style={[
-                  styles.filterCategory,
-                  {
-                    backgroundColor:
-                      petsTypeToFilter === "CAT" ? "#C9E9D2" : "#fff",
-                  },
-                ]}
-              >
-                🐈‍⬛ Cats
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.filterCategoryTouch}
-              onPress={() => setPetsTypeToFilter("DOG")}
-            >
-              <Text
-                style={[
-                  styles.filterCategory,
-                  {
-                    backgroundColor:
-                      petsTypeToFilter === "DOG" ? "#C9E9D2" : "#fff",
-                  },
-                ]}
-              >
-                🐕 Dogs
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.filterCategoryTouch}
-              onPress={() => setPetsTypeToFilter("")}
-            >
-              <Text
-                style={[
-                  styles.filterCategory,
-                  {
-                    backgroundColor:
-                      petsTypeToFilter === "" ? "#C9E9D2" : "#fff",
-                  },
-                ]}
-              >
-                🐈‍⬛ + 🐕 All pets
-              </Text>
-            </TouchableOpacity> */}
           <View style={styles.filterContainer}>
             <TouchableOpacity
-              style={[styles.topItemBlock, { backgroundColor: "#FCEFE9" }]}
+              style={[
+                styles.topItemBlock,
+                {
+                  backgroundColor: "#FCEFE9",
+                },
+              ]}
               onPress={() => setPetsTypeToFilter("CAT")}
             >
               <Text>CAT</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.topItemBlock, { backgroundColor: "#E6F8FF" }]}
+              style={[
+                styles.topItemBlock,
+                {
+                  backgroundColor: "#E6F8FF",
+                },
+              ]}
               onPress={() => setPetsTypeToFilter("DOG")}
             >
               <Text>DOG</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.topItemBlock, { backgroundColor: "#EEEFFE" }]}
+              style={[
+                styles.topItemBlock,
+                {
+                  backgroundColor: COLORS.ligth_violet,
+                },
+              ]}
               onPress={() => setPetsTypeToFilter("")}
             >
               <Text>CAT & DOG</Text>

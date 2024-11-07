@@ -11,13 +11,11 @@ const essentialstyles = StyleSheet.create({
   h1: {
     fontSize: 44,
     fontWeight: "700",
-    marginBottom: 20,
     color: "#1A3053",
   },
   h2: {
     fontSize: 22,
     fontWeight: "600",
-    marginBottom: 20,
     color: "#1A3053",
   },
   text: {

@@ -25,15 +25,15 @@ import { useAllPetsStore } from "../stores/AllPetsStore";
 const LostPetScreen = ({ route }) => {
   const [copiedText, setCopiedText] = React.useState("");
   const { item } = route.params;
-  const petId = item.petid;
+  const petId = item.petid.toString();
 
   const deletePet = useAllPetsStore((state) => state.deletePet);
   const markAsLost = useAllPetsStore((state) => state.markAsLost);
   const markAsFound = useAllPetsStore((state) => state.markAsFound);
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(item.petid);
-    Alert.alert("Copied id " + item.petid);
+    await Clipboard.setStringAsync(petId);
+    Alert.alert("Copied id " + petId);
   };
 
   const fetchCopiedText = async () => {
@@ -166,8 +166,13 @@ const LostPetScreen = ({ route }) => {
         </View>
         <View style={styles.detailsContainer}>
           <View style={styles.detailsItem}>
-            <Text style={styles.detailsItemLabel}>Microchip number:</Text>
-            <Text>{item.petid}</Text>
+            <View style={styles.petidBlockInner}>
+              <Text style={styles.detailsItemLabel}>Microchip number:</Text>
+              <Text>{item.petid}</Text>
+              <TouchableOpacity onPress={copyToClipboard}>
+                <Text style={styles.copyLabel}>COPY</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.detailsItem}>
             <Text style={styles.detailsItemLabel}>Owner phone:</Text>
@@ -339,8 +344,21 @@ const styles = StyleSheet.create({
   petTasksContainerTitle: {
     flexDirection: "row",
     justifyContent: "space-between",
-
     marginBottom: 15,
+  },
+
+  petidBlockInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 20,
+  },
+
+  copyLabel: {
+    fontSize: FONT_SIZES.small,
+    padding: 10,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.light_grey,
   },
 });
 export default LostPetScreen;

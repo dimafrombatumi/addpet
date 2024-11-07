@@ -1,8 +1,9 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
-import HomeScreen from "../screens/HomeScreen";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import LostPetScreen from "../screens/LostPetScreen";
@@ -13,12 +14,13 @@ import AddPetScreen from "../screens/AddPetScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import EditPetScreen from "../screens/EditPetScreen";
 import MyPetScreen from "../screens/MyPetScreen";
-import PetTaskScreen from "../screens/PetTaskScreen";
+import PetTasksListScreen from "../screens/PetTasksListScreen";
 
 import { Ionicons } from "@expo/vector-icons";
 
 const Navigation = () => {
   const Stack = createStackNavigator();
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -116,7 +118,7 @@ const Navigation = () => {
           component={UserProfileScreen}
           options={{
             title: "User Profile",
-            headerShown: false,
+            headerShown: true,
           }}
         />
         <Stack.Screen
@@ -127,22 +129,20 @@ const Navigation = () => {
             headerShown: false,
           }}
         />
-
+        <Stack.Screen
+          name="PetTasksListScreen"
+          component={PetTasksListScreen}
+          options={{
+            title: "Pets task details",
+            headerShown: true,
+          }}
+        />
         <Stack.Screen
           name="MyPetScreen"
           component={MyPetScreen}
           options={{
             title: "My Pet Details",
             headerShown: true,
-          }}
-        />
-
-        <Stack.Screen
-          name="PetTaskScreen"
-          component={PetTaskScreen}
-          options={{
-            title: "Pets task details",
-            headerShown: false,
           }}
         />
       </Stack.Navigator>
