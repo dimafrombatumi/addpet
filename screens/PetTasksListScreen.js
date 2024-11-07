@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
 import essentialstyles from "../styles";
 import { COLORS, FONT_SIZES, RADIUS } from "../constants/constants";
@@ -7,9 +7,15 @@ import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const PetTasksListScreen = ({ route }) => {
   const idpet = route.params?.idpet;
+  const petname = route.params?.petname;
   const fetchPetTasks = useAllPetsStore((state) => state.fetchPetTasks);
+  const donePetTask = useAllPetsStore((state) => state.donePetTask);
   const pettasks = useAllPetsStore((state) => state.pettasks);
 
+  const donePetTaskHeandler = (taskid) => {
+    donePetTask(taskid);
+    fetchPetTasks(idpet);
+  };
   useEffect(() => {
     if (idpet) {
       fetchPetTasks(idpet);
@@ -19,7 +25,7 @@ const PetTasksListScreen = ({ route }) => {
   return (
     <View style={essentialstyles.container}>
       <View style={styles.tasksContainer}>
-        <Text style={essentialstyles.h2}>All tasks</Text>
+        <Text style={essentialstyles.h2}>All tasks for {petname}</Text>
         {pettasks.map((task, idpet) => {
           return (
             <View style={styles.taskContainer} key={idpet}>
@@ -40,12 +46,16 @@ const PetTasksListScreen = ({ route }) => {
                 </Text>
                 <Text style={essentialstyles.text}>{task.place}</Text>
               </View>
-              <Ionicons
-                name="checkmark-circle-outline"
-                size={32}
-                color={task.task_status === true ? COLORS.roze : COLORS.green}
-                style={styles.checkmarks}
-              />
+              <TouchableOpacity
+                onPress={() => donePetTaskHeandler(task.task_id)}
+              >
+                <Ionicons
+                  name="checkmark-circle-outline"
+                  size={32}
+                  color={task.task_status === true ? COLORS.grey : COLORS.green}
+                  style={styles.checkmarks}
+                />
+              </TouchableOpacity>
             </View>
           );
         })}

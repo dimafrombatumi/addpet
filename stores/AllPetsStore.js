@@ -98,6 +98,15 @@ export const useAllPetsStore = create((set) => ({
     }
   },
 
+  donePetTask: async (taskid) => {
+    const { error } = await supabase
+      .from("pet_tasks")
+      .update({
+        task_status: false,
+      })
+      .eq("task_id", taskid);
+  },
+
   deletePet: async (petId) => {
     console.log("Attempting to delete pet with ID:", petId);
     const { data, error } = await supabase

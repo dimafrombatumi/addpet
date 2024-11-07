@@ -210,7 +210,10 @@ const MyPetScreen = ({ route }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={function () {
-                navigation.navigate("PetTasksListScreen", { idpet: petId });
+                navigation.navigate("PetTasksListScreen", {
+                  idpet: petId,
+                  petname: item.petname,
+                });
               }}
             >
               <Text style={styles.seeAllPetsButton}>See all</Text>
