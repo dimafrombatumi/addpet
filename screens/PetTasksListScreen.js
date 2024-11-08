@@ -8,57 +8,114 @@ import { useAllPetsStore } from "../stores/AllPetsStore";
 const PetTasksListScreen = ({ route }) => {
   const idpet = route.params?.idpet;
   const petname = route.params?.petname;
-  const fetchPetTasks = useAllPetsStore((state) => state.fetchPetTasks);
-  const donePetTask = useAllPetsStore((state) => state.donePetTask);
-  const pettasks = useAllPetsStore((state) => state.pettasks);
 
-  const donePetTaskHeandler = (taskid) => {
-    donePetTask(taskid);
-    fetchPetTasks(idpet);
+  const fetchPetAllTasks = useAllPetsStore((state) => state.fetchPetAllTasks);
+  const fetchPetDoneTasks = useAllPetsStore((state) => state.fetchPetDoneTasks);
+  const fetchPetCurrentTasks = useAllPetsStore(
+    (state) => state.fetchPetCurrentTasks
+  );
+
+  const donePetTask = useAllPetsStore((state) => state.donePetTask);
+  const undonePetTask = useAllPetsStore((state) => state.undonePetTask);
+
+  const all_pettasks = useAllPetsStore((state) => state.all_pettasks);
+  const donetasks = useAllPetsStore((state) => state.donetasks);
+  const currenttasks = useAllPetsStore((state) => state.currenttasks);
+
+  let doneNum = donetasks.length;
+  let currentNum = currenttasks.length;
+  let alltaskNum = doneNum + currentNum;
+  const undonePetTaskHeandler = async (taskid) => {
+    console.log(taskid);
+    await undonePetTask(taskid);
   };
+
+  const currentPetTaskHeandler = async (taskid) => {
+    await donePetTask(taskid);
+  };
+
   useEffect(() => {
-    if (idpet) {
-      fetchPetTasks(idpet);
-    }
+    fetchPetDoneTasks(idpet);
+    fetchPetCurrentTasks(idpet);
   }, [idpet]);
 
   return (
     <View style={essentialstyles.container}>
       <View style={styles.tasksContainer}>
-        <Text style={essentialstyles.h2}>All tasks for {petname}</Text>
-        {pettasks.map((task, idpet) => {
-          return (
-            <View style={styles.taskContainer} key={idpet}>
-              <View style={styles.taskContainerLeft}>
-                <Text
-                  style={[
-                    essentialstyles.h2,
-                    {
-                      textDecorationLine:
-                        task.task_status === false ? "line-through" : "none",
-                    },
-                  ]}
-                >
-                  {task.task_title}
-                </Text>
-                <Text style={styles.taskDescription}>
-                  {task.task_description}
-                </Text>
-                <Text style={essentialstyles.text}>{task.place}</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => donePetTaskHeandler(task.task_id)}
+        <Text style={essentialstyles.h2}>
+          All tasks for {petname} - {alltaskNum}
+        </Text>
+
+        <View style={styles.currentTasksContainer}>
+          <Text style={essentialstyles.h2}>
+            Current tasks - {currenttasks.length}
+          </Text>
+
+          {currenttasks.map((task, idpet) => {
+            return (
+              <View
+                style={[
+                  styles.taskContainer,
+                  { backgroundColor: COLORS.ligth_green },
+                ]}
+                key={idpet}
               >
-                <Ionicons
-                  name="checkmark-circle-outline"
-                  size={32}
-                  color={task.task_status === true ? COLORS.grey : COLORS.green}
-                  style={styles.checkmarks}
-                />
-              </TouchableOpacity>
-            </View>
-          );
-        })}
+                <View style={styles.taskContainerLeft}>
+                  <Text style={essentialstyles.h2}>{task.task_title}</Text>
+                  <Text style={styles.taskDescription}>
+                    {task.task_description}
+                  </Text>
+                  <Text style={essentialstyles.text}>{task.place}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => undonePetTaskHeandler(task.task_id)}
+                >
+                  <Ionicons
+                    name="checkmark-circle-outline"
+                    size={32}
+                    color={COLORS.green}
+                    style={styles.checkmarks}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </View>
+        <View style={styles.doneTasksContainer}>
+          <Text style={essentialstyles.h2}>
+            Done tasks - {donetasks.length}
+          </Text>
+
+          {donetasks.map((task, idpet) => {
+            return (
+              <View
+                style={[
+                  styles.taskContainer,
+                  { backgroundColor: COLORS.light_grey },
+                ]}
+                key={idpet}
+              >
+                <View style={styles.taskContainerLeft}>
+                  <Text>{task.task_title}</Text>
+                  <Text style={styles.taskDescription}>
+                    {task.task_description}
+                  </Text>
+                  <Text style={essentialstyles.text}>{task.place}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => currentPetTaskHeandler(task.task_id)}
+                >
+                  <Ionicons
+                    name="ellipse-outline"
+                    size={32}
+                    color={COLORS.grey}
+                    style={styles.checkmarks}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </View>
       </View>
     </View>
   );
@@ -68,11 +125,10 @@ const styles = StyleSheet.create({
   tasksContainer: {
     flexDirection: "column",
     marginVertical: 10,
-    backgroundColor: COLORS.white,
     borderRadius: RADIUS.default,
     paddingHorizontal: 10,
     paddingVertical: 20,
-    gap: 10,
+    gap: 20,
     height: "95%",
   },
 
@@ -81,10 +137,11 @@ const styles = StyleSheet.create({
     borderColor: COLORS.light_grey,
     borderWidth: 1,
     borderRadius: RADIUS.default,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     alignItems: "flex-start",
     justifyContent: "space-between",
-    gap: 20,
+    marginBottom: 15,
   },
 
   taskContainerLeft: {},
@@ -97,5 +154,24 @@ const styles = StyleSheet.create({
   taskDescription: {
     fontSize: FONT_SIZES.medium,
   },
+  currentTasksContainer: {
+    backgroundColor: COLORS.white,
+    flexDirection: "column",
+
+    borderRadius: RADIUS.default,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    gap: 20,
+  },
+
+  doneTasksContainer: {
+    backgroundColor: COLORS.white,
+    flexDirection: "column",
+    borderRadius: RADIUS.default,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    gap: 20,
+  },
 });
+
 export default PetTasksListScreen;

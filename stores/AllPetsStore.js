@@ -5,7 +5,9 @@ export const useAllPetsStore = create((set) => ({
   uid: null,
   allpets: [],
   mypets: [],
-  pettasks: [],
+  all_pettasks: [],
+  donetasks: [],
+  currenttasks: [],
 
   addMyPet: async () => {
     const { data, error } = await supabase.from("all_pets").insert([
@@ -70,10 +72,10 @@ export const useAllPetsStore = create((set) => ({
         task_status: taskStatus,
       }, // объект с данными, которые нужно вставить
     ]);
-    set({ pettasks: data });
+    set({ all_pettasks: data });
   },
 
-  fetchPetTasks: async (idpet) => {
+  fetchPetAllTasks: async (idpet) => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -90,21 +92,101 @@ export const useAllPetsStore = create((set) => ({
       } else {
         console.log("PETTASKS__________", data);
 
-        set({ pettasks: data });
+        set({ all_pettasks: data });
       }
     } else {
-      set({ pettasks: [] });
+      set({ all_pettasks: [] });
+      console.error("Пользователь не залогинен");
+    }
+  },
+
+  fetchPetDoneTasks: async (idpet) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data, error } = await supabase
+        .from("pet_tasks")
+        .select("*")
+        .eq("petid", idpet)
+        .eq("task_status", false);
+
+      if (error) {
+        console.error("Ошибка получения записей:", error.message);
+      } else {
+        console.log("DONE___PETTASKS__________", data);
+
+        set({ donetasks: data });
+      }
+    } else {
+      set({ donetasks: [] });
+      console.error("Пользователь не залогинен");
+    }
+  },
+
+  fetchPetCurrentTasks: async (idpet) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data, error } = await supabase
+        .from("pet_tasks")
+        .select("*")
+        .eq("petid", idpet)
+        .eq("task_status", true);
+
+      if (error) {
+        console.error("Ошибка получения записей:", error.message);
+      } else {
+        console.log("CURRENT_PETTASKS__________", data);
+        set({ currenttasks: data });
+      }
+    } else {
+      set({ currenttasks: [] });
       console.error("Пользователь не залогинен");
     }
   },
 
   donePetTask: async (taskid) => {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("pet_tasks")
-      .update({
-        task_status: false,
-      })
-      .eq("task_id", taskid);
+      .update({ task_status: true })
+      .eq("task_id", taskid)
+      .select("*");
+
+    if (error) {
+      console.error("Ошибка смены статуса задачи:", error.message);
+    }
+
+    if (data) {
+      set((state) => ({
+        donetasks: state.donetasks.filter((task) => task.task_id !== taskid),
+        currenttasks: [...state.currenttasks, ...data],
+      }));
+    }
+  },
+
+  undonePetTask: async (taskid) => {
+    const { data, error } = await supabase
+      .from("pet_tasks")
+      .update({ task_status: false })
+      .eq("task_id", taskid)
+      .select("*");
+
+    if (error) {
+      console.error("Ошибка смены статуса задачи:", error.message);
+    }
+
+    if (data) {
+      set((state) => ({
+        currenttasks: state.currenttasks.filter(
+          (task) => task.task_id !== taskid
+        ),
+        donetasks: [...state.donetasks, ...data],
+      }));
+    }
   },
 
   deletePet: async (petId) => {
