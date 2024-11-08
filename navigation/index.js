@@ -1,8 +1,9 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
-import HomeScreen from "../screens/HomeScreen";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import LostPetScreen from "../screens/LostPetScreen";
@@ -12,11 +13,14 @@ import SearchResultsScreen from "../screens/SearchResultsScreen";
 import AddPetScreen from "../screens/AddPetScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import EditPetScreen from "../screens/EditPetScreen";
+import MyPetScreen from "../screens/MyPetScreen";
+import PetTasksListScreen from "../screens/PetTasksListScreen";
 
 import { Ionicons } from "@expo/vector-icons";
 
 const Navigation = () => {
   const Stack = createStackNavigator();
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -72,8 +76,8 @@ const Navigation = () => {
           name="LostPetScreen"
           component={LostPetScreen}
           options={{
-            title: "Lost Pet",
-            headerShown: false,
+            title: "Pet details",
+            headerShown: true,
           }}
         />
         <Stack.Screen
@@ -114,7 +118,7 @@ const Navigation = () => {
           component={UserProfileScreen}
           options={{
             title: "User Profile",
-            headerShown: false,
+            headerShown: true,
           }}
         />
         <Stack.Screen
@@ -123,6 +127,22 @@ const Navigation = () => {
           options={{
             title: "Edit Pet",
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PetTasksListScreen"
+          component={PetTasksListScreen}
+          options={{
+            title: "Pets task details",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="MyPetScreen"
+          component={MyPetScreen}
+          options={{
+            title: "My Pet Details",
+            headerShown: true,
           }}
         />
       </Stack.Navigator>

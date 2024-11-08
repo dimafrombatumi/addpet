@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,13 +10,15 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import essentialstyles from "../styles";
-import HeaderPart from "../components/HeaderPart";
+
 import MyPetsInProfile from "../components/MyPetsInProfile";
+
+import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../supabase";
 import { useNavigation } from "@react-navigation/native";
 import { useAllPetsStore } from "../stores/AllPetsStore";
+import essentialstyles from "../styles";
+import { COLORS, FONT_SIZES, SPACING, RADIUS } from "../constants/constants";
 
 const ProfileScreen = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +26,6 @@ const ProfileScreen = () => {
   const [message, setMessage] = useState("");
 
   const navigation = useNavigation();
-  // const useremail = session?.user.id;
   const fetchMyPets = useAllPetsStore((state) => state.fetchMyPets);
 
   const mypets = useAllPetsStore((state) => state.mypets);
@@ -36,10 +37,9 @@ const ProfileScreen = () => {
     <SafeAreaView>
       <ScrollView>
         <View style={essentialstyles.container}>
-          <HeaderPart />
           <View style={styles.topContainer}>
             <Image
-              source={require("../assets/data/images/noimg.png")}
+              source={require("../assets/data/images/ava.jpg")}
               style={styles.avatar}
             />
             <Text style={styles.username}>Пользователь</Text>
@@ -58,17 +58,19 @@ const ProfileScreen = () => {
           <MyPetsInProfile mypets={mypets} />
 
           <View style={styles.formContainer}>
+            <Text style={essentialstyles.h2}>Edit your info</Text>
+
             {[
               {
                 icon: "person-outline",
-                placeholder: "Enter user name",
+                placeholder: "Enter new user name",
                 value: username,
                 setter: setUsername,
                 secure: false,
               },
               {
                 icon: "call-outline",
-                placeholder: "Enter phone number",
+                placeholder: "Enter new phone number",
                 value: phoneNumber,
                 setter: setPhoneNumber,
                 keyboardType: "phone-pad",
@@ -110,38 +112,43 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   topContainer: {
-    gap: 5,
-    backgroundColor: "#fff",
-    padding: 15,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: SPACING.sm,
+    borderRadius: RADIUS.default,
+    backgroundColor: COLORS.white,
     flex: 1,
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
+
   username: {
-    fontSize: 24,
+    fontSize: FONT_SIZES.large,
     marginBottom: 10,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     marginBottom: 10,
-    borderWidth: 3,
-    borderColor: "#74C1FC",
   },
   formContainer: {
-    width: "100%",
-    marginTop: 20,
+    padding: SPACING.sm,
+    borderRadius: RADIUS.default,
+    backgroundColor: COLORS.white,
+    flex: 1,
     gap: 10,
   },
   petListBlock: {
     flex: 1,
   },
   logoutBtn: {
+    width: "25%",
     borderWidth: 1,
     borderRadius: 15,
     backgroundColor: "#FF5844",
     borderColor: "#FF5844",
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoutBtnTxt: {
     fontSize: 18,

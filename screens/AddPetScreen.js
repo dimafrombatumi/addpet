@@ -25,6 +25,8 @@ import * as FileSystem from "expo-file-system";
 import { Ionicons } from "@expo/vector-icons";
 import essentialstyles from "../styles";
 
+import { useAllPetsStore } from "../stores/AllPetsStore";
+
 const AddPetScreen = () => {
   const [petId, setPetId] = useState("");
   const [petName, setPetName] = useState("");
@@ -43,6 +45,8 @@ const AddPetScreen = () => {
 
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  const addPet = useAllPetsStore((state) => state.addPet);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -83,25 +87,7 @@ const AddPetScreen = () => {
 
   const addNewPet = async () => {
     const ImagePath = await uploadImage();
-    const { data, error } = await supabase
-      .from("all_pets") // укажите свою таблицу
-      .insert([
-        {
-          petid: petId,
-          petname: petName,
-          pettype: petType,
-          petsex: petSex,
-          petage: petAge,
-          petlocation: petLocation,
-          owner_phone: petOwnerphone,
-          petimgurl: ImagePath,
-          petcolor: petColor,
-          petweight: petWeight,
-          petbreed: petBreed,
-          petdescription: petDescription,
-          owner_email: ownerEmail,
-        }, // объект с данными, которые нужно вставить
-      ]);
+    addPet();
 
     if (error) {
       console.log("Ошибка при вставке:", error.message);

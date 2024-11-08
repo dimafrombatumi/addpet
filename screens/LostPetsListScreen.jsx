@@ -10,6 +10,7 @@ import LostPetItem from "../components/LostPetItem.js";
 import PetsButton from "../components/PetsButton.jsx";
 
 import essentialstyles from "../styles.js";
+import { COLORS } from "../constants/constants.js";
 
 const LostPetsListScreen = () => {
   const [petsTypeToFilter, setPetsTypeToFilter] = useState(null);
@@ -32,44 +33,38 @@ const LostPetsListScreen = () => {
         <View style={essentialstyles.container}>
           <HeaderPart userName={user.displayName} />
           <View style={styles.filterContainer}>
-            <TouchableOpacity onPress={() => setPetsTypeToFilter("CAT")}>
-              <Text
-                style={[
-                  styles.filterCategory,
-                  {
-                    backgroundColor:
-                      petsTypeToFilter === "CAT" ? "#C9E9D2" : "#fff",
-                  },
-                ]}
-              >
-                🐈‍⬛ Cats
-              </Text>
+            <TouchableOpacity
+              style={[
+                styles.topItemBlock,
+                {
+                  backgroundColor: "#FCEFE9",
+                },
+              ]}
+              onPress={() => setPetsTypeToFilter("CAT")}
+            >
+              <Text>CAT</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setPetsTypeToFilter("DOG")}>
-              <Text
-                style={[
-                  styles.filterCategory,
-                  {
-                    backgroundColor:
-                      petsTypeToFilter === "DOG" ? "#C9E9D2" : "#fff",
-                  },
-                ]}
-              >
-                🐕 Dogs
-              </Text>
+            <TouchableOpacity
+              style={[
+                styles.topItemBlock,
+                {
+                  backgroundColor: "#E6F8FF",
+                },
+              ]}
+              onPress={() => setPetsTypeToFilter("DOG")}
+            >
+              <Text>DOG</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setPetsTypeToFilter("")}>
-              <Text
-                style={[
-                  styles.filterCategory,
-                  {
-                    backgroundColor:
-                      petsTypeToFilter === "" ? "#C9E9D2" : "#fff",
-                  },
-                ]}
-              >
-                🐈‍⬛ + 🐕 All pets
-              </Text>
+            <TouchableOpacity
+              style={[
+                styles.topItemBlock,
+                {
+                  backgroundColor: COLORS.ligth_violet,
+                },
+              ]}
+              onPress={() => setPetsTypeToFilter("")}
+            >
+              <Text>CAT & DOG</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.listContainer}>
@@ -83,13 +78,6 @@ const LostPetsListScreen = () => {
               columnWrapperStyle={{ gap: 10 }}
               contentContainerStyle={{ gap: 10 }}
               scrollEnabled={false}
-            />
-          </View>
-          <View style={styles.allLostBtn}>
-            <PetsButton
-              petsData={filteredPets}
-              targetScreen={"LostPetsListScreen"}
-              buttonText={"See all lost pets"}
             />
           </View>
         </View>
@@ -126,25 +114,22 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     padding: 5,
   },
-  petId: {
-    color: "#111",
-    fontSize: 18,
-    fontWeight: "700",
-  },
+
   filterContainer: {
     backgroundColor: "#fff",
+    height: 90,
     flexDirection: "row",
-    gap: 8,
-    marginTop: 20,
-    marginBottom: 15,
+    gap: 20,
+    borderRadius: 20,
+    padding: 20,
   },
-  filterCategory: {
-    fontSize: 18,
-    padding: 5,
-    borderWidth: 2,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    alignSelf: "center",
+
+  topItemBlock: {
+    borderRadius: 20,
+    flex: 3,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
   },
 });
 

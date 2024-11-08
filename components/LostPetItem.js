@@ -40,11 +40,10 @@ const LostPetItem = ({ item }) => {
 const styles = StyleSheet.create({
   lostPetItem: {
     flex: 1,
-    width: "45%",
-    maxWidth: "100%",
+    maxWidth: "50%",
     backgroundColor: "#Fff",
-    padding: 5,
-    borderRadius: 10,
+    padding: 10,
+    borderRadius: 20,
     borderColor: "rgba(80, 134, 231, 0.5)",
     borderWidth: 1,
   },
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
   petImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 10,
+    borderRadius: 20,
   },
 
   petOptions: {

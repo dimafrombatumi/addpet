@@ -4,52 +4,22 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Pressable,
   Alert,
   TouchableOpacity,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
+import { COLORS, FONT_SIZES, RADIUS, PETTYPE } from "../constants/constants";
 
-import { supabase } from "../supabase";
-import { Ionicons } from "@expo/vector-icons";
 import RemoteImage from "./RemoteImage";
-
-import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const MyPetItem = ({ item }) => {
   const petId = item.petid;
-  const deletePet = useAllPetsStore((state) => state.deletePet);
-
   const navigation = useNavigation();
-
-  const handleDeletePet = async (petId) => {
-    await deletePet(petId);
-  };
 
   const handleEditPet = (item) => {
     navigation.navigate("EditPetScreen", { item });
-  };
-
-  const confirmDelete = (petId) => {
-    console.log("Confirm delete called for pet ID:", petId);
-    Alert.alert(
-      "Deletion Confirmation",
-      `Are you sure you want to delete pet ${item.petname}? This action cannot be undone.`,
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: () => handleDeletePet(petId),
-          style: "destructive",
-        },
-      ],
-      { cancelable: true }
-    );
   };
 
   const confirmEdit = (petId) => {
@@ -74,48 +44,50 @@ const MyPetItem = ({ item }) => {
 
   return (
     <Pressable
-      style={styles.lostPetItem}
+      style={[
+        styles.lostPetItem,
+        {
+          backgroundColor: item.pettype === PETTYPE.cat ? "#E8FCC1" : "#FECEB0",
+        },
+      ]}
       keyExtractor={(item) => item.petid}
       onPress={() => {
-        navigation.navigate("LostPetScreen", { item });
+        navigation.navigate("MyPetScreen", { item });
       }}
     >
       <View style={styles.itemContainer}>
-        <RemoteImage
-          path={item.petimgurl}
-          fallback={
-            "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
-          }
-        />
+        <View style={styles.itemImageContainer}>
+          <RemoteImage
+            size={"mikro"}
+            style={{ height: 30, width: 30 }}
+            path={item.petimgurl}
+            fallback={
+              "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
+            }
+          />
+        </View>
         <View style={styles.petOptions}>
           <Text style={styles.petName}>{item.petname}</Text>
 
-          <View style={styles.petOptionsBlock}>
-            <Text style={styles.petSex}>{item.petsex}</Text>
-
-            <TouchableOpacity
-              onPress={() => confirmDelete(petId)}
-              style={styles.deleteIconBlock}
+          <View style={styles.petOptionsBlock}></View>
+          <TouchableOpacity
+            onPress={() => confirmEdit(petId)}
+            style={styles.editIconBlock}
+          >
+            <View
+              style={[
+                styles.editPetButton,
+                {
+                  borderColor:
+                    item.pettype === PETTYPE.cat
+                      ? COLORS.border_green
+                      : COLORS.border_brown,
+                },
+              ]}
             >
-              <Ionicons
-                style={styles.deleteIcon}
-                name="trash-outline"
-                size={24}
-                color="#F37F3B"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => confirmEdit(petId)}
-              style={styles.editIconBlock}
-            >
-              <Ionicons
-                style={styles.editIcon}
-                name="create-outline"
-                size={24}
-                color="#1A3053"
-              />
-            </TouchableOpacity>
-          </View>
+              <Text>Edit pet</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </Pressable>
@@ -124,38 +96,38 @@ const MyPetItem = ({ item }) => {
 
 const styles = StyleSheet.create({
   lostPetItem: {
-    width: "50%",
-    backgroundColor: "#FFF",
-    padding: 5,
-    borderRadius: 10,
-    borderColor: "rgba(80, 134, 231, 0.5)",
-    borderWidth: 1,
+    width: "49%",
+    backgroundColor: COLORS.ligth_green,
+    borderRadius: RADIUS.default,
+    padding: 10,
   },
 
   petOptions: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    padding: 6,
+    padding: 5,
   },
 
   petOptionsBlock: {
     marginTop: 7,
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
-    alignItems: "center",
+    gap: 15,
   },
+
   petName: {
-    color: "#111",
-    fontSize: 18,
+    color: COLORS.black,
+    fontSize: FONT_SIZES.large,
     fontWeight: "700",
   },
-  deleteIconBlock: {
-    flex: 1,
-    alignItems: "flex-end",
-    marginRight: 25,
+
+  editPetButton: {
+    padding: 10,
+    borderRadius: RADIUS.default,
+    borderWidth: 1,
+    borderColor: COLORS.border_green,
+    alignItems: "center",
+    marginTop: 20,
   },
 });
 

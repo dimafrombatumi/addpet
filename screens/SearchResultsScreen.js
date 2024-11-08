@@ -6,33 +6,33 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import LostPetItem from "../components/LostPetItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import SearchField from "../components/SearchField";
 import AllPetsContext from "../context/AllPetsContext";
-import UserContext from "../context/UserContext";
 import HeaderPart from "../components/HeaderPart";
 
 import essentialstyles from "../styles";
+import { useAllPetsStore } from "../stores/AllPetsStore";
 
 const SearchResultsScreen = ({ route }) => {
   const { searchPhrase } = route.params;
-  const allpets = useContext(AllPetsContext);
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState(null);
-  const user = useContext(UserContext);
+
+  const allpets = useAllPetsStore((state) => state.allpets);
 
   const filteredData = allpets.filter(
-    (item) => item.petid.toUpperCase() === searchPhrase?.toUpperCase()
+    (item) => item.petid.toString() === searchPhrase.toString()
   );
-
+  console.log("ALLL_PETS: ", allpets);
   return (
     <SafeAreaView>
       <View style={essentialstyles.container}>
-        <HeaderPart userName={user.displayName} />
+        <HeaderPart />
         <SearchField
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

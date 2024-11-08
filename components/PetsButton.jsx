@@ -9,59 +9,66 @@ const PetsButton = ({ buttonText }) => {
 
   return (
     <View>
-      <Text style={essentialstyles.h2}>Lost pets</Text>
-
       <View style={styles.LostPetsContainer}>
-        <Image
-          style={styles.lostImg}
-          source={require("../assets/data/images/lost1.png")}
-        />
-        <Image
-          style={styles.lostImg}
-          source={require("../assets/data/images/lost2.png")}
-        />
-        <Image
-          style={styles.lostImg}
-          source={require("../assets/data/images/lost3.png")}
-        />
-        <TouchableOpacity
-          onPress={function () {
-            navigation.navigate("LostPetsListScreen");
-          }}
-          style={styles.seeAllTextBlock}
-        >
-          <Text style={styles.seeAllText}>{buttonText}</Text>
-        </TouchableOpacity>
+        <View style={styles.LostPetsContainerTitle}>
+          <Text style={essentialstyles.h2}>Lost pets</Text>
+          <TouchableOpacity
+            style={styles.seeAllTextBlock}
+            onPress={function () {
+              navigation.navigate("LostPetsListScreen");
+            }}
+          >
+            <Text style={styles.seeAllText}>{buttonText}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.LostPetsContainerImgs}>
+          <Image
+            style={[styles.lostImg, { borderColor: "#EEEFFE" }]}
+            source={require("../assets/data/images/lost1.png")}
+          />
+          <Image
+            style={[styles.lostImg, { borderColor: "#fcefe9" }]}
+            source={require("../assets/data/images/lost2.png")}
+          />
+          <Image
+            style={[styles.lostImg, { borderColor: "#E6F8FF" }]}
+            source={require("../assets/data/images/lost3.png")}
+          />
+        </View>
       </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   LostPetsContainer: {
-    flex: 1,
+    marginVertical: 10,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 10,
+    gap: 5,
+  },
+  LostPetsContainerTitle: {
     flexDirection: "row",
-    height: 85,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#B2EAB8",
-    borderRadius: 10,
-    marginBottom: 20,
+    justifyContent: "space-between",
+  },
+  LostPetsContainerImgs: {
+    flexDirection: "row",
+    height: 80,
   },
   lostImg: {
-    height: "100%",
+    borderColor: "#E9E9E9",
+    borderWidth: 4,
+    height: "90%",
     flex: 3,
-  },
-  seeAllTextBlock: {
-    flex: 3,
-    height: "100%",
-    justifyContent: "center",
-    padding: 8,
+    borderRadius: 20,
   },
   seeAllText: {
-    marginLeft: 10,
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: 15,
     color: "#1A3053",
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#E9E9E9",
+    padding: 10,
   },
 });
 export default PetsButton;

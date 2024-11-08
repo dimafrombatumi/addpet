@@ -3,8 +3,7 @@ import { StyleSheet } from "react-native";
 const essentialstyles = StyleSheet.create({
   container: {
     gap: 15,
-    backgroundColor: "#fff",
-    paddingVertical: 30,
+    backgroundColor: "#F0F3F4",
     paddingHorizontal: 15,
     height: "100%",
     marginBottom: 50,
@@ -12,13 +11,11 @@ const essentialstyles = StyleSheet.create({
   h1: {
     fontSize: 44,
     fontWeight: "700",
-    marginBottom: 20,
     color: "#1A3053",
   },
   h2: {
     fontSize: 22,
     fontWeight: "600",
-    marginBottom: 20,
     color: "#1A3053",
   },
   text: {
@@ -27,7 +24,7 @@ const essentialstyles = StyleSheet.create({
   },
 
   iconInput: {
-    color: "#111",
+    color: "#ccc",
   },
   inputBar: {
     gap: 10,
@@ -39,12 +36,13 @@ const essentialstyles = StyleSheet.create({
     paddingLeft: 6,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
+    borderRadius: 15,
   },
   input: {
     flex: 1,
     fontSize: 18,
     height: 30,
+    color: "#111",
   },
 
   pressMeBtn: {
@@ -54,7 +52,7 @@ const essentialstyles = StyleSheet.create({
     padding: 10,
     flexDirection: "row-reverse",
     backgroundColor: "#E8EBF1",
-    borderRadius: 10,
+    borderRadius: 20,
     borderColor: "1.5px solid rgba(80, 134, 231, 0.5)",
     borderWidth: 3,
   },
