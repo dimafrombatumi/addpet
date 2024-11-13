@@ -1,31 +1,32 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+
+import Avatar from "./Avatar";
 
 import UserContext from "../context/UserContext";
 import { useNavigation } from "@react-navigation/native";
-
+import { useAllPetsStore } from "../stores/AllPetsStore";
 import { Ionicons } from "@expo/vector-icons";
 
 const HeaderPart = () => {
   const session = useContext(UserContext);
   const navigation = useNavigation();
+  const user = useAllPetsStore((state) => state.user);
 
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerContainerRight}>
-        <Image
-          style={styles.userAvatar}
-          source={require("../assets/data/images/ava.jpg")}
-        />
+        <Avatar style={styles.userAvatar} avatarImg={user?.avatar_url} />
+
         <View style={styles.userTitle}>
-          <Text style={styles.userName}>Hi, John 👋</Text>
+          <Text style={styles.userName}>Hi, {user.username} 👋</Text>
           <Text style={styles.userLocation}>Batumi, Georgia</Text>
         </View>
       </View>
       <View>
         <TouchableOpacity
           onPress={function () {
-            navigation.navigate("UserProfileScreen");
+            navigation.navigate("UserProfileScreen", { session: session });
           }}
         >
           <Ionicons
@@ -56,8 +57,8 @@ const styles = StyleSheet.create({
   },
 
   userAvatar: {
-    height: 80,
-    width: 80,
+    height: 100,
+    width: 100,
     borderRadius: 20,
   },
 

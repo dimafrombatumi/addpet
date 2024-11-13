@@ -3,31 +3,37 @@ import { supabase } from "../supabase";
 
 export const useAllPetsStore = create((set) => ({
   uid: null,
+  user: [],
   allpets: [],
   mypets: [],
   all_pettasks: [],
   donetasks: [],
   currenttasks: [],
 
-  addMyPet: async () => {
-    const { data, error } = await supabase.from("all_pets").insert([
-      {
-        petid: petId,
-        petname: petName,
-        pettype: petType,
-        petsex: petSex,
-        petage: petAge,
-        petlocation: petLocation,
-        owner_phone: petOwnerphone,
-        petimgurl: ImagePath,
-        petcolor: petColor,
-        petweight: petWeight,
-        petbreed: petBreed,
-        petdescription: petDescription,
-        owner_email: ownerEmail,
-      }, // объект с данными, которые нужно вставить
-    ]);
-    set({ mypets: data });
+  fetchUserData: async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const uid = user.id;
+      const { data, error } = await supabase
+        .from("profiles")
+        .select(`username, website, avatar_url`)
+        .eq("id", uid)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+      if (data) {
+        set({ user: data });
+        console.log(user);
+      }
+    } else {
+      set({ mypets: [] });
+      console.error("Пользователь не залогинен");
+    }
   },
 
   fetchMyPets: async () => {

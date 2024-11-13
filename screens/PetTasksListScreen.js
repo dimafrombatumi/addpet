@@ -66,6 +66,7 @@ const PetTasksListScreen = ({ route }) => {
                     {task.task_description}
                   </Text>
                   <Text style={essentialstyles.text}>{task.place}</Text>
+                  <Text>{task.task_date}</Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => undonePetTaskHeandler(task.task_id)}
